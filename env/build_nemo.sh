@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build the `nemo` conda env (CLAUDE.md §3.4). Needs apt: libsndfile1 ffmpeg sox. Run inside tmux:
+# Build the `nemo` conda env . Needs apt: libsndfile1 ffmpeg sox. Run inside tmux:
 #   tmux new -d -s env-nemo "bash env/build_nemo.sh 2>&1 | tee logs/20261026-env-nemo.log"
 set -euo pipefail
 REPO=${REPO:-$HOME/nemo-dicobw}

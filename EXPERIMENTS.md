@@ -1,6 +1,6 @@
 # EXPERIMENTS
 
-One entry per run (CLAUDE.md §11). Write the entry **before** launching.
+One entry per run: run ID, git commit, config path + hash, data mix (hours), init, start/end + GPU-h, best step, metrics, conclusion. Write the entry **before** launching.
 
 <!-- Template
 ## <run_id>  (YYYYMMDD-<model>-<short-desc>)
