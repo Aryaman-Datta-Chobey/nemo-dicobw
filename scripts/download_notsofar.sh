@@ -34,5 +34,16 @@ log "==> $DATASET @ ${REVISION:0:10} (SC + JSON, 240825.1)"
 echo "$DATASET $REVISION" > "$OUT/REVISION"
 
 log "    $(find "$OUT/benchmark-datasets" -name '*.wav' | wc -l) wav files"
+
+# Forced-alignment reference RTTMs (popcornell/FastMSS, used by the Nemotron-3-Diarization
+# model card for NOTSOFAR-1 eval) and the CHiME-8 session map (chimechallenge/chime-utils) that
+# names their S<id> sessions as <meeting>_<device>_{sc,mc}. Both pinned to a commit.
+FASTMSS_COMMIT=c240acf6930d6e6c8fc61a4463ceb08733fd6c29
+CHIME_UTILS_COMMIT=152882404f572d40769ef02bf91c5a9a9cfc9c78
+REF_RAW=$DATA/raw/notsofar_fa
+fetch "$REF_RAW" notsofar1-channels_mfa_rttms.tar.gz \
+  "https://raw.githubusercontent.com/popcornell/FastMSS/$FASTMSS_COMMIT/resources/notsofar1-channels_mfa_rttms.tar.gz"
+fetch "$REF_RAW" c8map.json \
+  "https://raw.githubusercontent.com/chimechallenge/chime-utils/$CHIME_UTILS_COMMIT/chime_utils/dgen/c8map.json"
 summary "$OUT"
 log "notsofar OK"
