@@ -17,7 +17,7 @@ One entry per run (CLAUDE.md §11). Write the entry **before** launching.
 ## Infrastructure jobs
 
 ### 20261026-env-dicow
-- Script: `env/build_dicow.sh` (Python 3.11, torch 2.7.0 cu128, TS-ASR-Whisper reqs, flash-attn 2.7.2.post1 built from source).
+- Script: `env/build_dicow.sh` (Python 3.11, torch 2.7.0 cu128, TS-ASR-Whisper reqs, flash-attn 2.7.4.post1 prebuilt wheel).
 - Log: `logs/20261026-env-dicow.log`. Output: `env/requirements-lock-dicow.txt`.
 
 ### 20261026-env-nemo

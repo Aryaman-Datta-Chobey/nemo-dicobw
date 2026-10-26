@@ -7,7 +7,7 @@ NEMO_VERSION=${NEMO_VERSION:-3.0.0}
 NEMO_SRC=${NEMO_SRC:-$HOME/src/NeMo-Speech}
 source "$HOME/miniforge3/etc/profile.d/conda.sh"
 
-conda env create -y -f "$REPO/env/nemo.yml"
+conda env list | grep -q "^nemo " || conda env create -y -f "$REPO/env/nemo.yml"
 conda activate nemo
 
 pip install Cython packaging
