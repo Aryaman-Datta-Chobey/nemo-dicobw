@@ -13,7 +13,7 @@
 - Mounted: `/mnt/data`, 984 GB usable. Backup of the old fstab: `/etc/fstab.bak.20261026`.
 
 ## Blockers
-- LICENSE is MIT; CLAUDE.md §3.3 says Apache-2.0. Waiting on the user's decision.
+- (none)
 
 ## Next action
 - Build the `dicow` and `nemo` envs.
