@@ -24,6 +24,7 @@ MODELS=(
   BUT-FIT/DiCoW_v3_3
   openai/whisper-large-v3
   openai/whisper-large-v3-turbo
+  BuzzASR/mandarin
 )
 
 OUT=$REPO/results/model_shas.md
