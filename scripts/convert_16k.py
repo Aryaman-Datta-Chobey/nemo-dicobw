@@ -141,7 +141,7 @@ def iter_jobs(src: Path, out: Path, corpus: str, layout: Layout, includes: list[
 
 def outputs_for(job: Job, n_channels: int) -> list[Path]:
     if job.downmix or n_channels == 1:
-        return [job.dst_stem.with_suffix(".flac")]
+        return [job.dst_stem.with_name(f"{job.dst_stem.name}.flac")]  # channel names may contain dots (U01.CH1)
     return [job.dst_stem.with_name(f"{job.dst_stem.name}_ch{c + 1}.flac") for c in range(n_channels)]
 
 

@@ -1,0 +1,4331 @@
+{
+ "meta": {
+  "name": "20261026-nemotron-zeroshot/egocom_test_all",
+  "manifest": "/mnt/data/manifests/nemo/egocom_test_all.jsonl",
+  "ref": "9 files under /mnt/data/refs/egocom/test/rttm/fa",
+  "hyp": "/mnt/data/exp/nemotron/20261026-nemotron-zeroshot/rttm/egocom_test_all",
+  "uem": "9 files under /mnt/data/refs/egocom/test/uem",
+  "collars": [
+   0.0,
+   0.25
+  ],
+  "boundary_tols": [
+   0.25,
+   0.5
+  ],
+  "seg_merge_gap": 0.0,
+  "git_commit": "14dba5ba9283b3c5a43d24e874fc385f7285cb11-dirty",
+  "created": "2026-10-26T15:39:46+00:00",
+  "condition": "egocom_test_all",
+  "ref_type": "fa",
+  "run": "20261026-nemotron-zeroshot",
+  "model": "/mnt/data/models/nvidia__Nemotron-3-Diarization/Nemotron-3-Diarization.nemo",
+  "precision": "bf16",
+  "streaming": "{\"spkcache_len\":264,\"fifo_len\":40,\"chunk_len\":340,\"chunk_right_context\":40,\"spkcache_update_period\":300}"
+ },
+ "overall": {
+  "diar": {
+   "0.00": {
+    "n_files": 26,
+    "scored_time": 20982.55,
+    "ref_speech": 17185.144999999997,
+    "miss": 2432.2280000000046,
+    "fa": 3466.6200000000017,
+    "conf": 645.0029999999958,
+    "der": 0.3807853236036125,
+    "miss_rate": 0.1415308395710368,
+    "fa_rate": 0.20172189411261893,
+    "conf_rate": 0.037532589919956796,
+    "jer": 0.3284085793365872,
+    "spk_count_acc": 0.9230769230769231,
+    "spk_count_mae": 0.07692307692307693,
+    "spk_count_bias": 0.07692307692307693
+   },
+   "0.25": {
+    "n_files": 26,
+    "scored_time": 11646.623000000005,
+    "ref_speech": 9676.043,
+    "miss": 669.6410000000018,
+    "fa": 1341.7370000000017,
+    "conf": 185.18399999999872,
+    "der": 0.22701035950336335,
+    "miss_rate": 0.06920607938596406,
+    "fa_rate": 0.13866587819008264,
+    "conf_rate": 0.019138401927316643,
+    "jer": 0.2201574841969249,
+    "spk_count_acc": 0.9230769230769231,
+    "spk_count_mae": 0.07692307692307693,
+    "spk_count_bias": 0.07692307692307693
+   }
+  },
+  "seg": {
+   "confusion": {
+    "uem_time": 20982.550000000003,
+    "ref_speech": 15243.808999999997,
+    "ref_silence": 5738.741000000002,
+    "ref_speech__hyp_speech__inter": 14125.260999999993,
+    "ref_speech__hyp_speech__union": 17386.964999999997,
+    "ref_speech__hyp_speech__iou": 0.8124052127556475,
+    "ref_speech__hyp_speech__frac_uem": 0.6731908657432005,
+    "ref_speech__hyp_silence__inter": 1118.5480000000045,
+    "ref_speech__hyp_silence__union": 18839.393999999997,
+    "ref_speech__hyp_silence__iou": 0.059372822713936804,
+    "ref_speech__hyp_silence__frac_uem": 0.05330848729062981,
+    "ref_silence__hyp_speech__inter": 2143.156,
+    "ref_silence__hyp_speech__union": 19864.001999999993,
+    "ref_silence__hyp_speech__iou": 0.1078914510781866,
+    "ref_silence__hyp_speech__frac_uem": 0.10213992102961746,
+    "ref_silence__hyp_silence__inter": 3595.585000000002,
+    "ref_silence__hyp_silence__union": 6857.289000000006,
+    "ref_silence__hyp_silence__iou": 0.5243449707311444,
+    "ref_silence__hyp_silence__frac_uem": 0.1713607259365521,
+    "speech_precision": 0.8682627818059986,
+    "speech_recall": 0.9266228014271233,
+    "speech_f1": 0.8964940147357408,
+    "speech_miss_rate": 0.07337719857287668,
+    "speech_fa_rate": 0.37345403808953903,
+    "sad_error": 0.21396909394495855
+   },
+   "boundaries": {
+    "0.25": {
+     "onset": {
+      "n_ref": 8128,
+      "n_hyp": 8582,
+      "n_match": 4874,
+      "precision": 0.5679328827779072,
+      "recall": 0.5996555118110236,
+      "f1": 0.5833632555356074,
+      "mae": 0.056726302831350904,
+      "median_abs_err": 0.030000000000001137,
+      "mean_disp": -0.008582683627410959,
+      "median_disp": -0.0049999999999954525
+     },
+     "offset": {
+      "n_ref": 8133,
+      "n_hyp": 8581,
+      "n_match": 4973,
+      "precision": 0.5795361845938701,
+      "recall": 0.6114594860445101,
+      "f1": 0.5950700011966017,
+      "mae": 0.07628795495676753,
+      "median_abs_err": 0.0549999999999784,
+      "mean_disp": 0.00993565252362597,
+      "median_disp": 0.009999999999990905
+     },
+     "all": {
+      "n_ref": 16261,
+      "n_hyp": 17163,
+      "n_match": 9847,
+      "precision": 0.5737341956534405,
+      "recall": 0.6055593136953447,
+      "f1": 0.5892173288654858,
+      "mae": 0.06660546359297342,
+      "median_abs_err": 0.040000000000020464,
+      "mean_disp": 0.0007695744896913724,
+      "median_disp": 0.0
+     }
+    },
+    "0.50": {
+     "onset": {
+      "n_ref": 8128,
+      "n_hyp": 8582,
+      "n_match": 6057,
+      "precision": 0.7057795385690981,
+      "recall": 0.7452017716535433,
+      "f1": 0.7249551166965889,
+      "mae": 0.11595641406637003,
+      "median_abs_err": 0.04999999999998295,
+      "mean_disp": -0.018709592207363537,
+      "median_disp": -0.009999999999990905
+     },
+     "offset": {
+      "n_ref": 8133,
+      "n_hyp": 8581,
+      "n_match": 6053,
+      "precision": 0.7053956415336208,
+      "recall": 0.744251813598918,
+      "f1": 0.7243029795381117,
+      "mae": 0.1253611432347605,
+      "median_abs_err": 0.07000000000016371,
+      "mean_disp": 0.011040971419129648,
+      "median_disp": 0.009999999999990905
+     },
+     "all": {
+      "n_ref": 16261,
+      "n_hyp": 17163,
+      "n_match": 12110,
+      "precision": 0.7055876012352152,
+      "recall": 0.7447266465777013,
+      "f1": 0.7246290090952608,
+      "mae": 0.12065722543352672,
+      "median_abs_err": 0.060000000000002274,
+      "mean_disp": -0.003839223781999106,
+      "median_disp": 0.0
+     }
+    }
+   }
+  }
+ },
+ "files": {
+  "day_1__con_4__part1__person_1": {
+   "uem_time": 290.11,
+   "diar": {
+    "0.00": {
+     "scored_time": 290.11,
+     "ref_speech": 240.0970000000001,
+     "miss": 29.6170000000001,
+     "fa": 7.450000000000113,
+     "conf": 2.494999999999883,
+     "der": 0.1647750700758447,
+     "miss_rate": 0.12335431096598495,
+     "fa_rate": 0.031029125728351918,
+     "conf_rate": 0.010391633381507816,
+     "jer": 0.20778640367348808,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.09574415744157516,
+      "spk2": 0.3559875352426154,
+      "spk3": 0.17162751833627365
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 181.84400000000008,
+     "ref_speech": 157.96600000000007,
+     "miss": 11.358999999999938,
+     "fa": 2.09999999999998,
+     "conf": 0.8249999999999975,
+     "der": 0.09042452173252415,
+     "miss_rate": 0.07190787891065123,
+     "fa_rate": 0.013293999974677964,
+     "conf_rate": 0.005222642847194948,
+     "jer": 0.10993143172558828,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.07728565542054766,
+      "spk2": 0.1990709786395456,
+      "spk3": 0.053437661116671586
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 290.11,
+     "ref_speech": 223.904,
+     "ref_silence": 66.20600000000002,
+     "ref_speech__hyp_speech__inter": 207.09899999999996,
+     "ref_speech__hyp_speech__union": 228.48500000000004,
+     "ref_speech__hyp_speech__iou": 0.9064008578243645,
+     "ref_speech__hyp_speech__frac_uem": 0.7138637068698078,
+     "ref_speech__hyp_silence__inter": 16.805000000000035,
+     "ref_speech__hyp_silence__union": 285.52899999999994,
+     "ref_speech__hyp_silence__iou": 0.0588556679006337,
+     "ref_speech__hyp_silence__frac_uem": 0.057926303815794125,
+     "ref_silence__hyp_speech__inter": 4.581000000000049,
+     "ref_silence__hyp_speech__union": 273.30499999999995,
+     "ref_silence__hyp_speech__iou": 0.016761493569455554,
+     "ref_silence__hyp_speech__frac_uem": 0.01579056220054479,
+     "ref_silence__hyp_silence__inter": 61.624999999999964,
+     "ref_silence__hyp_silence__union": 83.01100000000005,
+     "ref_silence__hyp_silence__iou": 0.7423714929346704,
+     "ref_silence__hyp_silence__frac_uem": 0.21241942711385323,
+     "speech_precision": 0.9783588435374148,
+     "speech_recall": 0.9249455123624409,
+     "speech_f1": 0.9509026961504553,
+     "speech_miss_rate": 0.0750544876375591,
+     "speech_fa_rate": 0.0691931244902282,
+     "sad_error": 0.0955141489209665
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 96,
+       "n_hyp": 125,
+       "n_match": 87,
+       "precision": 0.696,
+       "recall": 0.90625,
+       "f1": 0.7873303167420814,
+       "mae": 0.03134482758620731,
+       "median_abs_err": 0.012000000000000455,
+       "mean_disp": 0.010586206896552004,
+       "median_disp": 0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 97,
+       "n_hyp": 126,
+       "n_match": 89,
+       "precision": 0.7063492063492064,
+       "recall": 0.9175257731958762,
+       "f1": 0.7982062780269058,
+       "mae": 0.04489887640449593,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": -0.009528089887640678,
+       "median_disp": -0.005000000000023874
+      },
+      "all": {
+       "n_ref": 193,
+       "n_hyp": 251,
+       "n_match": 176,
+       "precision": 0.701195219123506,
+       "recall": 0.9119170984455959,
+       "f1": 0.7927927927927928,
+       "mae": 0.03819886363636462,
+       "median_abs_err": 0.020000000000003126,
+       "mean_disp": 0.0004147727272727497,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 96,
+       "n_hyp": 125,
+       "n_match": 88,
+       "precision": 0.704,
+       "recall": 0.9166666666666666,
+       "f1": 0.7963800904977375,
+       "mae": 0.03587500000000048,
+       "median_abs_err": 0.013500000000000512,
+       "mean_disp": 0.01535227272727308,
+       "median_disp": 0.009999999999994458
+      },
+      "offset": {
+       "n_ref": 97,
+       "n_hyp": 126,
+       "n_match": 90,
+       "precision": 0.7142857142857143,
+       "recall": 0.9278350515463918,
+       "f1": 0.8071748878923767,
+       "mae": 0.047733333333334904,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": -0.012755555555555829,
+       "median_disp": -0.00750000000000739
+      },
+      "all": {
+       "n_ref": 193,
+       "n_hyp": 251,
+       "n_match": 178,
+       "precision": 0.7091633466135459,
+       "recall": 0.9222797927461139,
+       "f1": 0.8018018018018018,
+       "mae": 0.04187078651685497,
+       "median_abs_err": 0.020000000000003126,
+       "mean_disp": 0.0011404494382022837,
+       "median_disp": 0.0
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part1__person_2": {
+   "uem_time": 290.11,
+   "diar": {
+    "0.00": {
+     "scored_time": 290.11,
+     "ref_speech": 240.0970000000001,
+     "miss": 20.02000000000004,
+     "fa": 15.212999999999889,
+     "conf": 6.21099999999997,
+     "der": 0.17261356868265693,
+     "miss_rate": 0.0833829660512211,
+     "fa_rate": 0.06336189123562512,
+     "conf_rate": 0.025868711395810724,
+     "jer": 0.20969632518414885,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.12349315212589151,
+      "spk2": 0.2838068517923853,
+      "spk3": 0.22178897163416977
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 181.84400000000008,
+     "ref_speech": 157.96600000000004,
+     "miss": 7.0970000000000475,
+     "fa": 1.9060000000000556,
+     "conf": 1.9860000000000042,
+     "der": 0.0695656027246376,
+     "miss_rate": 0.044927389438233836,
+     "fa_rate": 0.012065887596065325,
+     "conf_rate": 0.01257232569033845,
+     "jer": 0.0978663525709278,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.055829564292000255,
+      "spk2": 0.13876330013257898,
+      "spk3": 0.09900619328820415
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 290.11,
+     "ref_speech": 223.90400000000002,
+     "ref_silence": 66.20600000000002,
+     "ref_speech__hyp_speech__inter": 214.58700000000005,
+     "ref_speech__hyp_speech__union": 234.30699999999993,
+     "ref_speech__hyp_speech__iou": 0.915836914816886,
+     "ref_speech__hyp_speech__frac_uem": 0.7396746061838614,
+     "ref_speech__hyp_silence__inter": 9.316999999999968,
+     "ref_speech__hyp_silence__union": 279.7070000000001,
+     "ref_speech__hyp_silence__iou": 0.03330985638543177,
+     "ref_speech__hyp_silence__frac_uem": 0.03211540450174061,
+     "ref_silence__hyp_speech__inter": 10.402999999999933,
+     "ref_silence__hyp_speech__union": 280.793,
+     "ref_silence__hyp_speech__iou": 0.0370486443750376,
+     "ref_silence__hyp_speech__frac_uem": 0.035858812174692126,
+     "ref_silence__hyp_silence__inter": 55.80300000000008,
+     "ref_silence__hyp_silence__union": 75.52299999999998,
+     "ref_silence__hyp_silence__iou": 0.7388874912278391,
+     "ref_silence__hyp_silence__frac_uem": 0.1923511771397059,
+     "speech_precision": 0.953762389439531,
+     "speech_recall": 0.958388416464199,
+     "speech_f1": 0.9560698071259587,
+     "speech_miss_rate": 0.04161158353580091,
+     "speech_fa_rate": 0.15713077364589206,
+     "sad_error": 0.08807346005430854
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 96,
+       "n_hyp": 114,
+       "n_match": 82,
+       "precision": 0.7192982456140351,
+       "recall": 0.8541666666666666,
+       "f1": 0.780952380952381,
+       "mae": 0.05174390243902381,
+       "median_abs_err": 0.040000000000020464,
+       "mean_disp": -0.037036585365852956,
+       "median_disp": -0.03999999999999915
+      },
+      "offset": {
+       "n_ref": 97,
+       "n_hyp": 114,
+       "n_match": 87,
+       "precision": 0.7631578947368421,
+       "recall": 0.8969072164948454,
+       "f1": 0.8246445497630331,
+       "mae": 0.05311494252873464,
+       "median_abs_err": 0.04399999999998272,
+       "mean_disp": 0.028701149425287453,
+       "median_disp": 0.03500000000000014
+      },
+      "all": {
+       "n_ref": 193,
+       "n_hyp": 228,
+       "n_match": 169,
+       "precision": 0.7412280701754386,
+       "recall": 0.8756476683937824,
+       "f1": 0.8028503562945368,
+       "mae": 0.05244970414201104,
+       "median_abs_err": 0.040000000000020464,
+       "mean_disp": -0.003195266272188958,
+       "median_disp": -0.019999999999999574
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 96,
+       "n_hyp": 114,
+       "n_match": 89,
+       "precision": 0.7807017543859649,
+       "recall": 0.9270833333333334,
+       "f1": 0.8476190476190476,
+       "mae": 0.0777078651685387,
+       "median_abs_err": 0.045000000000001705,
+       "mean_disp": -0.027910112359549825,
+       "median_disp": -0.03999999999999915
+      },
+      "offset": {
+       "n_ref": 97,
+       "n_hyp": 114,
+       "n_match": 89,
+       "precision": 0.7807017543859649,
+       "recall": 0.9175257731958762,
+       "f1": 0.8436018957345972,
+       "mae": 0.05956179775280809,
+       "median_abs_err": 0.045000000000001705,
+       "mean_disp": 0.035696629213483315,
+       "median_disp": 0.03999999999999204
+      },
+      "all": {
+       "n_ref": 193,
+       "n_hyp": 228,
+       "n_match": 178,
+       "precision": 0.7807017543859649,
+       "recall": 0.9222797927461139,
+       "f1": 0.8456057007125891,
+       "mae": 0.0686348314606734,
+       "median_abs_err": 0.045000000000001705,
+       "mean_disp": 0.0038932584269667464,
+       "median_disp": -0.019999999999988916
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part1__person_3": {
+   "uem_time": 290.11,
+   "diar": {
+    "0.00": {
+     "scored_time": 290.11,
+     "ref_speech": 240.0970000000001,
+     "miss": 26.258000000000123,
+     "fa": 8.981000000000087,
+     "conf": 3.081999999999983,
+     "der": 0.15960632577666603,
+     "miss_rate": 0.10936413199665182,
+     "fa_rate": 0.03740571519011101,
+     "conf_rate": 0.012836478589903172,
+     "jer": 0.197750206525775,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.10796251301631421,
+      "spk2": 0.34955616773798603,
+      "spk3": 0.1357319388230247
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 181.84400000000008,
+     "ref_speech": 157.96600000000004,
+     "miss": 8.959000000000021,
+     "fa": 0.7560000000000571,
+     "conf": 0.7849999999999966,
+     "der": 0.06646999987339093,
+     "miss_rate": 0.056714736082448244,
+     "fa_rate": 0.004785839990884474,
+     "conf_rate": 0.004969423800058217,
+     "jer": 0.08893069353364225,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.05173407773765826,
+      "spk2": 0.16645335868651157,
+      "spk3": 0.04860464417675692
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 290.11,
+     "ref_speech": 223.90400000000002,
+     "ref_silence": 66.20600000000002,
+     "ref_speech__hyp_speech__inter": 211.43200000000002,
+     "ref_speech__hyp_speech__union": 231.48200000000006,
+     "ref_speech__hyp_speech__iou": 0.9133841940194053,
+     "ref_speech__hyp_speech__frac_uem": 0.7287994209093103,
+     "ref_speech__hyp_silence__inter": 12.471999999999998,
+     "ref_speech__hyp_silence__union": 282.5319999999999,
+     "ref_speech__hyp_silence__iou": 0.04414367222119973,
+     "ref_speech__hyp_silence__frac_uem": 0.04299058977629174,
+     "ref_silence__hyp_speech__inter": 7.578000000000063,
+     "ref_silence__hyp_speech__union": 277.63800000000003,
+     "ref_silence__hyp_speech__iou": 0.027294534609815884,
+     "ref_silence__hyp_speech__frac_uem": 0.026121126469270495,
+     "ref_silence__hyp_silence__inter": 58.62799999999995,
+     "ref_silence__hyp_silence__union": 78.67800000000001,
+     "ref_silence__hyp_silence__iou": 0.74516383232924,
+     "ref_silence__hyp_silence__frac_uem": 0.20208886284512753,
+     "speech_precision": 0.9653988402356054,
+     "speech_recall": 0.9442975560954695,
+     "speech_f1": 0.9547316183277114,
+     "speech_miss_rate": 0.055702443904530496,
+     "speech_fa_rate": 0.11446092499169352,
+     "sad_error": 0.08954730598828095
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 96,
+       "n_hyp": 119,
+       "n_match": 81,
+       "precision": 0.680672268907563,
+       "recall": 0.84375,
+       "f1": 0.7534883720930232,
+       "mae": 0.029740740740742296,
+       "median_abs_err": 0.01999999999998181,
+       "mean_disp": -0.012308641975309068,
+       "median_disp": -0.010000000000005116
+      },
+      "offset": {
+       "n_ref": 97,
+       "n_hyp": 119,
+       "n_match": 82,
+       "precision": 0.6890756302521008,
+       "recall": 0.845360824742268,
+       "f1": 0.7592592592592593,
+       "mae": 0.052170731707316946,
+       "median_abs_err": 0.04000000000001336,
+       "mean_disp": 0.02529268292682887,
+       "median_disp": 0.029999999999986926
+      },
+      "all": {
+       "n_ref": 193,
+       "n_hyp": 238,
+       "n_match": 163,
+       "precision": 0.6848739495798319,
+       "recall": 0.844559585492228,
+       "f1": 0.7563805104408353,
+       "mae": 0.04102453987730132,
+       "median_abs_err": 0.025000000000034106,
+       "mean_disp": 0.006607361963189773,
+       "median_disp": 0.009999999999990905
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 96,
+       "n_hyp": 119,
+       "n_match": 84,
+       "precision": 0.7058823529411765,
+       "recall": 0.875,
+       "f1": 0.7813953488372093,
+       "mae": 0.0415357142857156,
+       "median_abs_err": 0.01999999999999602,
+       "mean_disp": -0.014726190476190995,
+       "median_disp": -0.010000000000012221
+      },
+      "offset": {
+       "n_ref": 97,
+       "n_hyp": 119,
+       "n_match": 84,
+       "precision": 0.7058823529411765,
+       "recall": 0.865979381443299,
+       "f1": 0.7777777777777778,
+       "mae": 0.05790476190476227,
+       "median_abs_err": 0.040000000000020464,
+       "mean_disp": 0.02533333333333297,
+       "median_disp": 0.029999999999986926
+      },
+      "all": {
+       "n_ref": 193,
+       "n_hyp": 238,
+       "n_match": 168,
+       "precision": 0.7058823529411765,
+       "recall": 0.8704663212435233,
+       "f1": 0.7795823665893271,
+       "mae": 0.04972023809523893,
+       "median_abs_err": 0.030000000000000693,
+       "mean_disp": 0.005303571428570987,
+       "median_disp": 0.006500000000002615
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part2__person_1": {
+   "uem_time": 299.793,
+   "diar": {
+    "0.00": {
+     "scored_time": 299.793,
+     "ref_speech": 248.122,
+     "miss": 34.414000000000144,
+     "fa": 19.55199999999997,
+     "conf": 7.8330000000000375,
+     "der": 0.2490669912381818,
+     "miss_rate": 0.13869789861439188,
+     "fa_rate": 0.07879994518825405,
+     "conf_rate": 0.03156914743553589,
+     "jer": 0.29603853002292563,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.14498010215272883,
+      "spk2": 0.4756810213072018,
+      "spk3": 0.2674544666088463
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    },
+    "0.25": {
+     "scored_time": 169.0019999999998,
+     "ref_speech": 149.94899999999984,
+     "miss": 13.179000000000023,
+     "fa": 4.68899999999997,
+     "conf": 3.9799999999999827,
+     "der": 0.1457028723099187,
+     "miss_rate": 0.08788988256007067,
+     "fa_rate": 0.03127063201488489,
+     "conf_rate": 0.026542357734963135,
+     "jer": 0.20119533807526493,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.10918136244497112,
+      "spk2": 0.35989431233486235,
+      "spk3": 0.13451033944596136
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 299.793,
+     "ref_speech": 224.753,
+     "ref_silence": 75.04000000000002,
+     "ref_speech__hyp_speech__inter": 209.71499999999995,
+     "ref_speech__hyp_speech__union": 241.20799999999994,
+     "ref_speech__hyp_speech__iou": 0.869436337103247,
+     "ref_speech__hyp_speech__frac_uem": 0.6995326775475076,
+     "ref_speech__hyp_silence__inter": 15.038000000000046,
+     "ref_speech__hyp_silence__union": 283.3380000000001,
+     "ref_speech__hyp_silence__iou": 0.053074419950730374,
+     "ref_speech__hyp_silence__frac_uem": 0.05016127794845125,
+     "ref_silence__hyp_speech__inter": 16.45499999999994,
+     "ref_silence__hyp_speech__union": 284.755,
+     "ref_silence__hyp_speech__iou": 0.05778651823497372,
+     "ref_silence__hyp_speech__frac_uem": 0.05488787263211596,
+     "ref_silence__hyp_silence__inter": 58.58500000000007,
+     "ref_silence__hyp_silence__union": 90.07800000000006,
+     "ref_silence__hyp_silence__iou": 0.6503807811008241,
+     "ref_silence__hyp_silence__frac_uem": 0.1954181718719252,
+     "speech_precision": 0.9272449927046029,
+     "speech_recall": 0.9330909932236721,
+     "speech_f1": 0.9301588076012978,
+     "speech_miss_rate": 0.066909006776328,
+     "speech_fa_rate": 0.21928304904051088,
+     "sad_error": 0.14012271248882102
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 122,
+       "n_hyp": 138,
+       "n_match": 97,
+       "precision": 0.7028985507246377,
+       "recall": 0.7950819672131147,
+       "f1": 0.7461538461538462,
+       "mae": 0.03765979381443227,
+       "median_abs_err": 0.029999999999972715,
+       "mean_disp": 0.0008969072164958018,
+       "median_disp": 0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 121,
+       "n_hyp": 138,
+       "n_match": 92,
+       "precision": 0.6666666666666666,
+       "recall": 0.7603305785123967,
+       "f1": 0.7104247104247104,
+       "mae": 0.0619239130434791,
+       "median_abs_err": 0.03849999999999909,
+       "mean_disp": 0.02116304347826233,
+       "median_disp": 0.005000000000002558
+      },
+      "all": {
+       "n_ref": 243,
+       "n_hyp": 276,
+       "n_match": 189,
+       "precision": 0.6847826086956522,
+       "recall": 0.7777777777777778,
+       "f1": 0.7283236994219653,
+       "mae": 0.04947089947089951,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": 0.010761904761905965,
+       "median_disp": 0.009999999999990905
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 122,
+       "n_hyp": 138,
+       "n_match": 100,
+       "precision": 0.7246376811594203,
+       "recall": 0.819672131147541,
+       "f1": 0.7692307692307693,
+       "mae": 0.048429999999998995,
+       "median_abs_err": 0.02999999999997982,
+       "mean_disp": 0.005770000000001303,
+       "median_disp": 0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 121,
+       "n_hyp": 138,
+       "n_match": 100,
+       "precision": 0.7246376811594203,
+       "recall": 0.8264462809917356,
+       "f1": 0.7722007722007722,
+       "mae": 0.08547000000000077,
+       "median_abs_err": 0.04000000000000625,
+       "mean_disp": 0.012570000000001276,
+       "median_disp": 7.105427357601002e-15
+      },
+      "all": {
+       "n_ref": 243,
+       "n_hyp": 276,
+       "n_match": 200,
+       "precision": 0.7246376811594203,
+       "recall": 0.823045267489712,
+       "f1": 0.7707129094412332,
+       "mae": 0.06694999999999988,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": 0.00917000000000129,
+       "median_disp": 0.009999999999990905
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part2__person_2": {
+   "uem_time": 299.793,
+   "diar": {
+    "0.00": {
+     "scored_time": 299.793,
+     "ref_speech": 248.12200000000007,
+     "miss": 23.249000000000052,
+     "fa": 24.037000000000116,
+     "conf": 4.354999999999828,
+     "der": 0.20812745343016736,
+     "miss_rate": 0.09369987344935171,
+     "fa_rate": 0.09687573048742196,
+     "conf_rate": 0.01755184949339368,
+     "jer": 0.21884021244549767,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.1598187646797431,
+      "spk2": 0.29995869475423287,
+      "spk3": 0.19674317790251705
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    },
+    "0.25": {
+     "scored_time": 169.0019999999998,
+     "ref_speech": 149.94899999999984,
+     "miss": 8.248999999999972,
+     "fa": 4.568999999999914,
+     "conf": 1.6800000000000068,
+     "der": 0.09668620664359154,
+     "miss_rate": 0.055012037426058064,
+     "fa_rate": 0.030470359922373066,
+     "conf_rate": 0.011203809295160412,
+     "jer": 0.11543735721377686,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.09255501794911813,
+      "spk2": 0.17334856668051424,
+      "spk3": 0.08040848701169823
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 299.793,
+     "ref_speech": 224.753,
+     "ref_silence": 75.04000000000002,
+     "ref_speech__hyp_speech__inter": 215.93499999999995,
+     "ref_speech__hyp_speech__union": 241.7880000000002,
+     "ref_speech__hyp_speech__iou": 0.8930757523119417,
+     "ref_speech__hyp_speech__frac_uem": 0.7202803267587967,
+     "ref_speech__hyp_silence__inter": 8.818000000000042,
+     "ref_speech__hyp_silence__union": 282.7579999999998,
+     "ref_speech__hyp_silence__iou": 0.03118567821246454,
+     "ref_speech__hyp_silence__frac_uem": 0.029413628737162117,
+     "ref_silence__hyp_speech__inter": 17.03500000000021,
+     "ref_silence__hyp_speech__union": 290.97499999999997,
+     "ref_silence__hyp_speech__iou": 0.05854454850073103,
+     "ref_silence__hyp_speech__frac_uem": 0.05682254088654575,
+     "ref_silence__hyp_silence__inter": 58.004999999999804,
+     "ref_silence__hyp_silence__union": 83.85800000000006,
+     "ref_silence__hyp_silence__iou": 0.6917050251615798,
+     "ref_silence__hyp_silence__frac_uem": 0.19348350361749542,
+     "speech_precision": 0.9268789972957884,
+     "speech_recall": 0.9607658184762826,
+     "speech_f1": 0.9435182413817959,
+     "speech_miss_rate": 0.03923418152371734,
+     "speech_fa_rate": 0.2270122601279345,
+     "sad_error": 0.1150284979510852
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 122,
+       "n_hyp": 115,
+       "n_match": 92,
+       "precision": 0.8,
+       "recall": 0.7540983606557377,
+       "f1": 0.7763713080168776,
+       "mae": 0.04559782608695696,
+       "median_abs_err": 0.03999999999999915,
+       "mean_disp": -0.039293478260870755,
+       "median_disp": -0.03999999999999204
+      },
+      "offset": {
+       "n_ref": 121,
+       "n_hyp": 115,
+       "n_match": 100,
+       "precision": 0.8695652173913043,
+       "recall": 0.8264462809917356,
+       "f1": 0.847457627118644,
+       "mae": 0.06445000000000116,
+       "median_abs_err": 0.04749999999999943,
+       "mean_disp": 0.035050000000000935,
+       "median_disp": 0.030000000000001137
+      },
+      "all": {
+       "n_ref": 243,
+       "n_hyp": 230,
+       "n_match": 192,
+       "precision": 0.8347826086956521,
+       "recall": 0.7901234567901234,
+       "f1": 0.8118393234672304,
+       "mae": 0.05541666666666748,
+       "median_abs_err": 0.040000000000003144,
+       "mean_disp": -0.0005729166666667516,
+       "median_disp": -0.014999999999993463
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 122,
+       "n_hyp": 115,
+       "n_match": 101,
+       "precision": 0.8782608695652174,
+       "recall": 0.8278688524590164,
+       "f1": 0.8523206751054853,
+       "mae": 0.0767821782178222,
+       "median_abs_err": 0.04000000000000625,
+       "mean_disp": -0.04074257425742683,
+       "median_disp": -0.03999999999999915
+      },
+      "offset": {
+       "n_ref": 121,
+       "n_hyp": 115,
+       "n_match": 103,
+       "precision": 0.8956521739130435,
+       "recall": 0.8512396694214877,
+       "f1": 0.8728813559322034,
+       "mae": 0.07402912621359314,
+       "median_abs_err": 0.04999999999999716,
+       "mean_disp": 0.022572815533981695,
+       "median_disp": 0.03000000000000025
+      },
+      "all": {
+       "n_ref": 243,
+       "n_hyp": 230,
+       "n_match": 204,
+       "precision": 0.8869565217391304,
+       "recall": 0.8395061728395061,
+       "f1": 0.8625792811839323,
+       "mae": 0.07539215686274577,
+       "median_abs_err": 0.04000000000001336,
+       "mean_disp": -0.008774509803921542,
+       "median_disp": -0.019999999999988916
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part2__person_3": {
+   "uem_time": 299.793,
+   "diar": {
+    "0.00": {
+     "scored_time": 299.793,
+     "ref_speech": 248.12200000000004,
+     "miss": 33.36899999999977,
+     "fa": 18.25999999999985,
+     "conf": 3.880000000000024,
+     "der": 0.2237165587896262,
+     "miss_rate": 0.13448626079106152,
+     "fa_rate": 0.07359282933395606,
+     "conf_rate": 0.015637468664608634,
+     "jer": 0.25732704596132655,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.14934514046554992,
+      "spk2": 0.4357464814644473,
+      "spk3": 0.1868895159539824
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    },
+    "0.25": {
+     "scored_time": 169.0019999999998,
+     "ref_speech": 149.94899999999984,
+     "miss": 12.113999999999926,
+     "fa": 2.646999999999867,
+     "conf": 1.7400000000000233,
+     "der": 0.11004408165442807,
+     "miss_rate": 0.08078746773903087,
+     "fa_rate": 0.017652668573980953,
+     "conf_rate": 0.011603945341416249,
+     "jer": 0.15405540217230593,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.06927850328795038,
+      "spk2": 0.2973450675700545,
+      "spk3": 0.09554263565891286
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 299.793,
+     "ref_speech": 224.753,
+     "ref_silence": 75.04,
+     "ref_speech__hyp_speech__inter": 210.34300000000025,
+     "ref_speech__hyp_speech__union": 238.16299999999984,
+     "ref_speech__hyp_speech__iou": 0.8831892443410622,
+     "ref_speech__hyp_speech__frac_uem": 0.701627456278166,
+     "ref_speech__hyp_silence__inter": 14.409999999999737,
+     "ref_speech__hyp_silence__union": 286.38300000000015,
+     "ref_speech__hyp_silence__iou": 0.05031723251729233,
+     "ref_speech__hyp_silence__frac_uem": 0.048066499217792734,
+     "ref_silence__hyp_speech__inter": 13.40999999999983,
+     "ref_silence__hyp_speech__union": 285.38300000000027,
+     "ref_silence__hyp_speech__iou": 0.04698948430705339,
+     "ref_silence__hyp_speech__frac_uem": 0.04473086429636392,
+     "ref_silence__hyp_silence__inter": 61.63000000000018,
+     "ref_silence__hyp_silence__union": 89.44999999999976,
+     "ref_silence__hyp_silence__iou": 0.6889882615986623,
+     "ref_silence__hyp_silence__frac_uem": 0.20557518020767723,
+     "speech_precision": 0.9400678426657975,
+     "speech_recall": 0.9358851717218469,
+     "speech_f1": 0.9379718443008576,
+     "speech_miss_rate": 0.06411482827815307,
+     "speech_fa_rate": 0.1787046908315542,
+     "sad_error": 0.12378032773755887
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 122,
+       "n_hyp": 126,
+       "n_match": 93,
+       "precision": 0.7380952380952381,
+       "recall": 0.7622950819672131,
+       "f1": 0.75,
+       "mae": 0.03159139784946337,
+       "median_abs_err": 0.019999999999999574,
+       "mean_disp": -0.010193548387097141,
+       "median_disp": -0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 121,
+       "n_hyp": 125,
+       "n_match": 95,
+       "precision": 0.76,
+       "recall": 0.7851239669421488,
+       "f1": 0.7723577235772358,
+       "mae": 0.057526315789470234,
+       "median_abs_err": 0.04000000000000625,
+       "mean_disp": 0.007105263157894959,
+       "median_disp": 0.009999999999990905
+      },
+      "all": {
+       "n_ref": 243,
+       "n_hyp": 251,
+       "n_match": 188,
+       "precision": 0.749003984063745,
+       "recall": 0.7736625514403292,
+       "f1": 0.7611336032388664,
+       "mae": 0.044696808510637044,
+       "median_abs_err": 0.02999999999997982,
+       "mean_disp": -0.0014521276595745372,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 122,
+       "n_hyp": 126,
+       "n_match": 95,
+       "precision": 0.753968253968254,
+       "recall": 0.7786885245901639,
+       "f1": 0.7661290322580645,
+       "mae": 0.03808421052631654,
+       "median_abs_err": 0.020000000000010232,
+       "mean_disp": -0.01103157894736872,
+       "median_disp": -0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 121,
+       "n_hyp": 125,
+       "n_match": 97,
+       "precision": 0.776,
+       "recall": 0.8016528925619835,
+       "f1": 0.7886178861788617,
+       "mae": 0.0646907216494803,
+       "median_abs_err": 0.04000000000000625,
+       "mean_disp": 0.005824742268041607,
+       "median_disp": 0.009999999999990905
+      },
+      "all": {
+       "n_ref": 243,
+       "n_hyp": 251,
+       "n_match": 192,
+       "precision": 0.7649402390438247,
+       "recall": 0.7901234567901234,
+       "f1": 0.7773279352226721,
+       "mae": 0.05152604166666489,
+       "median_abs_err": 0.030000000000000693,
+       "mean_disp": -0.002515624999999961,
+       "median_disp": 0.0
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part3__person_1": {
+   "uem_time": 299.816,
+   "diar": {
+    "0.00": {
+     "scored_time": 299.816,
+     "ref_speech": 215.5130000000001,
+     "miss": 17.415999999999972,
+     "fa": 31.733,
+     "conf": 3.304999999999964,
+     "der": 0.24339134994176645,
+     "miss_rate": 0.08081183037682166,
+     "fa_rate": 0.1472440177622695,
+     "conf_rate": 0.015335501802675304,
+     "jer": 0.22756120371603836,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.20790261263447374,
+      "spk2": 0.2222003004962716,
+      "spk3": 0.2525806980173697
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    },
+    "0.25": {
+     "scored_time": 186.92799999999988,
+     "ref_speech": 138.08399999999992,
+     "miss": 6.294999999999892,
+     "fa": 13.415000000000028,
+     "conf": 1.6100000000000065,
+     "der": 0.15439877176211536,
+     "miss_rate": 0.04558819269430126,
+     "fa_rate": 0.09715100953043102,
+     "conf_rate": 0.011659569537383096,
+     "jer": 0.14633649357038284,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.1586005120078029,
+      "spk2": 0.11632049103961928,
+      "spk3": 0.16408847766372636
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 299.816,
+     "ref_speech": 199.826,
+     "ref_silence": 99.99,
+     "ref_speech__hyp_speech__inter": 192.596,
+     "ref_speech__hyp_speech__union": 225.20999999999992,
+     "ref_speech__hyp_speech__iou": 0.8551840504418102,
+     "ref_speech__hyp_speech__frac_uem": 0.6423806601382182,
+     "ref_speech__hyp_silence__inter": 7.229999999999983,
+     "ref_speech__hyp_silence__union": 274.432,
+     "ref_speech__hyp_silence__iou": 0.026345324160447697,
+     "ref_speech__hyp_silence__frac_uem": 0.024114790404781542,
+     "ref_silence__hyp_speech__inter": 25.38399999999996,
+     "ref_silence__hyp_speech__union": 292.586,
+     "ref_silence__hyp_speech__iou": 0.08675739782491287,
+     "ref_silence__hyp_speech__frac_uem": 0.08466526136030086,
+     "ref_silence__hyp_silence__inter": 74.60600000000004,
+     "ref_silence__hyp_silence__union": 107.21999999999998,
+     "ref_silence__hyp_silence__iou": 0.6958216750606234,
+     "ref_silence__hyp_silence__frac_uem": 0.24883928809669945,
+     "speech_precision": 0.8835489494449034,
+     "speech_recall": 0.9638185221142395,
+     "speech_f1": 0.9219398476805026,
+     "speech_miss_rate": 0.036181477885760524,
+     "speech_fa_rate": 0.2538653865386535,
+     "sad_error": 0.16321199443515833
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 101,
+       "n_hyp": 106,
+       "n_match": 80,
+       "precision": 0.7547169811320755,
+       "recall": 0.7920792079207921,
+       "f1": 0.7729468599033816,
+       "mae": 0.03012500000000103,
+       "median_abs_err": 0.01999999999999602,
+       "mean_disp": -0.0021250000000004694,
+       "median_disp": 0.0
+      },
+      "offset": {
+       "n_ref": 101,
+       "n_hyp": 106,
+       "n_match": 78,
+       "precision": 0.7358490566037735,
+       "recall": 0.7722772277227723,
+       "f1": 0.7536231884057971,
+       "mae": 0.0684487179487144,
+       "median_abs_err": 0.04999999999999005,
+       "mean_disp": 0.04255128205127993,
+       "median_disp": 0.03000000000000025
+      },
+      "all": {
+       "n_ref": 202,
+       "n_hyp": 212,
+       "n_match": 158,
+       "precision": 0.7452830188679245,
+       "recall": 0.7821782178217822,
+       "f1": 0.7632850241545893,
+       "mae": 0.049044303797467124,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": 0.019930379746834155,
+       "median_disp": 0.009999999999994458
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 101,
+       "n_hyp": 106,
+       "n_match": 83,
+       "precision": 0.7830188679245284,
+       "recall": 0.8217821782178217,
+       "f1": 0.8019323671497585,
+       "mae": 0.04253012048192872,
+       "median_abs_err": 0.019999999999999574,
+       "mean_disp": -0.008072289156627088,
+       "median_disp": 0.0
+      },
+      "offset": {
+       "n_ref": 101,
+       "n_hyp": 106,
+       "n_match": 82,
+       "precision": 0.7735849056603774,
+       "recall": 0.8118811881188119,
+       "f1": 0.7922705314009661,
+       "mae": 0.0838292682926796,
+       "median_abs_err": 0.05999999999996675,
+       "mean_disp": 0.04699999999999802,
+       "median_disp": 0.030000000000015348
+      },
+      "all": {
+       "n_ref": 202,
+       "n_hyp": 212,
+       "n_match": 165,
+       "precision": 0.7783018867924528,
+       "recall": 0.8168316831683168,
+       "f1": 0.7971014492753623,
+       "mae": 0.06305454545454431,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": 0.01929696969696842,
+       "median_disp": 0.00999999999999801
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part3__person_2": {
+   "uem_time": 299.816,
+   "diar": {
+    "0.00": {
+     "scored_time": 299.816,
+     "ref_speech": 215.51300000000015,
+     "miss": 16.76399999999999,
+     "fa": 38.38099999999988,
+     "conf": 4.164999999999939,
+     "der": 0.275203816011098,
+     "miss_rate": 0.07778649083813959,
+     "fa_rate": 0.17809134483766573,
+     "conf_rate": 0.019325980335292703,
+     "jer": 0.25088350890892835,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.215974284557236,
+      "spk2": 0.2953248689215552,
+      "spk3": 0.24135137324799383
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    },
+    "0.25": {
+     "scored_time": 186.92799999999988,
+     "ref_speech": 138.08399999999992,
+     "miss": 7.364999999999913,
+     "fa": 16.234999999999964,
+     "conf": 1.3399999999999537,
+     "der": 0.18061469829958465,
+     "miss_rate": 0.05333709915703425,
+     "fa_rate": 0.11757336114249278,
+     "conf_rate": 0.009704238000057605,
+     "jer": 0.17157470623978024,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.146306818181819,
+      "spk2": 0.24430228825606037,
+      "spk3": 0.12411501228146138
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 299.816,
+     "ref_speech": 199.82599999999996,
+     "ref_silence": 99.99000000000001,
+     "ref_speech__hyp_speech__inter": 194.2100000000001,
+     "ref_speech__hyp_speech__union": 227.65599999999984,
+     "ref_speech__hyp_speech__iou": 0.8530853568542021,
+     "ref_speech__hyp_speech__frac_uem": 0.6477639618966303,
+     "ref_speech__hyp_silence__inter": 5.615999999999884,
+     "ref_speech__hyp_silence__union": 271.9860000000001,
+     "ref_speech__hyp_silence__iou": 0.0206481215944934,
+     "ref_speech__hyp_silence__frac_uem": 0.01873148864636939,
+     "ref_silence__hyp_speech__inter": 27.829999999999863,
+     "ref_silence__hyp_speech__union": 294.2000000000001,
+     "ref_silence__hyp_speech__iou": 0.09459551325628775,
+     "ref_silence__hyp_speech__frac_uem": 0.0928235984737301,
+     "ref_silence__hyp_silence__inter": 72.16000000000014,
+     "ref_silence__hyp_silence__union": 105.60599999999988,
+     "ref_silence__hyp_silence__iou": 0.6832945097816433,
+     "ref_silence__hyp_silence__frac_uem": 0.24068095098327022,
+     "speech_precision": 0.8746622230228793,
+     "speech_recall": 0.9718955491277418,
+     "speech_f1": 0.9207189012624869,
+     "speech_miss_rate": 0.02810445087225829,
+     "speech_fa_rate": 0.27832783278327694,
+     "sad_error": 0.16737561678660312
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 101,
+       "n_hyp": 111,
+       "n_match": 82,
+       "precision": 0.7387387387387387,
+       "recall": 0.8118811881188119,
+       "f1": 0.7735849056603774,
+       "mae": 0.04682926829268412,
+       "median_abs_err": 0.032500000000013074,
+       "mean_disp": -0.033902439024390975,
+       "median_disp": -0.030000000000001137
+      },
+      "offset": {
+       "n_ref": 101,
+       "n_hyp": 111,
+       "n_match": 78,
+       "precision": 0.7027027027027027,
+       "recall": 0.7722772277227723,
+       "f1": 0.7358490566037735,
+       "mae": 0.0760384615384597,
+       "median_abs_err": 0.060000000000005826,
+       "mean_disp": 0.06203846153846103,
+       "median_disp": 0.05250000000000554
+      },
+      "all": {
+       "n_ref": 202,
+       "n_hyp": 222,
+       "n_match": 160,
+       "precision": 0.7207207207207207,
+       "recall": 0.7920792079207921,
+       "f1": 0.7547169811320755,
+       "mae": 0.061068749999999714,
+       "median_abs_err": 0.04749999999999943,
+       "mean_disp": 0.012868749999999377,
+       "median_disp": -0.009999999999995346
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 101,
+       "n_hyp": 111,
+       "n_match": 86,
+       "precision": 0.7747747747747747,
+       "recall": 0.8514851485148515,
+       "f1": 0.8113207547169812,
+       "mae": 0.05941860465116371,
+       "median_abs_err": 0.03999999999997783,
+       "mean_disp": -0.04709302325581444,
+       "median_disp": -0.030000000000001137
+      },
+      "offset": {
+       "n_ref": 101,
+       "n_hyp": 111,
+       "n_match": 84,
+       "precision": 0.7567567567567568,
+       "recall": 0.8316831683168316,
+       "f1": 0.7924528301886793,
+       "mae": 0.09399999999999784,
+       "median_abs_err": 0.06749999999998124,
+       "mean_disp": 0.08099999999999909,
+       "median_disp": 0.060000000000002274
+      },
+      "all": {
+       "n_ref": 202,
+       "n_hyp": 222,
+       "n_match": 170,
+       "precision": 0.7657657657657657,
+       "recall": 0.8415841584158416,
+       "f1": 0.8018867924528302,
+       "mae": 0.07650588235294058,
+       "median_abs_err": 0.05000000000000426,
+       "mean_disp": 0.016199999999999302,
+       "median_disp": -0.009999999999990905
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part3__person_3": {
+   "uem_time": 299.816,
+   "diar": {
+    "0.00": {
+     "scored_time": 299.816,
+     "ref_speech": 215.5130000000001,
+     "miss": 17.653000000000112,
+     "fa": 39.26599999999995,
+     "conf": 4.227999999999902,
+     "der": 0.2837276637604225,
+     "miss_rate": 0.08191153201895061,
+     "fa_rate": 0.18219782565320855,
+     "conf_rate": 0.019618306088263354,
+     "jer": 0.2574211596854747,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.23041668383959124,
+      "spk2": 0.29811591753970856,
+      "spk3": 0.2437308776771243
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    },
+    "0.25": {
+     "scored_time": 186.92799999999988,
+     "ref_speech": 138.08399999999992,
+     "miss": 7.930000000000005,
+     "fa": 17.494999999999912,
+     "conf": 0.659999999999954,
+     "der": 0.18890675241157476,
+     "miss_rate": 0.057428811448104126,
+     "fa_rate": 0.1266982416500096,
+     "conf_rate": 0.004779699313461041,
+     "jer": 0.17397462539451344,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.16281615704039298,
+      "spk2": 0.19392499489065784,
+      "spk3": 0.16518272425248948
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_2",
+      "spk3": "speaker_0"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 299.816,
+     "ref_speech": 199.826,
+     "ref_silence": 99.99000000000001,
+     "ref_speech__hyp_speech__inter": 193.9,
+     "ref_speech__hyp_speech__union": 228.9119999999999,
+     "ref_speech__hyp_speech__iou": 0.8470503949115822,
+     "ref_speech__hyp_speech__frac_uem": 0.6467299943965633,
+     "ref_speech__hyp_silence__inter": 5.925999999999978,
+     "ref_speech__hyp_silence__union": 270.73,
+     "ref_speech__hyp_silence__iou": 0.02188896686735854,
+     "ref_speech__hyp_silence__frac_uem": 0.01976545614643641,
+     "ref_silence__hyp_speech__inter": 29.085999999999924,
+     "ref_silence__hyp_speech__union": 293.89,
+     "ref_silence__hyp_speech__iou": 0.0989690020075536,
+     "ref_silence__hyp_speech__frac_uem": 0.09701283453851671,
+     "ref_silence__hyp_silence__inter": 70.90400000000008,
+     "ref_silence__hyp_silence__union": 105.91599999999998,
+     "ref_silence__hyp_silence__iou": 0.6694361569545687,
+     "ref_silence__hyp_silence__frac_uem": 0.23649171491848364,
+     "speech_precision": 0.8695613177508905,
+     "speech_recall": 0.9703441994535247,
+     "speech_f1": 0.9171925110924006,
+     "speech_miss_rate": 0.029655800546475323,
+     "speech_fa_rate": 0.2908890889088901,
+     "sad_error": 0.17521243481829143
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 101,
+       "n_hyp": 109,
+       "n_match": 81,
+       "precision": 0.7431192660550459,
+       "recall": 0.801980198019802,
+       "f1": 0.7714285714285715,
+       "mae": 0.042592592592593514,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": -0.026419753086421853,
+       "median_disp": -0.01999999999999602
+      },
+      "offset": {
+       "n_ref": 101,
+       "n_hyp": 108,
+       "n_match": 77,
+       "precision": 0.7129629629629629,
+       "recall": 0.7623762376237624,
+       "f1": 0.7368421052631579,
+       "mae": 0.07442857142857032,
+       "median_abs_err": 0.060000000000002274,
+       "mean_disp": 0.055831168831166955,
+       "median_disp": 0.05999999999997385
+      },
+      "all": {
+       "n_ref": 202,
+       "n_hyp": 217,
+       "n_match": 158,
+       "precision": 0.728110599078341,
+       "recall": 0.7821782178217822,
+       "f1": 0.7541766109785203,
+       "mae": 0.0581075949367088,
+       "median_abs_err": 0.042500000000011084,
+       "mean_disp": 0.013664556962023325,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 101,
+       "n_hyp": 109,
+       "n_match": 85,
+       "precision": 0.7798165137614679,
+       "recall": 0.8415841584158416,
+       "f1": 0.8095238095238095,
+       "mae": 0.05900000000000123,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": -0.03405882352941342,
+       "median_disp": -0.01999999999999602
+      },
+      "offset": {
+       "n_ref": 101,
+       "n_hyp": 108,
+       "n_match": 81,
+       "precision": 0.75,
+       "recall": 0.801980198019802,
+       "f1": 0.7751196172248804,
+       "mae": 0.08834567901234439,
+       "median_abs_err": 0.060000000000002274,
+       "mean_disp": 0.07066666666666466,
+       "median_disp": 0.05999999999999517
+      },
+      "all": {
+       "n_ref": 202,
+       "n_hyp": 217,
+       "n_match": 166,
+       "precision": 0.7649769585253456,
+       "recall": 0.8217821782178217,
+       "f1": 0.7923627684964201,
+       "mae": 0.07331927710843374,
+       "median_abs_err": 0.04999999999998295,
+       "mean_disp": 0.017042168674696965,
+       "median_disp": 0.0
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part4__person_1": {
+   "uem_time": 260.528,
+   "diar": {
+    "0.00": {
+     "scored_time": 260.528,
+     "ref_speech": 236.7060000000001,
+     "miss": 34.33699999999992,
+     "fa": 17.348999999999855,
+     "conf": 25.32400000000007,
+     "der": 0.32534029555651234,
+     "miss_rate": 0.14506180662932036,
+     "fa_rate": 0.07329345263744834,
+     "conf_rate": 0.10698503628974364,
+     "jer": 0.3752083138222591,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.2922034722768645,
+      "spk2": 0.48461758869162086,
+      "spk3": 0.34880388049829203
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_0",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 151.99399999999991,
+     "ref_speech": 143.384,
+     "miss": 12.80999999999992,
+     "fa": 4.839999999999959,
+     "conf": 15.310000000000102,
+     "der": 0.22987223121129263,
+     "miss_rate": 0.0893405121910389,
+     "fa_rate": 0.03375550968029877,
+     "conf_rate": 0.10677620933995496,
+     "jer": 0.2842204519912448,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.25643552875695785,
+      "spk2": 0.40455048902738977,
+      "spk3": 0.19167533818938676
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_0",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 260.528,
+     "ref_speech": 207.79400000000012,
+     "ref_silence": 52.73399999999989,
+     "ref_speech__hyp_speech__inter": 196.02700000000013,
+     "ref_speech__hyp_speech__union": 219.87500000000003,
+     "ref_speech__hyp_speech__iou": 0.8915383740761801,
+     "ref_speech__hyp_speech__frac_uem": 0.7524220045446175,
+     "ref_speech__hyp_silence__inter": 11.766999999999994,
+     "ref_speech__hyp_silence__union": 248.44700000000012,
+     "ref_speech__hyp_silence__iou": 0.04736221407382656,
+     "ref_speech__hyp_silence__frac_uem": 0.045165970644230155,
+     "ref_silence__hyp_speech__inter": 12.080999999999904,
+     "ref_silence__hyp_speech__union": 248.76100000000002,
+     "ref_silence__hyp_speech__iou": 0.04856468658672341,
+     "ref_silence__hyp_speech__frac_uem": 0.04637121537800122,
+     "ref_silence__hyp_silence__inter": 40.652999999999984,
+     "ref_silence__hyp_silence__union": 64.50099999999989,
+     "ref_silence__hyp_silence__iou": 0.6302692981504171,
+     "ref_silence__hyp_silence__frac_uem": 0.15604080943315107,
+     "speech_precision": 0.9419484114017727,
+     "speech_recall": 0.9433718009182172,
+     "speech_f1": 0.9426595688407369,
+     "speech_miss_rate": 0.056628199081782855,
+     "speech_fa_rate": 0.22909318466264514,
+     "sad_error": 0.11476751013022457
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 85,
+       "n_hyp": 101,
+       "n_match": 67,
+       "precision": 0.6633663366336634,
+       "recall": 0.788235294117647,
+       "f1": 0.7204301075268817,
+       "mae": 0.0417910447761186,
+       "median_abs_err": 0.014999999999986358,
+       "mean_disp": -0.024925373134329038,
+       "median_disp": 0.0
+      },
+      "offset": {
+       "n_ref": 86,
+       "n_hyp": 101,
+       "n_match": 71,
+       "precision": 0.7029702970297029,
+       "recall": 0.8255813953488372,
+       "f1": 0.7593582887700535,
+       "mae": 0.0596619718309858,
+       "median_abs_err": 0.040000000000020464,
+       "mean_disp": 0.0011830985915463883,
+       "median_disp": 0.005000000000009663
+      },
+      "all": {
+       "n_ref": 171,
+       "n_hyp": 202,
+       "n_match": 138,
+       "precision": 0.6831683168316832,
+       "recall": 0.8070175438596491,
+       "f1": 0.739946380697051,
+       "mae": 0.050985507246376356,
+       "median_abs_err": 0.020000000000010232,
+       "mean_disp": -0.011492753623190233,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 85,
+       "n_hyp": 101,
+       "n_match": 71,
+       "precision": 0.7029702970297029,
+       "recall": 0.8352941176470589,
+       "f1": 0.7634408602150538,
+       "mae": 0.05985915492957666,
+       "median_abs_err": 0.014999999999986358,
+       "mean_disp": -0.019154929577465674,
+       "median_disp": 0.0
+      },
+      "offset": {
+       "n_ref": 86,
+       "n_hyp": 101,
+       "n_match": 71,
+       "precision": 0.7029702970297029,
+       "recall": 0.8255813953488372,
+       "f1": 0.7593582887700535,
+       "mae": 0.0596619718309858,
+       "median_abs_err": 0.040000000000020464,
+       "mean_disp": 0.0011830985915463883,
+       "median_disp": 0.005000000000009663
+      },
+      "all": {
+       "n_ref": 171,
+       "n_hyp": 202,
+       "n_match": 142,
+       "precision": 0.7029702970297029,
+       "recall": 0.8304093567251462,
+       "f1": 0.7613941018766756,
+       "mae": 0.05976056338028123,
+       "median_abs_err": 0.020000000000010232,
+       "mean_disp": -0.008985915492959644,
+       "median_disp": 0.0
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part4__person_2": {
+   "uem_time": 260.528,
+   "diar": {
+    "0.00": {
+     "scored_time": 260.528,
+     "ref_speech": 236.70600000000005,
+     "miss": 26.303000000000075,
+     "fa": 25.716999999999956,
+     "conf": 25.973000000000027,
+     "der": 0.3294931264944701,
+     "miss_rate": 0.11112096862774949,
+     "fa_rate": 0.10864532373492836,
+     "conf_rate": 0.10972683413179228,
+     "jer": 0.36790657763142337,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.3142733998994326,
+      "spk2": 0.4182856475761504,
+      "spk3": 0.37116068541868696
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_0",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 151.99399999999991,
+     "ref_speech": 143.384,
+     "miss": 9.325,
+     "fa": 8.669999999999966,
+     "conf": 14.930000000000037,
+     "der": 0.229628131451208,
+     "miss_rate": 0.06503515036545221,
+     "fa_rate": 0.060466997712436306,
+     "conf_rate": 0.10412598337331946,
+     "jer": 0.2799027617174586,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.24718375968082595,
+      "spk2": 0.37348475625663113,
+      "spk3": 0.21903976921491874
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_0",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 260.528,
+     "ref_speech": 207.79400000000015,
+     "ref_silence": 52.733999999999895,
+     "ref_speech__hyp_speech__inter": 200.68300000000008,
+     "ref_speech__hyp_speech__union": 224.46100000000007,
+     "ref_speech__hyp_speech__iou": 0.8940662297682004,
+     "ref_speech__hyp_speech__frac_uem": 0.7702934041638521,
+     "ref_speech__hyp_silence__inter": 7.111000000000084,
+     "ref_speech__hyp_silence__union": 243.86100000000005,
+     "ref_speech__hyp_silence__iou": 0.029160054293224758,
+     "ref_speech__hyp_silence__frac_uem": 0.027294571024995714,
+     "ref_silence__hyp_speech__inter": 16.666999999999955,
+     "ref_silence__hyp_speech__union": 253.41699999999994,
+     "ref_silence__hyp_speech__iou": 0.06576906837347123,
+     "ref_silence__hyp_speech__frac_uem": 0.06397392986550372,
+     "ref_silence__hyp_silence__inter": 36.066999999999936,
+     "ref_silence__hyp_silence__union": 59.84499999999997,
+     "ref_silence__hyp_silence__iou": 0.6026735733979439,
+     "ref_silence__hyp_silence__frac_uem": 0.13843809494564857,
+     "speech_precision": 0.9233172302737522,
+     "speech_recall": 0.9657786076595086,
+     "speech_f1": 0.9440707148636698,
+     "speech_miss_rate": 0.034221392340491444,
+     "speech_fa_rate": 0.3160579512269122,
+     "sad_error": 0.11443063803574706
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 85,
+       "n_hyp": 94,
+       "n_match": 64,
+       "precision": 0.6808510638297872,
+       "recall": 0.7529411764705882,
+       "f1": 0.7150837988826816,
+       "mae": 0.042890624999999113,
+       "median_abs_err": 0.02499999999999858,
+       "mean_disp": -0.03820312499999971,
+       "median_disp": -0.02499999999999858
+      },
+      "offset": {
+       "n_ref": 86,
+       "n_hyp": 95,
+       "n_match": 68,
+       "precision": 0.7157894736842105,
+       "recall": 0.7906976744186046,
+       "f1": 0.7513812154696132,
+       "mae": 0.06591176470588254,
+       "median_abs_err": 0.04749999999999943,
+       "mean_disp": 0.022176470588234166,
+       "median_disp": 0.03000000000000025
+      },
+      "all": {
+       "n_ref": 171,
+       "n_hyp": 189,
+       "n_match": 132,
+       "precision": 0.6984126984126984,
+       "recall": 0.7719298245614035,
+       "f1": 0.7333333333333333,
+       "mae": 0.05474999999999967,
+       "median_abs_err": 0.0350000000000108,
+       "mean_disp": -0.007098484848485289,
+       "median_disp": -0.010000000000001563
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 85,
+       "n_hyp": 94,
+       "n_match": 69,
+       "precision": 0.7340425531914894,
+       "recall": 0.8117647058823529,
+       "f1": 0.770949720670391,
+       "mae": 0.06311594202898506,
+       "median_abs_err": 0.030000000000001137,
+       "mean_disp": -0.0457246376811595,
+       "median_disp": -0.030000000000001137
+      },
+      "offset": {
+       "n_ref": 86,
+       "n_hyp": 95,
+       "n_match": 71,
+       "precision": 0.7473684210526316,
+       "recall": 0.8255813953488372,
+       "f1": 0.7845303867403315,
+       "mae": 0.07777464788732441,
+       "median_abs_err": 0.04999999999999716,
+       "mean_disp": 0.026309859154928693,
+       "median_disp": 0.030000000000001137
+      },
+      "all": {
+       "n_ref": 171,
+       "n_hyp": 189,
+       "n_match": 140,
+       "precision": 0.7407407407407407,
+       "recall": 0.8187134502923976,
+       "f1": 0.7777777777777778,
+       "mae": 0.07055000000000002,
+       "median_abs_err": 0.03999999999999204,
+       "mean_disp": -0.009192857142857632,
+       "median_disp": -0.010000000000012221
+      }
+     }
+    }
+   }
+  },
+  "day_1__con_4__part4__person_3": {
+   "uem_time": 260.528,
+   "diar": {
+    "0.00": {
+     "scored_time": 260.528,
+     "ref_speech": 236.70600000000007,
+     "miss": 31.45099999999993,
+     "fa": 19.732999999999954,
+     "conf": 28.98000000000008,
+     "der": 0.3386648416178717,
+     "miss_rate": 0.1328694667646782,
+     "fa_rate": 0.08336501820824123,
+     "conf_rate": 0.12243035664495226,
+     "jer": 0.3829874585464718,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.3071619297121835,
+      "spk2": 0.535726796955446,
+      "spk3": 0.3060736489717859
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_0",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 151.99399999999991,
+     "ref_speech": 143.384,
+     "miss": 11.919999999999877,
+     "fa": 5.540000000000006,
+     "conf": 17.158000000000012,
+     "der": 0.24143558556045233,
+     "miss_rate": 0.08313340400602492,
+     "fa_rate": 0.03863750488199525,
+     "conf_rate": 0.11966467667243216,
+     "jer": 0.295571652990357,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.2645497761572888,
+      "spk2": 0.46251100413942847,
+      "spk3": 0.1596541786743536
+     },
+     "mapping": {
+      "spk1": "speaker_1",
+      "spk2": "speaker_0",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 260.528,
+     "ref_speech": 207.79400000000012,
+     "ref_silence": 52.733999999999895,
+     "ref_speech__hyp_speech__inter": 196.09300000000016,
+     "ref_speech__hyp_speech__union": 220.8390000000001,
+     "ref_speech__hyp_speech__iou": 0.8879455168697561,
+     "ref_speech__hyp_speech__frac_uem": 0.7526753362402511,
+     "ref_speech__hyp_silence__inter": 11.700999999999976,
+     "ref_speech__hyp_silence__union": 247.48300000000006,
+     "ref_speech__hyp_silence__iou": 0.04728001519296264,
+     "ref_speech__hyp_silence__frac_uem": 0.0449126389485966,
+     "ref_silence__hyp_speech__inter": 13.044999999999984,
+     "ref_silence__hyp_speech__union": 248.82700000000006,
+     "ref_silence__hyp_speech__iou": 0.05242598271087937,
+     "ref_silence__hyp_speech__frac_uem": 0.05007139347786028,
+     "ref_silence__hyp_silence__inter": 39.68899999999991,
+     "ref_silence__hyp_silence__union": 64.43499999999986,
+     "ref_silence__hyp_silence__iou": 0.6159540622332582,
+     "ref_silence__hyp_silence__frac_uem": 0.15234063133329204,
+     "speech_precision": 0.9376249175185764,
+     "speech_recall": 0.9436894231787253,
+     "speech_f1": 0.940647395738394,
+     "speech_miss_rate": 0.056310576821274765,
+     "speech_fa_rate": 0.2473736109530855,
+     "sad_error": 0.11908909785653073
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 85,
+       "n_hyp": 103,
+       "n_match": 65,
+       "precision": 0.6310679611650486,
+       "recall": 0.7647058823529411,
+       "f1": 0.6914893617021277,
+       "mae": 0.034461538461537385,
+       "median_abs_err": 0.014999999999986358,
+       "mean_disp": -0.018000000000000148,
+       "median_disp": -0.0049999999999954525
+      },
+      "offset": {
+       "n_ref": 86,
+       "n_hyp": 103,
+       "n_match": 67,
+       "precision": 0.6504854368932039,
+       "recall": 0.7790697674418605,
+       "f1": 0.708994708994709,
+       "mae": 0.054417910447763014,
+       "median_abs_err": 0.035000000000003695,
+       "mean_disp": 0.01901492537313207,
+       "median_disp": 0.009999999999990905
+      },
+      "all": {
+       "n_ref": 171,
+       "n_hyp": 206,
+       "n_match": 132,
+       "precision": 0.6407766990291263,
+       "recall": 0.7719298245614035,
+       "f1": 0.7002652519893899,
+       "mae": 0.044590909090909486,
+       "median_abs_err": 0.020000000000010232,
+       "mean_disp": 0.0007878787878775673,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 85,
+       "n_hyp": 103,
+       "n_match": 67,
+       "precision": 0.6504854368932039,
+       "recall": 0.788235294117647,
+       "f1": 0.7127659574468085,
+       "mae": 0.04208955223880511,
+       "median_abs_err": 0.015000000000000568,
+       "mean_disp": -0.02611940298507496,
+       "median_disp": -0.0049999999999954525
+      },
+      "offset": {
+       "n_ref": 86,
+       "n_hyp": 103,
+       "n_match": 69,
+       "precision": 0.6699029126213593,
+       "recall": 0.8023255813953488,
+       "f1": 0.7301587301587301,
+       "mae": 0.06056521739130633,
+       "median_abs_err": 0.03999999999999204,
+       "mean_disp": 0.018275362318838723,
+       "median_disp": 0.009999999999990905
+      },
+      "all": {
+       "n_ref": 171,
+       "n_hyp": 206,
+       "n_match": 136,
+       "precision": 0.6601941747572816,
+       "recall": 0.7953216374269005,
+       "f1": 0.7214854111405835,
+       "mae": 0.05146323529411823,
+       "median_abs_err": 0.020000000000010232,
+       "mean_disp": -0.0035955882352952237,
+       "median_disp": 0.0
+      }
+     }
+    }
+   }
+  },
+  "day_4__con_5__person_1": {
+   "uem_time": 1242.825,
+   "diar": {
+    "0.00": {
+     "scored_time": 1242.825,
+     "ref_speech": 1081.799999999999,
+     "miss": 166.50599999999898,
+     "fa": 163.92100000000096,
+     "conf": 37.45499999999912,
+     "der": 0.34006470696986446,
+     "miss_rate": 0.15391569606211788,
+     "fa_rate": 0.15152616010353218,
+     "conf_rate": 0.034622850804214414,
+     "jer": 0.3276035407819255,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.21859254251468552,
+      "spk2": 0.3543330655679091,
+      "spk3": 0.4098850142631818
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 635.2850000000012,
+     "ref_speech": 556.8969999999995,
+     "miss": 50.13600000000088,
+     "fa": 69.21200000000026,
+     "conf": 11.708000000000226,
+     "der": 0.23533256598617244,
+     "miss_rate": 0.09002741979217148,
+     "fa_rate": 0.12428150986627746,
+     "conf_rate": 0.021023636327723506,
+     "jer": 0.2371731367610094,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.15581177294880366,
+      "spk2": 0.2519488352881821,
+      "spk3": 0.30375880204604244
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1242.825,
+     "ref_speech": 924.8459999999994,
+     "ref_silence": 317.9790000000006,
+     "ref_speech__hyp_speech__inter": 856.4810000000003,
+     "ref_speech__hyp_speech__union": 1003.7700000000007,
+     "ref_speech__hyp_speech__iou": 0.8532641939886625,
+     "ref_speech__hyp_speech__frac_uem": 0.6891404662764269,
+     "ref_speech__hyp_silence__inter": 68.36499999999914,
+     "ref_speech__hyp_silence__union": 1163.900999999999,
+     "ref_speech__hyp_silence__iou": 0.05873781361129444,
+     "ref_speech__hyp_silence__frac_uem": 0.05500774445316045,
+     "ref_silence__hyp_speech__inter": 78.92400000000126,
+     "ref_silence__hyp_speech__union": 1174.460000000001,
+     "ref_silence__hyp_speech__iou": 0.06720024521908043,
+     "ref_silence__hyp_speech__frac_uem": 0.06350371130287953,
+     "ref_silence__hyp_silence__inter": 239.05499999999932,
+     "ref_silence__hyp_silence__union": 386.3439999999997,
+     "ref_silence__hyp_silence__iou": 0.6187620359058236,
+     "ref_silence__hyp_silence__frac_uem": 0.1923480779675331,
+     "speech_precision": 0.9156258519037197,
+     "speech_recall": 0.9260795851417435,
+     "speech_f1": 0.9208230502227925,
+     "speech_miss_rate": 0.0739204148582566,
+     "speech_fa_rate": 0.2482050701461452,
+     "sad_error": 0.15925786563384658
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 500,
+       "n_hyp": 565,
+       "n_match": 384,
+       "precision": 0.679646017699115,
+       "recall": 0.768,
+       "f1": 0.7211267605633803,
+       "mae": 0.04661718750000241,
+       "median_abs_err": 0.029999999999972715,
+       "mean_disp": 0.01758593749999882,
+       "median_disp": 0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 499,
+       "n_hyp": 564,
+       "n_match": 386,
+       "precision": 0.6843971631205674,
+       "recall": 0.7735470941883767,
+       "f1": 0.7262464722483537,
+       "mae": 0.05746632124352287,
+       "median_abs_err": 0.04250000000009635,
+       "mean_disp": 0.021569948186532715,
+       "median_disp": 0.01999999999998181
+      },
+      "all": {
+       "n_ref": 999,
+       "n_hyp": 1129,
+       "n_match": 770,
+       "precision": 0.6820194862710364,
+       "recall": 0.7707707707707707,
+       "f1": 0.7236842105263158,
+       "mae": 0.05205584415584513,
+       "median_abs_err": 0.03999999999996362,
+       "mean_disp": 0.019583116883118406,
+       "median_disp": 0.01999999999998181
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 500,
+       "n_hyp": 565,
+       "n_match": 406,
+       "precision": 0.7185840707964601,
+       "recall": 0.812,
+       "f1": 0.7624413145539906,
+       "mae": 0.06436699507389394,
+       "median_abs_err": 0.03000000000002956,
+       "mean_disp": 0.016209359605910394,
+       "median_disp": 0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 499,
+       "n_hyp": 564,
+       "n_match": 407,
+       "precision": 0.7216312056737588,
+       "recall": 0.8156312625250501,
+       "f1": 0.7657572906867357,
+       "mae": 0.07224570024569961,
+       "median_abs_err": 0.049999999999954525,
+       "mean_disp": 0.02055036855037262,
+       "median_disp": 0.01999999999998181
+      },
+      "all": {
+       "n_ref": 999,
+       "n_hyp": 1129,
+       "n_match": 813,
+       "precision": 0.7201062887511072,
+       "recall": 0.8138138138138138,
+       "f1": 0.7640977443609023,
+       "mae": 0.06831119311193196,
+       "median_abs_err": 0.04000000000000625,
+       "mean_disp": 0.018382533825339824,
+       "median_disp": 0.01999999999998181
+      }
+     }
+    }
+   }
+  },
+  "day_4__con_5__person_2": {
+   "uem_time": 1242.825,
+   "diar": {
+    "0.00": {
+     "scored_time": 1242.825,
+     "ref_speech": 1081.799999999999,
+     "miss": 162.5579999999992,
+     "fa": 185.41799999999984,
+     "conf": 32.96799999999892,
+     "der": 0.3521390275466799,
+     "miss_rate": 0.15026622296172984,
+     "fa_rate": 0.17139767054908486,
+     "conf_rate": 0.03047513403586518,
+     "jer": 0.32709531020014054,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.21669999361206305,
+      "spk2": 0.3468593336947463,
+      "spk3": 0.41772660329361233
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 635.2850000000012,
+     "ref_speech": 556.8969999999995,
+     "miss": 49.25500000000082,
+     "fa": 81.73300000000086,
+     "conf": 9.902999999999821,
+     "der": 0.2529929232874331,
+     "miss_rate": 0.08844543964144333,
+     "fa_rate": 0.1467650211798608,
+     "conf_rate": 0.017782462466128978,
+     "jer": 0.24601748028258877,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.1497721350714024,
+      "spk2": 0.26779102755205564,
+      "spk3": 0.3204892782243083
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1242.825,
+     "ref_speech": 924.8459999999994,
+     "ref_silence": 317.97900000000055,
+     "ref_speech__hyp_speech__inter": 861.4749999999984,
+     "ref_speech__hyp_speech__union": 1007.7510000000005,
+     "ref_speech__hyp_speech__iou": 0.8548490648979737,
+     "ref_speech__hyp_speech__frac_uem": 0.6931587311166081,
+     "ref_speech__hyp_silence__inter": 63.37100000000102,
+     "ref_speech__hyp_silence__union": 1159.919999999999,
+     "ref_speech__hyp_silence__iou": 0.05463394027174381,
+     "ref_speech__hyp_silence__frac_uem": 0.05098947961297932,
+     "ref_silence__hyp_speech__inter": 82.90500000000112,
+     "ref_silence__hyp_speech__union": 1179.453999999999,
+     "ref_silence__hyp_speech__iou": 0.07029099905549618,
+     "ref_silence__hyp_speech__frac_uem": 0.06670689759218001,
+     "ref_silence__hyp_silence__inter": 235.07399999999944,
+     "ref_silence__hyp_silence__union": 381.3500000000016,
+     "ref_silence__hyp_silence__iou": 0.6164258555133039,
+     "ref_silence__hyp_silence__frac_uem": 0.1891448916782326,
+     "speech_precision": 0.9122122450708389,
+     "speech_recall": 0.9314794030573728,
+     "speech_f1": 0.9217451501316575,
+     "speech_miss_rate": 0.06852059694262727,
+     "speech_fa_rate": 0.2607247648429644,
+     "sad_error": 0.15816254814315273
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 500,
+       "n_hyp": 593,
+       "n_match": 388,
+       "precision": 0.654300168634064,
+       "recall": 0.776,
+       "f1": 0.7099725526075022,
+       "mae": 0.043698453608251774,
+       "median_abs_err": 0.022500000000093223,
+       "mean_disp": -0.0038582474226812637,
+       "median_disp": 0.0
+      },
+      "offset": {
+       "n_ref": 499,
+       "n_hyp": 593,
+       "n_match": 389,
+       "precision": 0.6559865092748736,
+       "recall": 0.779559118236473,
+       "f1": 0.7124542124542125,
+       "mae": 0.058958868894602945,
+       "median_abs_err": 0.04000000000007731,
+       "mean_disp": 0.005853470437019904,
+       "median_disp": 0.0
+      },
+      "all": {
+       "n_ref": 999,
+       "n_hyp": 1186,
+       "n_match": 777,
+       "precision": 0.6551433389544689,
+       "recall": 0.7777777777777778,
+       "f1": 0.7112128146453089,
+       "mae": 0.05133848133848421,
+       "median_abs_err": 0.03000000000020009,
+       "mean_disp": 0.0010038610038615346,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 500,
+       "n_hyp": 593,
+       "n_match": 410,
+       "precision": 0.6913996627318718,
+       "recall": 0.82,
+       "f1": 0.7502287282708143,
+       "mae": 0.05885365853658958,
+       "median_abs_err": 0.029999999999972715,
+       "mean_disp": -0.009297560975610625,
+       "median_disp": 0.0
+      },
+      "offset": {
+       "n_ref": 499,
+       "n_hyp": 593,
+       "n_match": 414,
+       "precision": 0.6981450252951096,
+       "recall": 0.8296593186372746,
+       "f1": 0.7582417582417582,
+       "mae": 0.07722946859903446,
+       "median_abs_err": 0.049999999999954525,
+       "mean_disp": 0.004393719806765684,
+       "median_disp": 0.0
+      },
+      "all": {
+       "n_ref": 999,
+       "n_hyp": 1186,
+       "n_match": 824,
+       "precision": 0.6947723440134908,
+       "recall": 0.8248248248248248,
+       "f1": 0.754233409610984,
+       "mae": 0.06808616504854612,
+       "median_abs_err": 0.03999999999996362,
+       "mean_disp": -0.002418689320387577,
+       "median_disp": 0.0
+      }
+     }
+    }
+   }
+  },
+  "day_4__con_5__person_3": {
+   "uem_time": 1242.825,
+   "diar": {
+    "0.00": {
+     "scored_time": 1242.825,
+     "ref_speech": 1081.799999999999,
+     "miss": 154.26000000000198,
+     "fa": 177.44000000000142,
+     "conf": 38.54599999999905,
+     "der": 0.34224995378073836,
+     "miss_rate": 0.14259567387687383,
+     "fa_rate": 0.16402292475503935,
+     "conf_rate": 0.035631355148825185,
+     "jer": 0.32352836860846984,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.2275809301172116,
+      "spk2": 0.3597805639728324,
+      "spk3": 0.38322361173536557
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 635.2850000000013,
+     "ref_speech": 556.8969999999996,
+     "miss": 43.279000000001126,
+     "fa": 75.09600000000069,
+     "conf": 12.56899999999979,
+     "der": 0.23513145159697701,
+     "miss_rate": 0.07771455044649397,
+     "fa_rate": 0.1348471979558172,
+     "conf_rate": 0.022569703194665797,
+     "jer": 0.23475968455655263,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.14081679700661665,
+      "spk2": 0.2540127775284494,
+      "spk3": 0.30944947913459186
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1242.825,
+     "ref_speech": 924.8459999999994,
+     "ref_silence": 317.97900000000055,
+     "ref_speech__hyp_speech__inter": 864.4549999999986,
+     "ref_speech__hyp_speech__union": 1010.6309999999997,
+     "ref_speech__hyp_speech__iou": 0.8553616502957051,
+     "ref_speech__hyp_speech__frac_uem": 0.6955564942771497,
+     "ref_speech__hyp_silence__inter": 60.391000000000915,
+     "ref_speech__hyp_silence__union": 1157.0399999999997,
+     "ref_speech__hyp_silence__iou": 0.05219439258798393,
+     "ref_speech__hyp_silence__frac_uem": 0.04859171645243772,
+     "ref_silence__hyp_speech__inter": 85.78500000000031,
+     "ref_silence__hyp_speech__union": 1182.433999999999,
+     "ref_silence__hyp_speech__iou": 0.07254950382008668,
+     "ref_silence__hyp_speech__frac_uem": 0.06902419890169598,
+     "ref_silence__hyp_silence__inter": 232.19400000000024,
+     "ref_silence__hyp_silence__union": 378.3700000000015,
+     "ref_silence__hyp_silence__iou": 0.6136691598171085,
+     "ref_silence__hyp_silence__frac_uem": 0.18682759036871663,
+     "speech_precision": 0.909722806869843,
+     "speech_recall": 0.9347015611247701,
+     "speech_f1": 0.9220430422924596,
+     "speech_miss_rate": 0.06529843887522999,
+     "speech_fa_rate": 0.26978196673365273,
+     "sad_error": 0.15805442203350756
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 500,
+       "n_hyp": 575,
+       "n_match": 381,
+       "precision": 0.662608695652174,
+       "recall": 0.762,
+       "f1": 0.7088372093023256,
+       "mae": 0.05257217847769318,
+       "median_abs_err": 0.03999999999996362,
+       "mean_disp": -0.038629921259845816,
+       "median_disp": -0.030000000000086402
+      },
+      "offset": {
+       "n_ref": 499,
+       "n_hyp": 575,
+       "n_match": 392,
+       "precision": 0.6817391304347826,
+       "recall": 0.7855711422845691,
+       "f1": 0.7299813780260708,
+       "mae": 0.06126275510204276,
+       "median_abs_err": 0.049999999999954525,
+       "mean_disp": -0.02019642857143058,
+       "median_disp": -0.029999999999972715
+      },
+      "all": {
+       "n_ref": 999,
+       "n_hyp": 1150,
+       "n_match": 773,
+       "precision": 0.6721739130434783,
+       "recall": 0.7737737737737738,
+       "f1": 0.7194043741275011,
+       "mae": 0.05697930142302958,
+       "median_abs_err": 0.040000000000000924,
+       "mean_disp": -0.029282018111257496,
+       "median_disp": -0.02999999999999403
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 500,
+       "n_hyp": 575,
+       "n_match": 407,
+       "precision": 0.7078260869565217,
+       "recall": 0.814,
+       "f1": 0.7572093023255814,
+       "mae": 0.07104914004914276,
+       "median_abs_err": 0.03999999999999204,
+       "mean_disp": -0.04221375921376221,
+       "median_disp": -0.033999999999991815
+      },
+      "offset": {
+       "n_ref": 499,
+       "n_hyp": 575,
+       "n_match": 417,
+       "precision": 0.7252173913043478,
+       "recall": 0.8356713426853707,
+       "f1": 0.776536312849162,
+       "mae": 0.07926618705036124,
+       "median_abs_err": 0.05000000000001137,
+       "mean_disp": -0.018359712230218005,
+       "median_disp": -0.029999999999972715
+      },
+      "all": {
+       "n_ref": 999,
+       "n_hyp": 1150,
+       "n_match": 824,
+       "precision": 0.7165217391304348,
+       "recall": 0.8248248248248248,
+       "f1": 0.7668683108422523,
+       "mae": 0.07520752427184678,
+       "median_abs_err": 0.040000000000190994,
+       "mean_disp": -0.03014199029126472,
+       "median_disp": -0.02999999999999936
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_1__person_1": {
+   "uem_time": 1743.494,
+   "diar": {
+    "0.00": {
+     "scored_time": 1743.494,
+     "ref_speech": 1438.383999999998,
+     "miss": 109.1129999999995,
+     "fa": 321.29900000000225,
+     "conf": 22.661000000001046,
+     "der": 0.31498751376545026,
+     "miss_rate": 0.07585804625190468,
+     "fa_rate": 0.22337498192416122,
+     "conf_rate": 0.01575448558938439,
+     "jer": 0.32633094485699116,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.11848492871346439,
+      "spk2": 0.2808110120699293,
+      "spk3": 0.5796968937875797
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 1138.7740000000015,
+     "ref_speech": 1010.2720000000005,
+     "miss": 31.739999999998098,
+     "fa": 137.67500000000092,
+     "conf": 4.16000000000081,
+     "der": 0.17181016597510348,
+     "miss_rate": 0.03141728168255488,
+     "fa_rate": 0.13627518133730407,
+     "conf_rate": 0.004117702955244536,
+     "jer": 0.21442725540129268,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.06438819605777413,
+      "spk2": 0.09078746050774955,
+      "spk3": 0.4881061096383543
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1743.494,
+     "ref_speech": 1361.2060000000006,
+     "ref_silence": 382.28799999999933,
+     "ref_speech__hyp_speech__inter": 1308.3349999999987,
+     "ref_speech__hyp_speech__union": 1599.7710000000006,
+     "ref_speech__hyp_speech__iou": 0.8178264264072784,
+     "ref_speech__hyp_speech__frac_uem": 0.7504098092680552,
+     "ref_speech__hyp_silence__inter": 52.87100000000189,
+     "ref_speech__hyp_silence__union": 1504.929,
+     "ref_speech__hyp_silence__iou": 0.035131889942981956,
+     "ref_speech__hyp_silence__frac_uem": 0.0303247387143299,
+     "ref_silence__hyp_speech__inter": 238.56499999999994,
+     "ref_silence__hyp_speech__union": 1690.622999999998,
+     "ref_silence__hyp_speech__iou": 0.14111070297754155,
+     "ref_silence__hyp_speech__frac_uem": 0.13683155777995218,
+     "ref_silence__hyp_silence__inter": 143.72299999999942,
+     "ref_silence__hyp_silence__union": 435.15900000000124,
+     "ref_silence__hyp_silence__iou": 0.3302769792190878,
+     "ref_silence__hyp_silence__frac_uem": 0.08243389423766266,
+     "speech_precision": 0.8457786540823581,
+     "speech_recall": 0.961158707792941,
+     "speech_f1": 0.8997849459407593,
+     "speech_miss_rate": 0.03884129220705894,
+     "speech_fa_rate": 0.624045222450091,
+     "sad_error": 0.21410131897743745
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 566,
+       "n_hyp": 540,
+       "n_match": 303,
+       "precision": 0.5611111111111111,
+       "recall": 0.5353356890459364,
+       "f1": 0.5479204339963833,
+       "mae": 0.07707920792078937,
+       "median_abs_err": 0.024999999999977263,
+       "mean_disp": -0.052056105610555535,
+       "median_disp": -0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 567,
+       "n_hyp": 540,
+       "n_match": 313,
+       "precision": 0.5796296296296296,
+       "recall": 0.5520282186948854,
+       "f1": 0.5654923215898826,
+       "mae": 0.07336102236422451,
+       "median_abs_err": 0.03999999999996362,
+       "mean_disp": -0.025156549520769397,
+       "median_disp": -0.009999999999990905
+      },
+      "all": {
+       "n_ref": 1133,
+       "n_hyp": 1080,
+       "n_match": 616,
+       "precision": 0.5703703703703704,
+       "recall": 0.5436893203883495,
+       "f1": 0.5567103479439675,
+       "mae": 0.07518993506493742,
+       "median_abs_err": 0.029999999999983373,
+       "mean_disp": -0.03838798701298563,
+       "median_disp": -0.009999999999990905
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 566,
+       "n_hyp": 540,
+       "n_match": 358,
+       "precision": 0.662962962962963,
+       "recall": 0.6325088339222615,
+       "f1": 0.6473779385171791,
+       "mae": 0.12088268156424181,
+       "median_abs_err": 0.03999999999996362,
+       "mean_disp": -0.07370949720670035,
+       "median_disp": -0.010000000000133014
+      },
+      "offset": {
+       "n_ref": 567,
+       "n_hyp": 540,
+       "n_match": 361,
+       "precision": 0.6685185185185185,
+       "recall": 0.63668430335097,
+       "f1": 0.6522131887985546,
+       "mae": 0.10940720221607234,
+       "median_abs_err": 0.05000000000001137,
+       "mean_disp": -0.01132963988919823,
+       "median_disp": -0.009999999999990905
+      },
+      "all": {
+       "n_ref": 1133,
+       "n_hyp": 1080,
+       "n_match": 719,
+       "precision": 0.6657407407407407,
+       "recall": 0.6345984112974404,
+       "f1": 0.64979665612291,
+       "mae": 0.11512100139082151,
+       "median_abs_err": 0.049999999999954525,
+       "mean_disp": -0.04238942976355951,
+       "median_disp": -0.009999999999990905
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_1__person_2": {
+   "uem_time": 1743.494,
+   "diar": {
+    "0.00": {
+     "scored_time": 1743.494,
+     "ref_speech": 1438.3839999999982,
+     "miss": 129.9450000000004,
+     "fa": 393.95099999999945,
+     "conf": 30.831999999999933,
+     "der": 0.3856605746448796,
+     "miss_rate": 0.09034096597292555,
+     "fa_rate": 0.27388444254107386,
+     "conf_rate": 0.02143516613088019,
+     "jer": 0.35644892082877694,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.21680883161255848,
+      "spk2": 0.23411061055431703,
+      "spk3": 0.6184273203194555
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 1138.7740000000015,
+     "ref_speech": 1010.2720000000004,
+     "miss": 34.53099999999999,
+     "fa": 168.57699999999926,
+     "conf": 3.604000000000527,
+     "der": 0.20461024357796684,
+     "miss_rate": 0.03417990402584648,
+     "fa_rate": 0.16686298343416348,
+     "conf_rate": 0.0035673561179568724,
+     "jer": 0.2438786372466334,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.05664821556746924,
+      "spk2": 0.16154637524025184,
+      "spk3": 0.5134413209321791
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1743.494,
+     "ref_speech": 1361.2060000000006,
+     "ref_silence": 382.28799999999933,
+     "ref_speech__hyp_speech__inter": 1285.1279999999988,
+     "ref_speech__hyp_speech__union": 1630.088000000001,
+     "ref_speech__hyp_speech__iou": 0.788379523068692,
+     "ref_speech__hyp_speech__frac_uem": 0.7370991812991606,
+     "ref_speech__hyp_silence__inter": 76.07800000000171,
+     "ref_speech__hyp_silence__union": 1474.6119999999992,
+     "ref_speech__hyp_silence__iou": 0.05159187637154841,
+     "ref_speech__hyp_silence__frac_uem": 0.04363536668322444,
+     "ref_silence__hyp_speech__inter": 268.8820000000007,
+     "ref_silence__hyp_speech__union": 1667.4159999999981,
+     "ref_silence__hyp_speech__iou": 0.16125669898813552,
+     "ref_silence__hyp_speech__frac_uem": 0.15422020379766188,
+     "ref_silence__hyp_silence__inter": 113.40599999999866,
+     "ref_silence__hyp_silence__union": 458.36600000000107,
+     "ref_silence__hyp_silence__iou": 0.2474136388824616,
+     "ref_silence__hyp_silence__frac_uem": 0.06504524821995296,
+     "speech_precision": 0.8269753733888451,
+     "speech_recall": 0.9441098555251727,
+     "speech_f1": 0.8816691456139091,
+     "speech_miss_rate": 0.05589014447482723,
+     "speech_fa_rate": 0.7033493073285093,
+     "sad_error": 0.25342233284308346
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 566,
+       "n_hyp": 536,
+       "n_match": 253,
+       "precision": 0.47201492537313433,
+       "recall": 0.4469964664310954,
+       "f1": 0.4591651542649728,
+       "mae": 0.11527667984190333,
+       "median_abs_err": 0.10000000000013642,
+       "mean_disp": 0.057703557312258666,
+       "median_disp": 0.020000000000010232
+      },
+      "offset": {
+       "n_ref": 567,
+       "n_hyp": 537,
+       "n_match": 205,
+       "precision": 0.3817504655493482,
+       "recall": 0.36155202821869487,
+       "f1": 0.3713768115942029,
+       "mae": 0.13477560975610547,
+       "median_abs_err": 0.16999999999995907,
+       "mean_disp": 0.1026975609756069,
+       "median_disp": 0.12999999999999545
+      },
+      "all": {
+       "n_ref": 1133,
+       "n_hyp": 1073,
+       "n_match": 458,
+       "precision": 0.42684063373718545,
+       "recall": 0.4042365401588703,
+       "f1": 0.41523118766999095,
+       "mae": 0.124004366812234,
+       "median_abs_err": 0.12749999999994088,
+       "mean_disp": 0.0778427947598272,
+       "median_disp": 0.05999999999994543
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 566,
+       "n_hyp": 536,
+       "n_match": 366,
+       "precision": 0.6828358208955224,
+       "recall": 0.6466431095406361,
+       "f1": 0.6642468239564429,
+       "mae": 0.17355191256831,
+       "median_abs_err": 0.20999999999990493,
+       "mean_disp": 0.0901639344262345,
+       "median_disp": 0.10500000000006082
+      },
+      "offset": {
+       "n_ref": 567,
+       "n_hyp": 537,
+       "n_match": 344,
+       "precision": 0.6405959031657356,
+       "recall": 0.6067019400352733,
+       "f1": 0.6231884057971014,
+       "mae": 0.21540406976744556,
+       "median_abs_err": 0.2399999999998954,
+       "mean_disp": 0.16684011627906575,
+       "median_disp": 0.2299999999999045
+      },
+      "all": {
+       "n_ref": 1133,
+       "n_hyp": 1073,
+       "n_match": 710,
+       "precision": 0.6616961789375583,
+       "recall": 0.6266548984995587,
+       "f1": 0.6436990027198549,
+       "mae": 0.19382957746479257,
+       "median_abs_err": 0.22900000000001342,
+       "mean_disp": 0.1273140845070429,
+       "median_disp": 0.20000000000004547
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_4__person_1": {
+   "uem_time": 1236.277,
+   "diar": {
+    "0.00": {
+     "scored_time": 1236.277,
+     "ref_speech": 1171.4300000000005,
+     "miss": 235.52800000000107,
+     "fa": 169.48499999999893,
+     "conf": 35.60699999999753,
+     "der": 0.37613856568467374,
+     "miss_rate": 0.20106024260946107,
+     "fa_rate": 0.14468214063153484,
+     "conf_rate": 0.03039618244367782,
+     "jer": 0.4001891044784153,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.14543481723655416,
+      "spk2": 0.5692453776694846,
+      "spk3": 0.4858871185292072
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 613.880999999999,
+     "ref_speech": 592.9480000000001,
+     "miss": 59.54000000000058,
+     "fa": 46.54799999999844,
+     "conf": 8.900999999999897,
+     "der": 0.19392762940426295,
+     "miss_rate": 0.1004135269871904,
+     "fa_rate": 0.07850266802484945,
+     "conf_rate": 0.015011434392223088,
+     "jer": 0.23915080088012308,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.08254985669572745,
+      "spk2": 0.35222771575235456,
+      "spk3": 0.28267483019228723
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1236.277,
+     "ref_speech": 986.9320000000002,
+     "ref_silence": 249.34499999999986,
+     "ref_speech__hyp_speech__inter": 895.7690000000001,
+     "ref_speech__hyp_speech__union": 1090.7899999999986,
+     "ref_speech__hyp_speech__iou": 0.8212112322261859,
+     "ref_speech__hyp_speech__frac_uem": 0.7245698172820493,
+     "ref_speech__hyp_silence__inter": 91.16300000000012,
+     "ref_speech__hyp_silence__union": 1132.4190000000017,
+     "ref_speech__hyp_silence__iou": 0.08050288806528325,
+     "ref_speech__hyp_silence__frac_uem": 0.0737399466300838,
+     "ref_silence__hyp_speech__inter": 103.85799999999843,
+     "ref_silence__hyp_speech__union": 1145.114,
+     "ref_silence__hyp_speech__iou": 0.09069664679673677,
+     "ref_silence__hyp_speech__frac_uem": 0.08400868090241784,
+     "ref_silence__hyp_silence__inter": 145.48700000000142,
+     "ref_silence__hyp_silence__union": 340.508,
+     "ref_silence__hyp_silence__iou": 0.4272645576609108,
+     "ref_silence__hyp_silence__frac_uem": 0.11768155518544907,
+     "speech_precision": 0.89610324651095,
+     "speech_recall": 0.9076299076329473,
+     "speech_f1": 0.9018297468134605,
+     "speech_miss_rate": 0.09237009236705275,
+     "speech_fa_rate": 0.4165232910224728,
+     "sad_error": 0.19760327965857677
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 489,
+       "n_hyp": 532,
+       "n_match": 234,
+       "precision": 0.4398496240601504,
+       "recall": 0.4785276073619632,
+       "f1": 0.4583741429970617,
+       "mae": 0.04454273504273367,
+       "median_abs_err": 0.01999999999998181,
+       "mean_disp": 0.017534188034189324,
+       "median_disp": 0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 489,
+       "n_hyp": 532,
+       "n_match": 257,
+       "precision": 0.4830827067669173,
+       "recall": 0.5255623721881391,
+       "f1": 0.5034280117531832,
+       "mae": 0.06116731517509863,
+       "median_abs_err": 0.03000000000020009,
+       "mean_disp": -0.00411673151751345,
+       "median_disp": -0.009999999999763531
+      },
+      "all": {
+       "n_ref": 978,
+       "n_hyp": 1064,
+       "n_match": 491,
+       "precision": 0.46146616541353386,
+       "recall": 0.5020449897750511,
+       "f1": 0.48090107737512244,
+       "mae": 0.0532443991853361,
+       "median_abs_err": 0.020000000000095497,
+       "mean_disp": 0.006201629327900907,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 489,
+       "n_hyp": 532,
+       "n_match": 363,
+       "precision": 0.6823308270676691,
+       "recall": 0.7423312883435583,
+       "f1": 0.7110675808031341,
+       "mae": 0.1479669421487564,
+       "median_abs_err": 0.049999999999954525,
+       "mean_disp": 0.09117906336087825,
+       "median_disp": 0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 489,
+       "n_hyp": 532,
+       "n_match": 355,
+       "precision": 0.6672932330827067,
+       "recall": 0.7259713701431493,
+       "f1": 0.6953966699314398,
+       "mae": 0.13978591549295433,
+       "median_abs_err": 0.06999999999996476,
+       "mean_disp": 0.06549859154929066,
+       "median_disp": 0.009999999999990905
+      },
+      "all": {
+       "n_ref": 978,
+       "n_hyp": 1064,
+       "n_match": 718,
+       "precision": 0.674812030075188,
+       "recall": 0.7341513292433538,
+       "f1": 0.703232125367287,
+       "mae": 0.14392200557102697,
+       "median_abs_err": 0.06500000000005457,
+       "mean_disp": 0.07848189415041364,
+       "median_disp": 0.014999999999929514
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_4__person_2": {
+   "uem_time": 1236.277,
+   "diar": {
+    "0.00": {
+     "scored_time": 1236.277,
+     "ref_speech": 1171.4300000000003,
+     "miss": 208.36699999999956,
+     "fa": 230.07699999999912,
+     "conf": 72.27400000000084,
+     "der": 0.4359782488070132,
+     "miss_rate": 0.17787405137310766,
+     "fa_rate": 0.19640695560127286,
+     "conf_rate": 0.061697241832632616,
+     "jer": 0.41886100315539326,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.32214764120707384,
+      "spk2": 0.5292220714740201,
+      "spk3": 0.4052132967850859
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 613.880999999999,
+     "ref_speech": 592.9480000000001,
+     "miss": 51.78500000000129,
+     "fa": 60.717000000001136,
+     "conf": 13.124999999999346,
+     "der": 0.21186849437050426,
+     "miss_rate": 0.08733480844863509,
+     "fa_rate": 0.10239852398524175,
+     "conf_rate": 0.0221351619366274,
+     "jer": 0.25248736685254286,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.11324046528277198,
+      "spk2": 0.415434317695775,
+      "spk3": 0.22878731757908155
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1236.277,
+     "ref_speech": 986.9320000000002,
+     "ref_silence": 249.34499999999986,
+     "ref_speech__hyp_speech__inter": 899.1440000000011,
+     "ref_speech__hyp_speech__union": 1114.6179999999993,
+     "ref_speech__hyp_speech__iou": 0.806683545394029,
+     "ref_speech__hyp_speech__frac_uem": 0.7272997879924977,
+     "ref_speech__hyp_silence__inter": 87.78799999999907,
+     "ref_speech__hyp_silence__union": 1108.5910000000008,
+     "ref_speech__hyp_silence__iou": 0.07918880813573176,
+     "ref_speech__hyp_silence__frac_uem": 0.07100997591963538,
+     "ref_silence__hyp_speech__inter": 127.68599999999914,
+     "ref_silence__hyp_speech__union": 1148.489000000001,
+     "ref_silence__hyp_speech__iou": 0.11117738175985929,
+     "ref_silence__hyp_speech__frac_uem": 0.10328267855828357,
+     "ref_silence__hyp_silence__inter": 121.6590000000007,
+     "ref_silence__hyp_silence__union": 337.1329999999989,
+     "ref_silence__hyp_silence__iou": 0.36086351677231565,
+     "ref_silence__hyp_silence__frac_uem": 0.09840755752958334,
+     "speech_precision": 0.8756503023869587,
+     "speech_recall": 0.9110495961221249,
+     "speech_f1": 0.8929992720093048,
+     "speech_miss_rate": 0.08895040387787512,
+     "speech_fa_rate": 0.5120856644408318,
+     "sad_error": 0.21832709852350332
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 489,
+       "n_hyp": 509,
+       "n_match": 178,
+       "precision": 0.34970530451866405,
+       "recall": 0.36400817995910023,
+       "f1": 0.35671342685370744,
+       "mae": 0.07492696629213137,
+       "median_abs_err": 0.049999999999954525,
+       "mean_disp": -0.0023426966292136916,
+       "median_disp": 0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 489,
+       "n_hyp": 510,
+       "n_match": 228,
+       "precision": 0.4470588235294118,
+       "recall": 0.4662576687116564,
+       "f1": 0.45645645645645644,
+       "mae": 0.1204999999999929,
+       "median_abs_err": 0.10000000000001563,
+       "mean_disp": -0.017640350877195,
+       "median_disp": 0.01999999999998181
+      },
+      "all": {
+       "n_ref": 978,
+       "n_hyp": 1019,
+       "n_match": 406,
+       "precision": 0.39842983316977426,
+       "recall": 0.41513292433537835,
+       "f1": 0.40660991487230846,
+       "mae": 0.10051970443349204,
+       "median_abs_err": 0.07000000000005002,
+       "mean_disp": -0.010933497536947038,
+       "median_disp": 0.010000000000012221
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 489,
+       "n_hyp": 509,
+       "n_match": 343,
+       "precision": 0.6738703339882122,
+       "recall": 0.7014314928425358,
+       "f1": 0.687374749498998,
+       "mae": 0.1891428571428577,
+       "median_abs_err": 0.25,
+       "mean_disp": -0.12689795918367494,
+       "median_disp": -0.18999999999999773
+      },
+      "offset": {
+       "n_ref": 489,
+       "n_hyp": 510,
+       "n_match": 354,
+       "precision": 0.6941176470588235,
+       "recall": 0.7239263803680982,
+       "f1": 0.7087087087087087,
+       "mae": 0.18883615819208743,
+       "median_abs_err": 0.22000000000001307,
+       "mean_disp": -0.08373446327683809,
+       "median_disp": -0.09000000000008868
+      },
+      "all": {
+       "n_ref": 978,
+       "n_hyp": 1019,
+       "n_match": 697,
+       "precision": 0.6840039254170756,
+       "recall": 0.712678936605317,
+       "f1": 0.6980470706059089,
+       "mae": 0.18898708751793278,
+       "median_abs_err": 0.2249999999999659,
+       "mean_disp": -0.10497560975609928,
+       "median_disp": -0.14000000000000057
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_4__person_3": {
+   "uem_time": 1236.277,
+   "diar": {
+    "0.00": {
+     "scored_time": 1236.277,
+     "ref_speech": 1171.4300000000007,
+     "miss": 225.5669999999992,
+     "fa": 195.17699999999786,
+     "conf": 67.62100000000173,
+     "der": 0.4168964428092148,
+     "miss_rate": 0.19255696029638908,
+     "fa_rate": 0.1666143090069383,
+     "conf_rate": 0.057725173505887406,
+     "jer": 0.41258625042293495,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 4,
+     "speaker_jer": {
+      "spk1": 0.3360493651372525,
+      "spk2": 0.5076138888157956,
+      "spk3": 0.39409549731575677
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 613.880999999999,
+     "ref_speech": 592.9480000000001,
+     "miss": 57.67399999999981,
+     "fa": 48.053999999998936,
+     "conf": 11.034999999999176,
+     "der": 0.19691946005382918,
+     "miss_rate": 0.09726653939299872,
+     "fa_rate": 0.08104251974877887,
+     "conf_rate": 0.018610400912051604,
+     "jer": 0.23079200147822362,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 4,
+     "speaker_jer": {
+      "spk1": 0.12839397372948724,
+      "spk2": 0.32876175173824707,
+      "spk3": 0.23522027896693654
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1236.277,
+     "ref_speech": 986.9320000000002,
+     "ref_silence": 249.34499999999986,
+     "ref_speech__hyp_speech__inter": 897.4010000000017,
+     "ref_speech__hyp_speech__union": 1111.7609999999977,
+     "ref_speech__hyp_speech__iou": 0.8071887752853387,
+     "ref_speech__hyp_speech__frac_uem": 0.7258899097855914,
+     "ref_speech__hyp_silence__inter": 89.53099999999857,
+     "ref_speech__hyp_silence__union": 1111.4480000000024,
+     "ref_speech__hyp_silence__iou": 0.08055347618601894,
+     "ref_speech__hyp_silence__frac_uem": 0.07241985412654169,
+     "ref_silence__hyp_speech__inter": 124.82899999999762,
+     "ref_silence__hyp_speech__union": 1146.7460000000015,
+     "ref_silence__hyp_speech__iou": 0.10885496875506648,
+     "ref_silence__hyp_speech__frac_uem": 0.10097170779687531,
+     "ref_silence__hyp_silence__inter": 124.51600000000224,
+     "ref_silence__hyp_silence__union": 338.87599999999844,
+     "ref_silence__hyp_silence__iou": 0.3674382369952514,
+     "ref_silence__hyp_silence__frac_uem": 0.10071852829099161,
+     "speech_precision": 0.8778856030443268,
+     "speech_recall": 0.9092835170001595,
+     "speech_f1": 0.8933087526043214,
+     "speech_miss_rate": 0.09071648299984046,
+     "speech_fa_rate": 0.5006276444283931,
+     "sad_error": 0.21719834801181453
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 489,
+       "n_hyp": 524,
+       "n_match": 181,
+       "precision": 0.34541984732824427,
+       "recall": 0.37014314928425357,
+       "f1": 0.35735439289239884,
+       "mae": 0.06712707182320451,
+       "median_abs_err": 0.03999999999996362,
+       "mean_disp": -0.01593370165746164,
+       "median_disp": -0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 489,
+       "n_hyp": 524,
+       "n_match": 198,
+       "precision": 0.37786259541984735,
+       "recall": 0.4049079754601227,
+       "f1": 0.39091806515301086,
+       "mae": 0.08908585858584923,
+       "median_abs_err": 0.05500000000000682,
+       "mean_disp": 0.0008434343434288351,
+       "median_disp": 0.009999999999990905
+      },
+      "all": {
+       "n_ref": 978,
+       "n_hyp": 1048,
+       "n_match": 379,
+       "precision": 0.3616412213740458,
+       "recall": 0.38752556237218816,
+       "f1": 0.3741362290227048,
+       "mae": 0.07859894459102419,
+       "median_abs_err": 0.04999999999984084,
+       "mean_disp": -0.007168865435360547,
+       "median_disp": -0.006999999999997897
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 489,
+       "n_hyp": 524,
+       "n_match": 344,
+       "precision": 0.6564885496183206,
+       "recall": 0.7034764826175869,
+       "f1": 0.6791707798617966,
+       "mae": 0.19534883720929974,
+       "median_abs_err": 0.24000000000000465,
+       "mean_disp": -0.14841279069767116,
+       "median_disp": -0.1519999999999868
+      },
+      "offset": {
+       "n_ref": 489,
+       "n_hyp": 524,
+       "n_match": 355,
+       "precision": 0.6774809160305344,
+       "recall": 0.7259713701431493,
+       "f1": 0.700888450148075,
+       "mae": 0.1976140845070363,
+       "median_abs_err": 0.2399999999998954,
+       "mean_disp": -0.1265154929577482,
+       "median_disp": -0.13999999999998636
+      },
+      "all": {
+       "n_ref": 978,
+       "n_hyp": 1048,
+       "n_match": 699,
+       "precision": 0.6669847328244275,
+       "recall": 0.7147239263803681,
+       "f1": 0.6900296150049359,
+       "mae": 0.19649928469241343,
+       "median_abs_err": 0.24,
+       "mean_disp": -0.1372918454935615,
+       "median_disp": -0.1449999999999818
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_7__person_1": {
+   "uem_time": 1159.999,
+   "diar": {
+    "0.00": {
+     "scored_time": 1159.999,
+     "ref_speech": 830.9479999999992,
+     "miss": 93.44199999999992,
+     "fa": 189.41299999999913,
+     "conf": 22.952000000000098,
+     "der": 0.3680218256738081,
+     "miss_rate": 0.11245228341605013,
+     "fa_rate": 0.22794807858012694,
+     "conf_rate": 0.027621463677630995,
+     "jer": 0.31959256150127574,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.2134220477471067,
+      "spk2": 0.35397993358752233,
+      "spk3": 0.39137570316919823
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 635.516,
+     "ref_speech": 453.60499999999956,
+     "miss": 23.935000000000322,
+     "fa": 71.40099999999966,
+     "conf": 9.12999999999984,
+     "der": 0.23030169420531063,
+     "miss_rate": 0.052766173212377164,
+     "fa_rate": 0.1574078768972999,
+     "conf_rate": 0.020127644095633532,
+     "jer": 0.21394402021191125,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.15252118758302136,
+      "spk2": 0.20416657980501185,
+      "spk3": 0.2851442932477005
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1159.999,
+     "ref_speech": 762.1009999999998,
+     "ref_silence": 397.89800000000014,
+     "ref_speech__hyp_speech__inter": 711.9419999999993,
+     "ref_speech__hyp_speech__union": 869.1579999999999,
+     "ref_speech__hyp_speech__iou": 0.8191168924407293,
+     "ref_speech__hyp_speech__frac_uem": 0.6137436325376137,
+     "ref_speech__hyp_silence__inter": 50.15900000000045,
+     "ref_speech__hyp_silence__union": 1052.942,
+     "ref_speech__hyp_silence__iou": 0.047637001848155405,
+     "ref_speech__hyp_silence__frac_uem": 0.0432405545177198,
+     "ref_silence__hyp_speech__inter": 107.0570000000001,
+     "ref_silence__hyp_speech__union": 1109.8399999999997,
+     "ref_silence__hyp_speech__iou": 0.09646165213003688,
+     "ref_silence__hyp_speech__frac_uem": 0.09229059680223871,
+     "ref_silence__hyp_silence__inter": 290.84100000000007,
+     "ref_silence__hyp_silence__union": 448.05700000000064,
+     "ref_silence__hyp_silence__iou": 0.649116072285445,
+     "ref_silence__hyp_silence__frac_uem": 0.25072521614242776,
+     "speech_precision": 0.869283112677793,
+     "speech_recall": 0.9341832644229564,
+     "speech_f1": 0.9005654291316166,
+     "speech_miss_rate": 0.06581673557704354,
+     "speech_fa_rate": 0.26905639133647336,
+     "sad_error": 0.20629286669352304
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 503,
+       "n_hyp": 507,
+       "n_match": 362,
+       "precision": 0.7140039447731755,
+       "recall": 0.7196819085487077,
+       "f1": 0.7168316831683168,
+       "mae": 0.05429558011049549,
+       "median_abs_err": 0.03000000000020009,
+       "mean_disp": 0.033743093922649785,
+       "median_disp": 0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 503,
+       "n_hyp": 506,
+       "n_match": 359,
+       "precision": 0.7094861660079052,
+       "recall": 0.7137176938369781,
+       "f1": 0.711595639246779,
+       "mae": 0.07367688022284466,
+       "median_abs_err": 0.06000000000005912,
+       "mean_disp": 0.044178272980498874,
+       "median_disp": 0.04000000000000625
+      },
+      "all": {
+       "n_ref": 1006,
+       "n_hyp": 1013,
+       "n_match": 721,
+       "precision": 0.7117472852912142,
+       "recall": 0.7166998011928429,
+       "f1": 0.7142149578999505,
+       "mae": 0.0639459084604724,
+       "median_abs_err": 0.04999999999998295,
+       "mean_disp": 0.03893897364770918,
+       "median_disp": 0.030000000000001137
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 503,
+       "n_hyp": 507,
+       "n_match": 387,
+       "precision": 0.7633136094674556,
+       "recall": 0.7693836978131213,
+       "f1": 0.7663366336633664,
+       "mae": 0.07824031007751774,
+       "median_abs_err": 0.040000000000020464,
+       "mean_disp": 0.022250645994831172,
+       "median_disp": 0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 503,
+       "n_hyp": 506,
+       "n_match": 389,
+       "precision": 0.7687747035573123,
+       "recall": 0.7733598409542743,
+       "f1": 0.7710604558969276,
+       "mae": 0.0937917737789246,
+       "median_abs_err": 0.06999999999999318,
+       "mean_disp": 0.05659383033418846,
+       "median_disp": 0.04500000000007276
+      },
+      "all": {
+       "n_ref": 1006,
+       "n_hyp": 1013,
+       "n_match": 776,
+       "precision": 0.7660414610069102,
+       "recall": 0.7713717693836978,
+       "f1": 0.7686973749380882,
+       "mae": 0.08603608247422813,
+       "median_abs_err": 0.05999999999994543,
+       "mean_disp": 0.0394664948453595,
+       "median_disp": 0.03000000000002956
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_7__person_2": {
+   "uem_time": 1159.999,
+   "diar": {
+    "0.00": {
+     "scored_time": 1159.999,
+     "ref_speech": 830.9479999999992,
+     "miss": 99.30800000000207,
+     "fa": 222.53000000000145,
+     "conf": 23.856999999998507,
+     "der": 0.41602482947188313,
+     "miss_rate": 0.11951169026220915,
+     "fa_rate": 0.2678025580421418,
+     "conf_rate": 0.02871058116753218,
+     "jer": 0.3436879250682588,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.2632512898900623,
+      "spk2": 0.36222813331247394,
+      "spk3": 0.4055843520022402
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 635.516,
+     "ref_speech": 453.60499999999956,
+     "miss": 24.035000000000622,
+     "fa": 93.15400000000008,
+     "conf": 7.110999999999422,
+     "der": 0.2740269617839315,
+     "miss_rate": 0.0529866293360978,
+     "fa_rate": 0.2053636974901074,
+     "conf_rate": 0.01567663495772628,
+     "jer": 0.2400861618690123,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.1200117250174868,
+      "spk2": 0.2933193203287756,
+      "spk3": 0.30692744026077445
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1159.999,
+     "ref_speech": 762.1009999999999,
+     "ref_silence": 397.8980000000002,
+     "ref_speech__hyp_speech__inter": 701.6819999999981,
+     "ref_speech__hyp_speech__union": 880.8590000000006,
+     "ref_speech__hyp_speech__iou": 0.7965883302548962,
+     "ref_speech__hyp_speech__frac_uem": 0.6048987973265477,
+     "ref_speech__hyp_silence__inter": 60.419000000001795,
+     "ref_speech__hyp_silence__union": 1041.240999999999,
+     "ref_speech__hyp_silence__iou": 0.05802595172491464,
+     "ref_speech__hyp_silence__frac_uem": 0.0520853897287858,
+     "ref_silence__hyp_speech__inter": 118.75800000000082,
+     "ref_silence__hyp_speech__union": 1099.5799999999983,
+     "ref_silence__hyp_speech__iou": 0.10800305571218193,
+     "ref_silence__hyp_speech__frac_uem": 0.10237767446351317,
+     "ref_silence__hyp_silence__inter": 279.13999999999936,
+     "ref_silence__hyp_silence__union": 458.317000000002,
+     "ref_silence__hyp_silence__iou": 0.6090544317579277,
+     "ref_silence__hyp_silence__frac_uem": 0.2406381384811533,
+     "speech_precision": 0.8552508410121387,
+     "speech_recall": 0.9207204819308703,
+     "speech_f1": 0.8867789207357012,
+     "speech_miss_rate": 0.07927951806912968,
+     "speech_fa_rate": 0.2984634252999532,
+     "sad_error": 0.2351092571719531
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 503,
+       "n_hyp": 518,
+       "n_match": 358,
+       "precision": 0.6911196911196911,
+       "recall": 0.7117296222664016,
+       "f1": 0.7012732615083251,
+       "mae": 0.06921508379888382,
+       "median_abs_err": 0.06999999999999318,
+       "mean_disp": -0.055617318435756444,
+       "median_disp": -0.06999999999993634
+      },
+      "offset": {
+       "n_ref": 503,
+       "n_hyp": 518,
+       "n_match": 364,
+       "precision": 0.7027027027027027,
+       "recall": 0.7236580516898609,
+       "f1": 0.713026444662096,
+       "mae": 0.09144230769231014,
+       "median_abs_err": 0.08000000000009777,
+       "mean_disp": -0.055096153846157854,
+       "median_disp": -0.06499999999999773
+      },
+      "all": {
+       "n_ref": 1006,
+       "n_hyp": 1036,
+       "n_match": 722,
+       "precision": 0.696911196911197,
+       "recall": 0.7176938369781312,
+       "f1": 0.7071498530852106,
+       "mae": 0.08042105263158073,
+       "median_abs_err": 0.07999999999992724,
+       "mean_disp": -0.055354570637122257,
+       "median_disp": -0.06999999999993634
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 503,
+       "n_hyp": 518,
+       "n_match": 382,
+       "precision": 0.7374517374517374,
+       "recall": 0.7594433399602386,
+       "f1": 0.7482859941234085,
+       "mae": 0.08868062827225359,
+       "median_abs_err": 0.07000000000005002,
+       "mean_disp": -0.0534764397905775,
+       "median_disp": -0.06999999999993634
+      },
+      "offset": {
+       "n_ref": 503,
+       "n_hyp": 518,
+       "n_match": 389,
+       "precision": 0.750965250965251,
+       "recall": 0.7733598409542743,
+       "f1": 0.761998041136141,
+       "mae": 0.10699228791774047,
+       "median_abs_err": 0.08999999999999986,
+       "mean_disp": -0.05303341902313953,
+       "median_disp": -0.06999999999993634
+      },
+      "all": {
+       "n_ref": 1006,
+       "n_hyp": 1036,
+       "n_match": 771,
+       "precision": 0.7442084942084942,
+       "recall": 0.7664015904572564,
+       "f1": 0.7551420176297747,
+       "mae": 0.09791958495460687,
+       "median_abs_err": 0.0800000000000125,
+       "mean_disp": -0.05325291828794018,
+       "median_disp": -0.06999999999993634
+      }
+     }
+    }
+   }
+  },
+  "day_5__con_7__person_3": {
+   "uem_time": 1159.999,
+   "diar": {
+    "0.00": {
+     "scored_time": 1159.999,
+     "ref_speech": 830.9479999999992,
+     "miss": 83.00700000000074,
+     "fa": 202.44800000000112,
+     "conf": 28.0679999999998,
+     "der": 0.37730760528938273,
+     "miss_rate": 0.09989433755180929,
+     "fa_rate": 0.24363498076895462,
+     "conf_rate": 0.033778286968618766,
+     "jer": 0.31945054069801243,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.231615071372275,
+      "spk2": 0.33715843366383136,
+      "spk3": 0.3895781170579309
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    },
+    "0.25": {
+     "scored_time": 635.516,
+     "ref_speech": 453.60499999999956,
+     "miss": 20.849999999999284,
+     "fa": 86.04899999999974,
+     "conf": 10.066000000000095,
+     "der": 0.257856505109069,
+     "miss_rate": 0.04596510179561359,
+     "fa_rate": 0.18970028989980228,
+     "conf_rate": 0.02219111341365308,
+     "jer": 0.2267763237895015,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.13277944140067233,
+      "spk2": 0.22034665083269056,
+      "spk3": 0.32720287913514157
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_2",
+      "spk3": "speaker_1"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1159.999,
+     "ref_speech": 762.1009999999998,
+     "ref_silence": 397.8980000000002,
+     "ref_speech__hyp_speech__inter": 717.1919999999996,
+     "ref_speech__hyp_speech__union": 873.7280000000006,
+     "ref_speech__hyp_speech__iou": 0.8208412686785808,
+     "ref_speech__hyp_speech__frac_uem": 0.618269498508188,
+     "ref_speech__hyp_silence__inter": 44.909000000000226,
+     "ref_speech__hyp_silence__union": 1048.3719999999992,
+     "ref_speech__hyp_silence__iou": 0.042836893774347524,
+     "ref_speech__hyp_silence__frac_uem": 0.03871468854714549,
+     "ref_silence__hyp_speech__inter": 111.6270000000008,
+     "ref_silence__hyp_speech__union": 1115.0899999999997,
+     "ref_silence__hyp_speech__iou": 0.1001058210548035,
+     "ref_silence__hyp_speech__frac_uem": 0.0962302553709105,
+     "ref_silence__hyp_silence__inter": 286.2709999999994,
+     "ref_silence__hyp_silence__union": 442.8070000000004,
+     "ref_silence__hyp_silence__iou": 0.6464915866280323,
+     "ref_silence__hyp_silence__frac_uem": 0.246785557573756,
+     "speech_precision": 0.8653180006732462,
+     "speech_recall": 0.9410721151133508,
+     "speech_f1": 0.9016066175546218,
+     "speech_miss_rate": 0.0589278848866492,
+     "speech_fa_rate": 0.2805417468798555,
+     "sad_error": 0.20540059650886308
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 503,
+       "n_hyp": 523,
+       "n_match": 371,
+       "precision": 0.7093690248565966,
+       "recall": 0.7375745526838966,
+       "f1": 0.723196881091618,
+       "mae": 0.048638814016174224,
+       "median_abs_err": 0.030000000000086402,
+       "mean_disp": -0.0029245283018876165,
+       "median_disp": -0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 503,
+       "n_hyp": 522,
+       "n_match": 375,
+       "precision": 0.7183908045977011,
+       "recall": 0.7455268389662028,
+       "f1": 0.7317073170731707,
+       "mae": 0.06950666666667103,
+       "median_abs_err": 0.05999999999994543,
+       "mean_disp": 0.0011866666666627552,
+       "median_disp": -0.009999999999990905
+      },
+      "all": {
+       "n_ref": 1006,
+       "n_hyp": 1045,
+       "n_match": 746,
+       "precision": 0.7138755980861244,
+       "recall": 0.7415506958250497,
+       "f1": 0.727450024378352,
+       "mae": 0.05912868632708079,
+       "median_abs_err": 0.049999999999954525,
+       "mean_disp": -0.0008579088471873626,
+       "median_disp": -0.009999999999990905
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 503,
+       "n_hyp": 523,
+       "n_match": 395,
+       "precision": 0.7552581261950286,
+       "recall": 0.7852882703777336,
+       "f1": 0.7699805068226121,
+       "mae": 0.07053670886076142,
+       "median_abs_err": 0.03999999999996362,
+       "mean_disp": -0.00420759493671106,
+       "median_disp": -0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 503,
+       "n_hyp": 522,
+       "n_match": 399,
+       "precision": 0.764367816091954,
+       "recall": 0.7932405566600398,
+       "f1": 0.7785365853658537,
+       "mae": 0.08760651629073231,
+       "median_abs_err": 0.06000000000005912,
+       "mean_disp": 0.018233082706764197,
+       "median_disp": 0.0
+      },
+      "all": {
+       "n_ref": 1006,
+       "n_hyp": 1045,
+       "n_match": 794,
+       "precision": 0.7598086124401914,
+       "recall": 0.7892644135188867,
+       "f1": 0.7742564602632862,
+       "mae": 0.07911460957179213,
+       "median_abs_err": 0.05000000000001137,
+       "mean_disp": 0.007069269521408119,
+       "median_disp": -0.009999999999990905
+      }
+     }
+    }
+   }
+  },
+  "day_6__con_4__person_1": {
+   "uem_time": 1042.506,
+   "diar": {
+    "0.00": {
+     "scored_time": 1042.506,
+     "ref_speech": 744.8430000000006,
+     "miss": 153.13900000000143,
+     "fa": 236.7960000000008,
+     "conf": 32.14699999999924,
+     "der": 0.5666724396953466,
+     "miss_rate": 0.20559903227928744,
+     "fa_rate": 0.3179139765024315,
+     "conf_rate": 0.04315943091362772,
+     "jer": 0.4567987577469715,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.29583040555768925,
+      "spk2": 0.5409182782283224,
+      "spk3": 0.5336475894549029
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 548.575000000001,
+     "ref_speech": 359.00000000000045,
+     "miss": 35.392000000000245,
+     "fa": 105.72900000000126,
+     "conf": 5.864999999999929,
+     "der": 0.40943175487465533,
+     "miss_rate": 0.09858495821727076,
+     "fa_rate": 0.29450974930362434,
+     "conf_rate": 0.016337047353760226,
+     "jer": 0.3326083508158003,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.16723107104488877,
+      "spk2": 0.41420555758045685,
+      "spk3": 0.4163884238220553
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1042.506,
+     "ref_speech": 643.6429999999997,
+     "ref_silence": 398.86300000000034,
+     "ref_speech__hyp_speech__inter": 562.3189999999996,
+     "ref_speech__hyp_speech__union": 802.5639999999999,
+     "ref_speech__hyp_speech__iou": 0.7006531566329909,
+     "ref_speech__hyp_speech__frac_uem": 0.5393916198084228,
+     "ref_speech__hyp_silence__inter": 81.3240000000001,
+     "ref_speech__hyp_silence__union": 883.585,
+     "ref_speech__hyp_silence__iou": 0.09203868331852634,
+     "ref_speech__hyp_silence__frac_uem": 0.07800818412555907,
+     "ref_silence__hyp_speech__inter": 158.92100000000008,
+     "ref_silence__hyp_speech__union": 961.182,
+     "ref_silence__hyp_speech__iou": 0.1653391345239508,
+     "ref_silence__hyp_speech__frac_uem": 0.15244132887484588,
+     "ref_silence__hyp_silence__inter": 239.94200000000026,
+     "ref_silence__hyp_silence__union": 480.18700000000047,
+     "ref_silence__hyp_silence__iou": 0.49968449791435426,
+     "ref_silence__hyp_silence__frac_uem": 0.23015886719117226,
+     "speech_precision": 0.779655870445344,
+     "speech_recall": 0.8736504552989777,
+     "speech_f1": 0.8239812496748804,
+     "speech_miss_rate": 0.12634954470102236,
+     "speech_fa_rate": 0.3984350516342703,
+     "sad_error": 0.37325815708397403
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 436,
+       "n_hyp": 442,
+       "n_match": 183,
+       "precision": 0.41402714932126694,
+       "recall": 0.4197247706422018,
+       "f1": 0.4168564920273349,
+       "mae": 0.060737704918034416,
+       "median_abs_err": 0.020000000000095497,
+       "mean_disp": -0.012551912568307266,
+       "median_disp": -0.00999999999999801
+      },
+      "offset": {
+       "n_ref": 437,
+       "n_hyp": 443,
+       "n_match": 197,
+       "precision": 0.44469525959367945,
+       "recall": 0.45080091533180777,
+       "f1": 0.44772727272727275,
+       "mae": 0.09568020304568797,
+       "median_abs_err": 0.07999999999998408,
+       "mean_disp": 0.0193654822335008,
+       "median_disp": 0.03999999999996362
+      },
+      "all": {
+       "n_ref": 873,
+       "n_hyp": 885,
+       "n_match": 380,
+       "precision": 0.4293785310734463,
+       "recall": 0.4352806414662085,
+       "f1": 0.4323094425483504,
+       "mae": 0.07885263157894955,
+       "median_abs_err": 0.05000000000006821,
+       "mean_disp": 0.003994736842103756,
+       "median_disp": 0.0
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 436,
+       "n_hyp": 442,
+       "n_match": 296,
+       "precision": 0.669683257918552,
+       "recall": 0.6788990825688074,
+       "f1": 0.6742596810933941,
+       "mae": 0.19775337837837942,
+       "median_abs_err": 0.12999999999999545,
+       "mean_disp": -0.08336824324324323,
+       "median_disp": -0.020000000000024443
+      },
+      "offset": {
+       "n_ref": 437,
+       "n_hyp": 443,
+       "n_match": 293,
+       "precision": 0.6613995485327314,
+       "recall": 0.6704805491990846,
+       "f1": 0.6659090909090909,
+       "mae": 0.18786689419795768,
+       "median_abs_err": 0.14999999999997726,
+       "mean_disp": -0.036146757679183676,
+       "median_disp": 0.01999999999998181
+      },
+      "all": {
+       "n_ref": 873,
+       "n_hyp": 885,
+       "n_match": 589,
+       "precision": 0.6655367231638418,
+       "recall": 0.6746849942726232,
+       "f1": 0.6700796359499431,
+       "mae": 0.19283531409168406,
+       "median_abs_err": 0.14000000000010004,
+       "mean_disp": -0.05987775891341394,
+       "median_disp": -0.010000000000047748
+      }
+     }
+    }
+   }
+  },
+  "day_6__con_4__person_2": {
+   "uem_time": 1042.506,
+   "diar": {
+    "0.00": {
+     "scored_time": 1042.506,
+     "ref_speech": 744.8430000000006,
+     "miss": 167.30700000000002,
+     "fa": 238.64999999999975,
+     "conf": 41.2329999999995,
+     "der": 0.6003815569187049,
+     "miss_rate": 0.22462049049262714,
+     "fa_rate": 0.32040309165824143,
+     "conf_rate": 0.055357974767836264,
+     "jer": 0.4922954281056337,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 4,
+     "speaker_jer": {
+      "spk1": 0.48852375915735424,
+      "spk2": 0.3843522046744343,
+      "spk3": 0.6040103204851126
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 548.575000000001,
+     "ref_speech": 359.00000000000045,
+     "miss": 43.33900000000007,
+     "fa": 97.2239999999999,
+     "conf": 8.297999999999789,
+     "der": 0.4146545961002774,
+     "miss_rate": 0.12072144846796662,
+     "fa_rate": 0.2708189415041777,
+     "conf_rate": 0.023114206128133086,
+     "jer": 0.35262789789918925,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 4,
+     "speaker_jer": {
+      "spk1": 0.30250130276185727,
+      "spk2": 0.3194933070761329,
+      "spk3": 0.4358890838595776
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1042.506,
+     "ref_speech": 643.6429999999997,
+     "ref_silence": 398.86300000000034,
+     "ref_speech__hyp_speech__inter": 548.4380000000001,
+     "ref_speech__hyp_speech__union": 813.0609999999991,
+     "ref_speech__hyp_speech__iou": 0.6745348749970798,
+     "ref_speech__hyp_speech__frac_uem": 0.5260765885280277,
+     "ref_speech__hyp_silence__inter": 95.20499999999961,
+     "ref_speech__hyp_silence__union": 873.0880000000008,
+     "ref_speech__hyp_silence__iou": 0.10904399098372619,
+     "ref_speech__hyp_silence__frac_uem": 0.09132321540595412,
+     "ref_silence__hyp_speech__inter": 169.41799999999935,
+     "ref_silence__hyp_speech__union": 947.3010000000005,
+     "ref_silence__hyp_speech__iou": 0.1788428387598021,
+     "ref_silence__hyp_speech__frac_uem": 0.16251033567192835,
+     "ref_silence__hyp_silence__inter": 229.445000000001,
+     "ref_silence__hyp_silence__union": 494.0679999999999,
+     "ref_silence__hyp_silence__iou": 0.4643996372968924,
+     "ref_silence__hyp_silence__frac_uem": 0.2200898603940898,
+     "speech_precision": 0.7639944501404189,
+     "speech_recall": 0.8520841522396738,
+     "speech_f1": 0.8056384911042908,
+     "speech_miss_rate": 0.14791584776032624,
+     "speech_fa_rate": 0.4247523585792596,
+     "sad_error": 0.41113319029337553
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 436,
+       "n_hyp": 443,
+       "n_match": 161,
+       "precision": 0.36343115124153497,
+       "recall": 0.36926605504587157,
+       "f1": 0.366325369738339,
+       "mae": 0.07221739130434664,
+       "median_abs_err": 0.04999999999999716,
+       "mean_disp": -0.025670807453414785,
+       "median_disp": -0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 437,
+       "n_hyp": 443,
+       "n_match": 159,
+       "precision": 0.35891647855530473,
+       "recall": 0.36384439359267734,
+       "f1": 0.3613636363636364,
+       "mae": 0.0866477987421338,
+       "median_abs_err": 0.06000000000005912,
+       "mean_disp": 0.01610691823898712,
+       "median_disp": 0.022999999999996135
+      },
+      "all": {
+       "n_ref": 873,
+       "n_hyp": 886,
+       "n_match": 320,
+       "precision": 0.3611738148984199,
+       "recall": 0.3665521191294387,
+       "f1": 0.36384309266628767,
+       "mae": 0.07938749999999714,
+       "median_abs_err": 0.05999999999998096,
+       "mean_disp": -0.00491250000000259,
+       "median_disp": -0.009999999999990905
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 436,
+       "n_hyp": 443,
+       "n_match": 303,
+       "precision": 0.6839729119638827,
+       "recall": 0.694954128440367,
+       "f1": 0.689419795221843,
+       "mae": 0.23108910891089066,
+       "median_abs_err": 0.22000000000000242,
+       "mean_disp": 0.13224422442244232,
+       "median_disp": 0.029999999999972715
+      },
+      "offset": {
+       "n_ref": 437,
+       "n_hyp": 443,
+       "n_match": 274,
+       "precision": 0.618510158013544,
+       "recall": 0.6270022883295194,
+       "f1": 0.6227272727272727,
+       "mae": 0.2283065693430611,
+       "median_abs_err": 0.19649999999998613,
+       "mean_disp": 0.14253284671532582,
+       "median_disp": 0.0799999999999983
+      },
+      "all": {
+       "n_ref": 873,
+       "n_hyp": 886,
+       "n_match": 577,
+       "precision": 0.6512415349887133,
+       "recall": 0.6609392898052692,
+       "f1": 0.6560545764639,
+       "mae": 0.22976776429809118,
+       "median_abs_err": 0.2099999999999227,
+       "mean_disp": 0.13712998266897625,
+       "median_disp": 0.06999999999999318
+      }
+     }
+    }
+   }
+  },
+  "day_6__con_4__person_3": {
+   "uem_time": 1042.506,
+   "diar": {
+    "0.00": {
+     "scored_time": 1042.506,
+     "ref_speech": 744.8430000000005,
+     "miss": 133.33000000000027,
+     "fa": 274.3429999999999,
+     "conf": 38.95100000000079,
+     "der": 0.599621665236836,
+     "miss_rate": 0.17900416597860244,
+     "fa_rate": 0.3683232573844417,
+     "conf_rate": 0.05229424187379188,
+     "jer": 0.4647474601743091,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.31524742595118294,
+      "spk2": 0.5040698391213471,
+      "spk3": 0.5749251154503974
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    },
+    "0.25": {
+     "scored_time": 548.575000000001,
+     "ref_speech": 359.00000000000045,
+     "miss": 27.547999999999163,
+     "fa": 117.70600000000086,
+     "conf": 7.704999999999984,
+     "der": 0.42606963788300783,
+     "miss_rate": 0.07673537604456582,
+     "fa_rate": 0.3278718662952666,
+     "conf_rate": 0.021462395543175417,
+     "jer": 0.3403682038804228,
+     "n_ref_speakers": 3,
+     "n_hyp_speakers": 3,
+     "speaker_jer": {
+      "spk1": 0.1458963778083442,
+      "spk2": 0.35894316483180666,
+      "spk3": 0.5162650690011178
+     },
+     "mapping": {
+      "spk1": "speaker_0",
+      "spk2": "speaker_1",
+      "spk3": "speaker_2"
+     }
+    }
+   },
+   "seg": {
+    "confusion": {
+     "uem_time": 1042.506,
+     "ref_speech": 643.6429999999997,
+     "ref_silence": 398.86300000000034,
+     "ref_speech__hyp_speech__inter": 572.8799999999997,
+     "ref_speech__hyp_speech__union": 816.0290000000002,
+     "ref_speech__hyp_speech__iou": 0.7020338737961512,
+     "ref_speech__hyp_speech__frac_uem": 0.5495220171394694,
+     "ref_speech__hyp_silence__inter": 70.76300000000006,
+     "ref_speech__hyp_silence__union": 870.1199999999995,
+     "ref_speech__hyp_silence__iou": 0.08132556428998311,
+     "ref_speech__hyp_silence__frac_uem": 0.0678777867945125,
+     "ref_silence__hyp_speech__inter": 172.38600000000056,
+     "ref_silence__hyp_speech__union": 971.743,
+     "ref_silence__hyp_speech__iou": 0.17739875666714405,
+     "ref_silence__hyp_speech__frac_uem": 0.16535732168448003,
+     "ref_silence__hyp_silence__inter": 226.47699999999978,
+     "ref_silence__hyp_silence__union": 469.6260000000004,
+     "ref_silence__hyp_silence__iou": 0.4822497050844706,
+     "ref_silence__hyp_silence__frac_uem": 0.2172428743815381,
+     "speech_precision": 0.7686919838017561,
+     "speech_recall": 0.8900586194520874,
+     "speech_f1": 0.8249352549375081,
+     "speech_miss_rate": 0.10994138054791258,
+     "speech_fa_rate": 0.43219351005232476,
+     "sad_error": 0.3777699749705982
+    },
+    "boundaries": {
+     "0.25": {
+      "onset": {
+       "n_ref": 436,
+       "n_hyp": 414,
+       "n_match": 166,
+       "precision": 0.40096618357487923,
+       "recall": 0.38073394495412843,
+       "f1": 0.3905882352941176,
+       "mae": 0.06203012048192769,
+       "median_abs_err": 0.040000000000020464,
+       "mean_disp": 0.007090361445785653,
+       "median_disp": 0.009999999999990905
+      },
+      "offset": {
+       "n_ref": 437,
+       "n_hyp": 413,
+       "n_match": 167,
+       "precision": 0.4043583535108959,
+       "recall": 0.38215102974828374,
+       "f1": 0.39294117647058824,
+       "mae": 0.12294011976047872,
+       "median_abs_err": 0.12000000000006139,
+       "mean_disp": 0.06382634730538968,
+       "median_disp": 0.08999999999997499
+      },
+      "all": {
+       "n_ref": 873,
+       "n_hyp": 827,
+       "n_match": 333,
+       "precision": 0.4026602176541717,
+       "recall": 0.38144329896907214,
+       "f1": 0.39176470588235296,
+       "mae": 0.0925765765765764,
+       "median_abs_err": 0.07000000000005002,
+       "mean_disp": 0.03554354354354503,
+       "median_disp": 0.040000000000020464
+      }
+     },
+     "0.50": {
+      "onset": {
+       "n_ref": 436,
+       "n_hyp": 414,
+       "n_match": 279,
+       "precision": 0.6739130434782609,
+       "recall": 0.6399082568807339,
+       "f1": 0.6564705882352941,
+       "mae": 0.1976845878136205,
+       "median_abs_err": 0.12999999999999545,
+       "mean_disp": -0.09003584229390477,
+       "median_disp": -0.01999999999998181
+      },
+      "offset": {
+       "n_ref": 437,
+       "n_hyp": 413,
+       "n_match": 281,
+       "precision": 0.6803874092009685,
+       "recall": 0.6430205949656751,
+       "f1": 0.6611764705882353,
+       "mae": 0.2161138790035622,
+       "median_abs_err": 0.19999999999998863,
+       "mean_disp": -0.009672597864767962,
+       "median_disp": 0.06999999999993634
+      },
+      "all": {
+       "n_ref": 873,
+       "n_hyp": 827,
+       "n_match": 560,
+       "precision": 0.6771463119709794,
+       "recall": 0.6414662084765178,
+       "f1": 0.6588235294117647,
+       "mae": 0.2069321428571448,
+       "median_abs_err": 0.17000000000001592,
+       "mean_disp": -0.04971071428571291,
+       "median_disp": 0.0
+      }
+     }
+    }
+   }
+  }
+ }
+}

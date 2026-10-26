@@ -10,15 +10,20 @@ Definitions are in src/nemo_dicobw/{diar_metrics,seg_metrics}.py.
 
 Files are those in the UEM (if given) or in the reference; a file with no hypothesis is
 scored as all-missed. Without a UEM, each file is scored from the earliest to the latest
-turn over reference and hypothesis (dscore's convention); pass a full-recording UEM so
-leading/trailing silence counts in the speech/silence confusion.
+turn over reference and hypothesis (dscore's convention, also what NeMo does when no UEM is
+given); pass a full-recording UEM so leading/trailing silence counts in the speech/silence
+confusion.
+
+With --manifest (a JSONL from recipes/diarization/make_eval_manifests.py) the scored files
+are the manifest's recordings (`uniq_id` = <session>__<channel>), each scored against its
+session's reference and UEM. The reference and UEM default to the manifest's
+`rttm_filepath` / `uem_filepath`; --ref overrides the reference (e.g. another ref type) and
+--no-uem drops the UEM.
 
 Example:
-    python eval/score_diar.py \
-        --ref $DATA/refs/aishell5/Eval2/rttm --uem $DATA/refs/aishell5/Eval2/uem \
-        --hyp $DATA/exp/nemotron/<run>/rttm/aishell5_Eval2 \
-        --name <run>_aishell5_Eval2 --meta ref_type=textgrid-segments \
-        --out results/<run>_aishell5_Eval2.json
+    python eval/score_diar.py --manifest $DATA/manifests/nemo/aishell5_Eval2_DX01C01.jsonl \
+        --hyp $DATA/exp/nemotron/<run>/rttm/aishell5_Eval2_DX01C01 \
+        --name <run>_aishell5_Eval2_DX01C01 --out results/<run>_aishell5_Eval2_DX01C01.json
 """
 from __future__ import annotations
 
@@ -64,14 +69,22 @@ def score(
     collars: list[float],
     tols: list[float],
     merge_gap: float,
+    sessions: dict[str, str] | None = None,
 ) -> dict:
-    file_ids = sorted(uem) if uem is not None else sorted(ref)
+    """`sessions` maps scored file ids to the reference/UEM id (identity if None)."""
+    if sessions is not None:
+        file_ids = sorted(sessions)
+    else:
+        file_ids = sorted(uem) if uem is not None else sorted(ref)
+        sessions = {f: f for f in file_ids}
     if missing := [f for f in file_ids if f not in hyp]:
         log.warning("%d file(s) have no hypothesis, scored as all-missed: %s", len(missing), missing[:5])
     if extra := sorted(set(hyp) - set(file_ids)):
         log.warning("%d hypothesis file(s) not in the reference/UEM, ignored: %s", len(extra), extra[:5])
-    if uem is not None and (no_ref := [f for f in file_ids if f not in ref]):
-        log.warning("%d UEM file(s) have no reference turns: %s", len(no_ref), no_ref[:5])
+    if no_ref := [f for f in file_ids if sessions[f] not in ref]:
+        log.warning("%d file(s) have no reference turns: %s", len(no_ref), no_ref[:5])
+    if uem is not None and (no_uem := [f for f in file_ids if sessions[f] not in uem]):
+        raise KeyError(f"{len(no_uem)} file(s) have no UEM, e.g. {no_uem[:3]}")
 
     ckey = {c: f"{c:.2f}" for c in collars}
     tkey = {t: f"{t:.2f}" for t in tols}
@@ -81,8 +94,8 @@ def score(
     files: dict[str, dict] = {}
 
     for fid in file_ids:
-        r, h = ref.get(fid, []), hyp.get(fid, [])
-        u = uem[fid] if uem is not None else _auto_uem(r, h)
+        r, h = ref.get(sessions[fid], []), hyp.get(fid, [])
+        u = uem[sessions[fid]] if uem is not None else _auto_uem(r, h)
         out: dict = {"uem_time": sum(e - s for s, e in u), "diar": {}, "seg": {}}
         for c in collars:
             s = diar[c].files[fid] = score_file(r, h, u, c)
@@ -113,9 +126,11 @@ def score(
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--ref", nargs="+", required=True, help="reference RTTM file(s) or directories")
+    ap.add_argument("--manifest", type=Path, help="NeMo eval manifest: defines files, sessions, ref and UEM")
+    ap.add_argument("--ref", nargs="+", help="reference RTTM file(s) or directories")
     ap.add_argument("--hyp", nargs="+", required=True, help="hypothesis RTTM file(s) or directories")
     ap.add_argument("--uem", nargs="+", help="UEM file(s) or directories (recommended)")
+    ap.add_argument("--no-uem", action="store_true", help="ignore the manifest's UEM (score first to last turn)")
     ap.add_argument("--collars", nargs="+", type=float, default=[0.0, 0.25],
                     help="DER/JER collars in seconds (default: 0 0.25)")
     ap.add_argument("--boundary-tols", nargs="+", type=float, default=[0.25, 0.5],
@@ -130,17 +145,31 @@ def main() -> None:
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 
+    sessions = None
+    if args.manifest:
+        rows = [json.loads(line) for line in args.manifest.read_text().splitlines() if line.strip()]
+        sessions = {r["uniq_id"]: r["session"] for r in rows}
+        if not args.ref:
+            args.ref = sorted({r["rttm_filepath"] for r in rows})
+        if not args.uem and not args.no_uem:
+            args.uem = sorted({r["uem_filepath"] for r in rows})
+    if not args.ref:
+        ap.error("--ref is required without --manifest")
+    if args.no_uem:
+        args.uem = None
     ref, hyp = load_rttm(args.ref), load_rttm(args.hyp)
     uem = load_uem(args.uem) if args.uem else None
     if uem is None:
         log.warning("no UEM given: scoring each file from its first to its last turn")
 
-    res = score(ref, hyp, uem, args.collars, args.boundary_tols, args.seg_merge_gap)
+    res = score(ref, hyp, uem, args.collars, args.boundary_tols, args.seg_merge_gap, sessions)
     res["meta"] = {
         "name": args.name,
-        "ref": " ".join(args.ref),
+        "manifest": str(args.manifest) if args.manifest else None,
+        "ref": " ".join(args.ref) if len(args.ref) <= 3 else f"{len(args.ref)} files under {Path(args.ref[0]).parent}",
         "hyp": " ".join(args.hyp),
-        "uem": " ".join(args.uem) if args.uem else "auto (first to last turn)",
+        "uem": (" ".join(args.uem) if len(args.uem) <= 3 else f"{len(args.uem)} files under {Path(args.uem[0]).parent}")
+        if args.uem else "auto (first to last turn)",
         "collars": args.collars,
         "boundary_tols": args.boundary_tols,
         "seg_merge_gap": args.seg_merge_gap,

@@ -65,6 +65,32 @@ def to_markdown(res: dict, per_file: bool = True) -> str:
     return "\n".join(lines) + "\n"
 
 
+def summary_table(results: list[dict], tol: str = "0.25") -> str:
+    """One row per scoring JSON: DER@collars (miss/FA/conf at collar 0), JER@0, speaker count,
+    speech IoU, and speaker-agnostic boundary F1 / median displacement at tolerance `tol`."""
+    collars = list(results[0]["overall"]["diar"]) if results else []
+    head = (["condition", "ref", "UEM", "files", "hours"] + [f"DER@{c}" for c in collars]
+            + ["Miss", "FA", "Conf", "JER@" + collars[0] if collars else "JER", "spk acc", "spk MAE",
+               "speech IoU", "sil IoU", f"bnd F1@{tol}", "onset med disp", "offset med disp"])
+    lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
+    for r in results:
+        m, o = r["meta"], r["overall"]
+        d0 = o["diar"][collars[0]]
+        conf = o["seg"]["confusion"]
+        b = o["seg"]["boundaries"].get(tol, {})
+        uem = "no" if str(m.get("uem", "")).startswith("auto") else "yes"
+        row = ([m.get("condition", m.get("name")), m.get("ref_type", "?"), uem, str(d0["n_files"]),
+                f"{d0['scored_time'] / 3600:.1f}" if uem == "yes" else "–"]
+               + [_pct(o["diar"][c]["der"]) for c in collars]
+               + [_pct(d0["miss_rate"]), _pct(d0["fa_rate"]), _pct(d0["conf_rate"]), _pct(d0["jer"]),
+                  _pct(d0["spk_count_acc"]), f"{d0['spk_count_mae']:.2f}",
+                  _pct(conf["ref_speech__hyp_speech__iou"]), _pct(conf["ref_silence__hyp_silence__iou"]),
+                  _pct(b.get("all", {}).get("f1")), _sec(b.get("onset", {}).get("median_disp")),
+                  _sec(b.get("offset", {}).get("median_disp"))])
+        lines.append("| " + " | ".join(row) + " |")
+    return "\n".join(lines) + "\n"
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("json")

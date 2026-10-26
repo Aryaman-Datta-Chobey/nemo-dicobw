@@ -19,7 +19,7 @@ ref_type:
 | alimeeting | Eval_Ali, Test_Ali    | segments (far TextGrid), fa (nttcslab-sp/diar-forced-alignment) | [0, recording] |
 | notsofar   | eval                  | segments (gt_transcription.json, 129 meetings), fa (FastMSS MFA, 80 meetings) | [0, shortest device] |
 | chime6     | dev, eval             | segments (transcription JSON), fa (official alignment RTTM) | [official start, min(12000, recording)] |
-| egocom     | test, val             | words (ground_truth_transcriptions.csv) | [0, shortest wearer]   |
+| egocom     | test, val             | words (ground_truth_transcriptions.csv, untimed words interpolated), words_timedonly | [0, shortest wearer] |
 
 Recording durations come from the converted 16 kHz audio. NOTSOFAR also gets eval_sc_160.tsv,
 the (meeting, device) pairs of the CHiME-8 / Nemotron-card eval-SC set.
@@ -270,32 +270,197 @@ def build_chime6(args) -> None:
         w.write()
 
 
+# EgoCom transcript tokens that mark untranscribed or non-lexical audio; untimed ones get no interval.
+EGOCOM_TAGS = {"crosstalk", "inaudible", "laughs", "laughter", "laugh", "music", "foreign"}
+EGOCOM_WORD_DUR = 0.17  # median timed word duration (s)
+EGOCOM_MIN_WORD, EGOCOM_MAX_WORD = 0.10, 0.60  # per-word bounds when spreading untimed words over a gap
+
+
+def egocom_words(rows: list[dict], stats: dict[str, int]) -> list[dict]:
+    """Spoken words of one conversation in transcript order, as dicts with keys
+    spk, s, e, text, interpolated (bool) and tag (bool: an annotation tag such as "laughs").
+
+    About 10% of the transcript's words have no timestamps. The transcript is chronological, so
+    each run of untimed words is spread evenly over the gap between its timed neighbours (prev
+    end p, next start n), at most EGOCOM_MAX_WORD per word; if that leaves the gap partly empty,
+    the run sits next to the neighbour of the same speaker (else centred). If the gap is smaller
+    than EGOCOM_MIN_WORD per word (overlapping crosstalk), each word gets EGOCOM_WORD_DUR centred on
+    the gap. Runs at a conversation edge are anchored to their one timed neighbour. Untimed
+    annotation tags (EGOCOM_TAGS) get no interval. A contraction suffix ("it ' s") is joined to
+    the previous word's text ("it's") and extends its interval if it has one. Numerals count as
+    words.
+    """
+    words: list[dict] = []  # s/e None while untimed
+    prev_tok = ""
+    for r in rows:
+        tok = r["word"].strip()
+        if not tok or not any(c.isalnum() for c in tok):
+            prev_tok = tok or prev_tok
+            continue
+        has_s, has_e = bool(r["startTime"]), bool(r["endTime"])
+        if prev_tok == "'" and words and words[-1]["spk"] == r["speaker_id"]:
+            words[-1]["text"] += "'" + tok.lower()
+            if has_s and has_e and words[-1]["s"] is not None:
+                words[-1]["e"] = max(words[-1]["e"], float(r["endTime"]))
+            stats["contraction_suffix_joined"] += 1
+        elif not has_s and tok.lower() in EGOCOM_TAGS:
+            stats["untimed_tag_skipped"] += 1
+        elif has_s:
+            s = float(r["startTime"])
+            e = float(r["endTime"]) if has_e else s + EGOCOM_WORD_DUR
+            stats["timed" if has_e else "start_only"] += 1
+            if e > s:
+                words.append({"spk": r["speaker_id"], "s": s, "e": e, "text": tok.lower(),
+                              "interpolated": False, "tag": tok.lower() in EGOCOM_TAGS})
+        else:
+            words.append({"spk": r["speaker_id"], "s": None, "e": None, "text": tok.lower(),
+                          "interpolated": True, "tag": False})
+        prev_tok = tok
+
+    i = 0
+    while i < len(words):
+        if words[i]["s"] is not None:
+            i += 1
+            continue
+        j = i
+        while j < len(words) and words[j]["s"] is None:
+            j += 1
+        run, k = words[i:j], j - i
+        prev, nxt = (words[i - 1] if i > 0 else None), (words[j] if j < len(words) else None)
+        if prev is None and nxt is None:
+            stats["untimed_unanchored_skipped"] += k
+            del words[i:j]
+            continue
+        if prev is None or nxt is None:
+            d = EGOCOM_WORD_DUR
+            start = nxt["s"] - k * d if prev is None else prev["e"]
+            stats["interpolated_edge"] += k
+        else:
+            gap = nxt["s"] - prev["e"]
+            if gap >= k * EGOCOM_MIN_WORD:
+                d = min(gap / k, EGOCOM_MAX_WORD)
+                spare = gap - k * d
+                if spare <= 1e-9 or run[0]["spk"] == prev["spk"]:
+                    start = prev["e"]
+                elif run[-1]["spk"] == nxt["spk"]:
+                    start = nxt["s"] - k * d
+                else:
+                    start = prev["e"] + spare / 2
+                stats["interpolated_gap"] += k
+            else:
+                d = EGOCOM_WORD_DUR
+                start = (prev["e"] + nxt["s"]) / 2 - k * d / 2
+                stats["interpolated_overlap"] += k
+        for n, w in enumerate(run):
+            w["s"], w["e"] = max(0.0, start + n * d), max(0.0, start + (n + 1) * d)
+        i = j
+    return [w for w in words if w["e"] > w["s"]]
+
+
+EGOCOM_MAX_ALIGNED_WORD = 1.0  # longer MFA words are treated as stretched over unexplained audio
+
+
+def egocom_fa_words(aligned: Path, utts: list[dict], stats: dict[str, int]) -> dict[str, dict[str, list[Interval]]]:
+    """session -> speaker -> word intervals from MFA output (recipes/data/egocom_mfa.py corpus).
+
+    Within each utterance window, the MFA words (midpoint inside the window, in order) are matched
+    one-to-one with the window's words that were sent to MFA. An MFA word longer than
+    EGOCOM_MAX_ALIGNED_WORD (MFA stretching a word, mostly an isolated backchannel, over other
+    speakers' speech or noise in the window) is replaced by that word's transcript/interpolated
+    interval. Words not sent to MFA (tags, numerals) keep their transcript/interpolated interval.
+    If the counts do not match, stretched words are cut to EGOCOM_MAX_ALIGNED_WORD around their
+    centre instead. A window MFA left empty falls back entirely to the transcript/interpolated words."""
+    import textgrid
+
+    mfa: dict[tuple[str, str], list[Interval]] = {}
+    for tg_path in sorted(aligned.glob("*.TextGrid")):
+        sess, _, spk = tg_path.stem.rpartition("__")
+        tier = next(t for t in textgrid.TextGrid.fromFile(str(tg_path)).tiers if t.name == "words")
+        mfa[(sess, spk)] = [(float(i.minTime), float(i.maxTime)) for i in tier
+                            if i.mark and i.mark.strip() and i.mark.strip() != "<eps>"]
+    cap = EGOCOM_MAX_ALIGNED_WORD
+    out: dict[str, dict[str, list[Interval]]] = defaultdict(lambda: defaultdict(list))
+    for u in utts:
+        orig = [(a, b) for a, b, _ in u["words"]]
+        sent = [(a, b) for a, b, in_text in u["words"] if in_text]
+        unsent = [(a, b) for a, b, in_text in u["words"] if not in_text]
+        got = [(a, b) for a, b in mfa.get((u["session"], u["speaker"]), [])
+               if u["start"] <= (a + b) / 2 < u["end"]] if sent else []
+        if not got:
+            stats["windows_fallback_" + ("unaligned" if sent else "no_text")] += 1
+            out[u["session"]][u["speaker"]].extend(orig)
+            continue
+        stats["windows_mfa"] += 1
+        words = []
+        matched = len(got) == len(sent)
+        stats["windows_matched" if matched else "windows_count_mismatch"] += 1
+        for k, (a, b) in enumerate(got):
+            if b - a <= cap:
+                words.append((a, b))
+                stats["words_mfa"] += 1
+            elif matched:
+                words.append(sent[k])
+                stats["words_stretched_replaced"] += 1
+            else:
+                m = (a + b) / 2
+                words.append((m - cap / 2, m + cap / 2))
+                stats["words_stretched_cut"] += 1
+        stats["words_unsent_kept"] += len(unsent)
+        out[u["session"]][u["speaker"]].extend(words + unsent)
+    return out
+
+
 def build_egocom(args) -> None:
     ann = args.corpora / "egocom" / "annotations"
-    words: dict[str, dict[str, list[Interval]]] = defaultdict(lambda: defaultdict(list))
+    by_conv: dict[str, list[dict]] = defaultdict(list)
     with open(ann / "ground_truth_transcriptions.csv") as f:
         for r in csv.DictReader(f):
-            if r["startTime"] and r["endTime"] and r["word"].strip():
-                s, e = float(r["startTime"]), float(r["endTime"])
-                if e > s:
-                    words[r["conversation_id"]][f"spk{r['speaker_id']}"].append((s, e))
+            by_conv[r["conversation_id"]].append(r)
     for split in ("test", "val"):
         w = Writer(args.refs, "egocom", split)
+        src = "annotations/ground_truth_transcriptions.csv word timings (facebookresearch/EgoCom-Dataset)"
+        stats: dict[str, int] = defaultdict(int)
         w.prov["ref_types"]["words"] = {
-            "source": "annotations/ground_truth_transcriptions.csv word timings (facebookresearch/EgoCom-Dataset), "
-                      f"merged per speaker across gaps <= {args.word_gap} s", "word_gap": args.word_gap}
+            "source": f"{src}; untimed words interpolated (see build_refs.egocom_words); merged per speaker across "
+                      f"gaps <= {args.word_gap} s", "word_gap": args.word_gap, "interpolation": stats}
+        w.prov["ref_types"]["words_timedonly"] = {
+            "source": f"{src}; timed words only (untimed ~10% dropped); merged per speaker across gaps <= {args.word_gap} s",
+            "word_gap": args.word_gap}
         w.prov["uem"] = "[0, shortest wearer recording of the conversation part]"
+        mfa_dir = args.data / "work" / "egocom_mfa"
+        fa = None
+        if (mfa_dir / "aligned" / split).is_dir():
+            fa_stats: dict[str, int] = defaultdict(int)
+            fa = egocom_fa_words(mfa_dir / "aligned" / split,
+                                 json.loads((mfa_dir / f"utterances_{split}.json").read_text()), fa_stats)
+            w.prov["ref_types"]["fa"] = {
+                "source": "Montreal Forced Aligner 3.4.3 (english_mfa acoustic v3.1.0, english_us_mfa dictionary v3.1.0, "
+                          "OOVs via english_us_mfa G2P v3.0.0) on each speaker's own head-worn mic "
+                          "(recipes/data/egocom_mfa.py); aligned words > 1.0 s replaced by transcript/interpolated times, "
+                          "windows MFA left empty fall back to them; "
+                          f"merged per speaker across gaps <= {args.word_gap} s",
+                "word_gap": args.word_gap, "alignment": dict(fa_stats)}
         for sess_dir in sorted((args.audio / "egocom" / split).iterdir()):
             s = sess_dir.name
             durs = audio_durations(sess_dir)
             dur = min(durs.values())
             if max(durs.values()) - dur > 1.0:
                 print(f"  WARNING {s}: wearer recordings differ in length {sorted(durs.values())}", file=sys.stderr)
-            turns = rename([Turn(spk, a, b) for spk, iv in words[s].items()
-                            for a, b in merge_intervals(iv, args.word_gap)])
-            check_within(s, turns, dur)
-            w.add("words", s, turns)
+            rows = by_conv[s]
+            timed: dict[str, list[Interval]] = defaultdict(list)
+            for r in rows:
+                if r["startTime"] and r["endTime"] and r["word"].strip() and float(r["endTime"]) > float(r["startTime"]):
+                    timed[f"spk{r['speaker_id']}"].append((float(r["startTime"]), float(r["endTime"])))
+            interp: dict[str, list[Interval]] = defaultdict(list)
+            for wd in egocom_words(rows, stats):
+                interp[f"spk{wd['spk']}"].append((wd["s"], wd["e"]))
+            sets = [("words", interp), ("words_timedonly", timed)] + ([("fa", fa[s])] if fa is not None else [])
+            for ref_type, words in sets:
+                turns = rename([Turn(spk, a, b) for spk, iv in words.items() for a, b in merge_intervals(iv, args.word_gap)])
+                check_within(s, turns, dur)
+                w.add(ref_type, s, turns)
             w.uem[s] = [(0.0, dur)]
+        w.prov["ref_types"]["words"]["interpolation"] = dict(stats)
         w.write()
 
 
