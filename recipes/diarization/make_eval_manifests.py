@@ -50,6 +50,11 @@ CONDITIONS: dict[str, Condition] = {
     **{f"chime6_{s}_U06_CH1": Condition("chime6", s, "U06.CH1", "reference array U06, channel 1") for s in ("dev", "eval")},
     **{f"egocom_{s}_all": Condition("egocom", s, "person_*", "every wearer (moving egocentric mic)") for s in ("test", "val")},
     "indic_diarbench_far_field": Condition("indic_diarbench", "far_field", "mix"),
+    # every channel of multi-microphone sessions (channel-consistency diagnostics)
+    "aishell4_test_far_all": Condition("aishell4", "test", "far_ch*", "all 8 array channels"),
+    **{f"aishell5_{s}_DX_all": Condition("aishell5", s, "DX0[1-4]C01", "all 4 far-field door mics") for s in ("Dev", "Eval1", "Eval2")},
+    **{f"alimeeting_{s}_far_all": Condition("alimeeting", s, "far_ch*", "all 8 array channels") for s in ("Eval_Ali", "Test_Ali")},
+    **{f"chime6_{s}_U_all": Condition("chime6", s, "U0[1-6].CH[1-4]", "all Kinect array channels") for s in ("dev", "eval")},
 }
 
 
