@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build the `dicow` conda env (CLAUDE.md §3.4). Run inside tmux:
+# Build the `dicow` conda env. Needs apt: build-essential (meeteval compiles C++). Run inside tmux:
 #   tmux new -d -s env-dicow "bash env/build_dicow.sh 2>&1 | tee logs/20261026-env-dicow.log"
 set -euo pipefail
 REPO=${REPO:-$HOME/nemo-dicobw}
