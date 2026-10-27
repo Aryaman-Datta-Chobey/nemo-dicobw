@@ -26,6 +26,7 @@ DEFAULT_CONDITIONS = [
     "aishell4_test_far_ch1", "aishell5_Dev_DX01C01", "aishell5_Eval1_DX01C01", "aishell5_Eval2_DX01C01",
     "alimeeting_Eval_Ali_far_ch1", "alimeeting_Test_Ali_far_ch1", "chime6_dev_U06_CH1", "chime6_eval_U06_CH1",
     "egocom_test_all", "egocom_val_all", "indic_diarbench_far_field", "notsofar_eval_sc_all",
+    "ear1_dev_D1", "ear1_dev_R1", "ear1_train_D1", "ear1_train_R1",
 ]
 OUTCOMES = ("under", "correct", "over")
 

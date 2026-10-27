@@ -42,7 +42,8 @@ REPO = Path(__file__).resolve().parents[1]
 SLIVER_S = 10.0
 MULTI_CHANNEL = ["alimeeting_Eval_Ali_far_all", "alimeeting_Test_Ali_far_all", "aishell5_Dev_DX_all",
                  "aishell5_Eval1_DX_all", "aishell5_Eval2_DX_all", "aishell4_test_far_all", "chime6_dev_U_all",
-                 "chime6_eval_U_all", "notsofar_eval_sc_all", "egocom_test_all", "egocom_val_all"]
+                 "chime6_eval_U_all", "notsofar_eval_sc_all", "egocom_test_all", "egocom_val_all", "ear1_dev_all",
+                 "ear1_train_all"]
 THRESHOLDS = [0.3, 0.4, 0.5, 0.6, 0.7]
 
 
