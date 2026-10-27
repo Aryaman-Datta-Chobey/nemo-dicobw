@@ -2,8 +2,10 @@
 
 Each character (absolute time t) goes to the speaker active at t. If several are active, the one with
 the highest diarizer probability at t (when per-frame probabilities are given, 10 ms frames, column
-k = speaker_k) else the one whose turn started last. If none is active, the speaker with the nearest
-turn. Consecutive characters of one speaker, with gaps <= max_gap, form one SegLST segment
+k = speaker_k) else the one whose active turn is longest: in overlap a single-stream decoder mostly
+transcribes the main speaker, not a backchannel inside their turn (breaking ties by latest start
+cost belle-zh oracle fusion 3.3 cpCER on AliMeeting Eval, see EXPERIMENTS.md). If none is active,
+the speaker with the nearest turn. Consecutive characters of one speaker, with gaps <= max_gap, form one SegLST segment
 [first char time, last char time + last char duration]; a character lasts until the next character
 (at most max_char s).
 """
@@ -28,7 +30,7 @@ def assign(chars: list[tuple[float, str]], turns: list[Turn], probs: np.ndarray 
             f = min(len(probs) - 1, int(t / frame))
             active.sort(key=lambda x: -probs[f, int(x.speaker.rsplit("_", 1)[-1])])
         elif len(active) > 1:
-            active.sort(key=lambda x: -x.start)
+            active.sort(key=lambda x: -(x.end - x.start))
         if active:
             out.append(active[0].speaker)
         elif starts:

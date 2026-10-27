@@ -83,6 +83,7 @@ class Decoder:
         # DiCoW's generate returns segments and is not DTW-capable; it gets segment timing only
         self.char_times = char_times and not dicow
         self.dtw = dtw
+        self.n_dtw_truncated = 0  # windows whose text exceeded the decoder positions in the DTW pass
         self.heads = [tuple(h) for h in gc.alignment_heads]
         self.tok = self.processor.tokenizer
         self.ts_begin = gc.no_timestamps_token_id + 1
@@ -94,14 +95,17 @@ class Decoder:
         fe = self.processor.feature_extractor(audios, sampling_rate=16000, return_tensors="pt", return_attention_mask=True)
         feats = fe.input_features.to(self.device, self.dtype)
         langs = [self.language] * len(audios)
+        stno_t = torch.from_numpy(np.stack(stno)).to(self.device, self.dtype) if self.dicow else None
         if self.language is None:  # auto-LID: detect per window, then decode in that language
+            if self.dicow:  # DiCoW's detect_language reads the mask that its generate() normally stores
+                self.model.stno_mask = stno_t
             ids = self.model.detect_language(feats)
             langs = [self.id2lang.get(int(i), "<|?|>").strip("<|>") for i in ids]
         kw = dict(input_features=feats, attention_mask=fe.attention_mask.to(self.device), task="transcribe", return_timestamps=self.timestamps, num_beams=1,
                   do_sample=False, max_new_tokens=440, return_dict_in_generate=True)
         kw["language"] = langs if len(set(langs)) > 1 else langs[0]
         if self.dicow:
-            kw["stno_mask"] = torch.from_numpy(np.stack(stno)).to(self.device, self.dtype)
+            kw["stno_mask"] = stno_t
         if self.char_times and self.dtw == "generate":
             kw["return_token_timestamps"] = True
         out = self.model.generate(**kw)
@@ -132,6 +136,13 @@ class Decoder:
         gc = self.model.generation_config
         prompts = [[gc.decoder_start_token_id, gc.lang_to_id[f"<|{l}|>"], gc.task_to_id["transcribe"],
                     gc.no_timestamps_token_id] for l in langs]
+        # With timestamps on, generate can run a second pass inside one window (seek to the last timestamp)
+        # and return more text than the decoder's positions hold (repetition loops). Align the first
+        # tokens that fit; the rest get the last aligned time (see _pad_times).
+        full_lens = [len(t) for t in text_ids]
+        cap = self.model.config.max_target_positions - len(prompts[0]) - 1
+        text_ids = [t[:cap] for t in text_ids]
+        self.n_dtw_truncated += sum(n > cap for n in full_lens)
         seqs = [p + t + [self.eos] for p, t in zip(prompts, text_ids)]
         n = max(map(len, seqs))
         dec = torch.full((len(seqs), n), self.eos, dtype=torch.long)
@@ -160,7 +171,7 @@ class Decoder:
             ti, tj = _dynamic_time_warping(-w.mean(0).cpu().double().numpy())
             jumps = np.pad(np.diff(ti), (1, 0), constant_values=1).astype(bool)
             times.append((tj[jumps] * 0.02).tolist()[:len(t)])
-        return times
+        return [ts + ts[-1:] * (n - len(ts)) for ts, n in zip(times, full_lens)]
 
     def _segments(self, ids: list[int]) -> list[tuple[float, float, str]]:
         """(start, end, text) from timestamp-token pairs <|t0|> text <|t1|>."""

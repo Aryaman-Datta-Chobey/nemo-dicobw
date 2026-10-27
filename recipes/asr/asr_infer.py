@@ -5,6 +5,8 @@ Modes (see nemo_dicobw.longform for windowing):
     whole        <= 30 s windows cut at silences of the diarized union speech; the mixture is decoded.
     per_speaker  per diarized speaker, <= 30 s windows cut at that speaker's silences; Whisper gets the
                  audio with only-non-target frames zeroed, DiCoW gets the unmasked audio plus STNO masks.
+--near-field (per_speaker, oracle): each speaker's stream is read from their headset recording
+<session dir>/<speaker>.flac instead of the manifest audio (AliMeeting), for near- vs far-field comparison.
 Diarization: `nemotron:<run_id>` (RTTMs under /mnt/data/exp/nemotron/<run_id>/rttm/<manifest name>/,
 probabilities used for late fusion) or `oracle` (the manifest's reference RTTM).
 
@@ -64,6 +66,8 @@ def decode_recording(dec, args, row, turns) -> list[dict]:
     audio, sr = sf.read(row["audio_filepath"], dtype="float32")
     rec_end = len(audio) / sr
     spk = by_speaker(turns)
+    if args.near_field:  # each speaker's stream from their own headset (<session dir>/<speaker>.flac)
+        heads = {s: sf.read(Path(row["audio_filepath"]).parent / f"{s}.flac", dtype="float32")[0] for s in spk}
     jobs = []  # (stream, window, audio, stno)
     if args.mode == "whole":
         union = merge_intervals(x for v in spk.values() for x in v)
@@ -72,8 +76,9 @@ def decode_recording(dec, args, row, turns) -> list[dict]:
     else:
         for s, ivs in spk.items():
             others = [x for k, v in spk.items() if k != s for x in v]
-            for w in windows(ivs, rec_end, audio):
-                seg = audio[int(w[0] * sr):int(w[1] * sr)]
+            src = heads[s] if args.near_field else audio
+            for w in windows(ivs, rec_end, src):
+                seg = src[int(w[0] * sr):int(w[1] * sr)]
                 if args.dicow:
                     jobs.append((s, w, seg, stno_mask(w, ivs, others)))
                 else:
@@ -87,7 +92,7 @@ def decode_recording(dec, args, row, turns) -> list[dict]:
             stream, (ws, we), _, _ = jobs[i]
             out.append({"uniq_id": row["uniq_id"], "session": row["session"], "stream": stream,
                         "window": [round(ws, 3), round(we, 3)], "text": r["text"], "language": r["language"],
-                        "segments": [[round(ws + s, 3), round(min(ws + e, we), 3), t] for s, e, t in r["segments"]],
+                        "segments": [[round(min(ws + s, we), 3), round(min(ws + e, we), 3), t] for s, e, t in r["segments"]],
                         "chars": [[round(ws + t, 3), c] for t, c in r["chars"]]})
     return sorted(out, key=lambda x: (x["stream"], x["window"][0]))
 
@@ -104,7 +109,9 @@ def build_seglst(rows: list[dict], lines: list[dict], args, manifest: Path) -> d
             turns, _ = diar_turns(args.diar, manifest, row)
             spk = by_speaker(turns)
             for x in ws:
-                hyps["seg"] += [{"session_id": sess, "speaker": x["stream"], "start_time": s, "end_time": e, "words": t}
+                # min(s, e): windows written before the start clamp in decode_recording can hold model
+                # timestamps that start past the window's audio end (end already clamped)
+                hyps["seg"] += [{"session_id": sess, "speaker": x["stream"], "start_time": min(s, e), "end_time": e, "words": t}
                                 for s, e, t in x["segments"]]
                 ivs = intersect_intervals(spk.get(x["stream"], []), [tuple(x["window"])]) or [tuple(x["window"])]
                 groups = defaultdict(list)
@@ -117,7 +124,7 @@ def build_seglst(rows: list[dict], lines: list[dict], args, manifest: Path) -> d
         else:
             chars = [(t, c) for x in ws for t, c in x["chars"]]
             for x in ws:
-                hyps["agnostic_seg"] += [{"session_id": sess, "speaker": "all", "start_time": s, "end_time": e, "words": t}
+                hyps["agnostic_seg"] += [{"session_id": sess, "speaker": "all", "start_time": min(s, e), "end_time": e, "words": t}
                                          for s, e, t in x["segments"]]
             hyps["agnostic_dtw"] += late_fusion.segments(chars, ["all"] * len(chars), sess)
             for name, spec in (("fusion_nemotron", args.fusion_nemotron), ("fusion_oracle", "oracle")):
@@ -149,10 +156,14 @@ def main() -> int:
     ap.add_argument("--language", choices=["zh", "auto"], default="zh")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--condition", required=True)
+    ap.add_argument("--near-field", action="store_true",
+                    help="per_speaker with oracle diarization only: decode each speaker from their headset recording")
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--limit", type=int, help="only the first N recordings (smoke tests)")
     args = ap.parse_args()
     args.timestamps = args.timestamps == "on"
+    if args.near_field and (args.mode != "per_speaker" or args.diar != "oracle"):
+        ap.error("--near-field needs --mode per_speaker --diar oracle (headsets are named by reference speaker)")
 
     from nemo_dicobw.whisper_decode import Decoder
 
@@ -186,6 +197,7 @@ def main() -> int:
                 "char_times": "cross-attention DTW in one teacher-forced decoder pass (openai-whisper find_alignment rows)",
                 "windowing": "<= 30 s, cut at diarized silences (pad 0.3 s); long runs cut at the energy minimum of the last 8 s",
                 "borrowed_alignment_heads": getattr(dec, "borrowed_heads", None) if dec else None,
+                "dtw_truncated_windows_this_call": dec.n_dtw_truncated if dec else None,
                 "n_recordings": len(rows), "n_windows": len(lines)})
     if audio_s:
         cfg["rtfx_this_call"] = round(audio_s / wall, 1)

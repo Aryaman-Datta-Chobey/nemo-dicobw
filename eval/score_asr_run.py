@@ -8,7 +8,7 @@ first field of the condition name, mapped through DATASET_REFS). Writes
 per-speaker CER, attribution and timing gaps, and the LID tracing rates.
 
 Example:
-    python eval/score_asr_run.py --run-dir /mnt/data/exp/asr/20261027-whisper-zeroshot
+    python eval/score_asr_run.py --run-dir /mnt/data/exp/asr/20261027-whisper-zeroshot --jobs 10
 """
 from __future__ import annotations
 
@@ -16,12 +16,14 @@ import argparse
 import json
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 REFS = Path("/mnt/data/refs")
 DATASET_REFS = {
     "alimeeting_Eval_Ali_far_ch1": REFS / "alimeeting/Eval_Ali/seglst",
+    "alimeeting_Eval_Ali_near": REFS / "alimeeting/Eval_Ali/seglst",
     "alimeeting_Test_Ali_far_ch1": REFS / "alimeeting/Test_Ali/seglst",
     "aishell4_test_far_ch1": REFS / "aishell4/test/seglst",
     "aishell5_Eval1_DX01C01": REFS / "aishell5/Eval1/seglst",
@@ -34,22 +36,31 @@ def main() -> int:
     ap.add_argument("--run-dir", type=Path, required=True)
     ap.add_argument("--results", type=Path, default=REPO / "results")
     ap.add_argument("--rescore", action="store_true")
+    ap.add_argument("--jobs", type=int, default=10, help="parallel score_asr.py processes")
     args = ap.parse_args()
     out = args.results / args.run_dir.name
     out.mkdir(parents=True, exist_ok=True)
-    rows = []
+    todo, cmds = [], []
     for cdir in sorted(p for p in args.run_dir.iterdir() if (p / "config.json").exists()):
         ds = cdir.name.split("__")[0]
         for hyp in sorted(cdir.glob("hyp_*.seglst.json")):
             variant = hyp.name.removeprefix("hyp_").removesuffix(".seglst.json")
             name = f"{cdir.name}__{variant}"
             res = out / f"{name}.json"
+            todo.append((cdir.name, variant, res))
             if args.rescore or not res.exists():
-                subprocess.run([sys.executable, str(REPO / "eval" / "score_asr.py"), "--ref", str(DATASET_REFS[ds]),
-                                "--hyp", str(hyp), "--name", f"{args.run_dir.name}/{name}", "--out", str(res),
-                                "--meta", f"condition={cdir.name}", f"variant={variant}"],
-                               check=True, stdout=subprocess.DEVNULL)
-            rows.append((cdir.name, variant, json.loads(res.read_text())["overall"]))
+                cmds.append([sys.executable, str(REPO / "eval" / "score_asr.py"), "--ref", str(DATASET_REFS[ds]),
+                             "--hyp", str(hyp), "--name", f"{args.run_dir.name}/{name}", "--out", str(res),
+                             "--meta", f"condition={cdir.name}", f"variant={variant}"])
+    print(f"{len(todo)} hypotheses, {len(cmds)} to score with {args.jobs} jobs", flush=True)
+    # each score_asr.py call is a single-threaded process, so threads only wait on subprocesses
+    with ThreadPoolExecutor(args.jobs) as ex:
+        failed = [c[c.index("--name") + 1] for c, r in zip(cmds, ex.map(
+            lambda c: subprocess.run(c, stdout=subprocess.DEVNULL).returncode, cmds)) if r]
+    if failed:
+        print("FAILED:\n  " + "\n  ".join(failed), file=sys.stderr)
+        return 1
+    rows = [(c, v, json.loads(res.read_text())["overall"]) for c, v, res in todo]
     p = lambda x: f"{100 * x:.1f}"  # noqa: E731
     f = lambda e: f"{p(e['error_rate'])} ({p(e['sub_rate'])}/{p(e['del_rate'])}/{p(e['ins_rate'])})"  # noqa: E731
     md = [f"# {args.run_dir.name}: Mandarin ASR scores", "", "CER % with (sub/del/ins) %. Normaliser nemo_dicobw.txt_norm_zh; "
