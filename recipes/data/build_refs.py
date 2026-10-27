@@ -5,7 +5,8 @@ Output, per corpus and split:
     <refs>/<corpus>/<split>/rttm/<ref_type>/<session>.rttm   one file per session
     <refs>/<corpus>/<split>/uem/<session>.uem
     <refs>/<corpus>/<split>/PROVENANCE.json                  sources, commits, counts
-RTTM file ids are session ids; every channel of a session shares its reference.
+RTTM file ids are session ids; every channel of a session shares its reference. Where channels of a
+session differ in length (EAR-1), uem/<session>__<channel>.uem gives each channel's own scoring region.
 
 ref_type:
     segments  the corpus' own segment-level annotation (counts within-segment pauses as speech)
@@ -20,6 +21,7 @@ ref_type:
 | notsofar   | eval                  | segments (gt_transcription.json, 129 meetings), fa (FastMSS MFA, 80 meetings) | [0, shortest device] |
 | chime6     | dev, eval             | segments (transcription JSON), fa (official alignment RTTM) | [official start, min(12000, recording)] |
 | egocom     | test, val             | words (ground_truth_transcriptions.csv, untimed words interpolated), words_timedonly | [0, shortest wearer] |
+| ear1       | train, dev            | segments (headset A/P*.TextGrid; device TextGrids = these cut at the device's end) | [0, D1]; per channel uem/<session>__<channel>.uem = [0, that channel] |
 
 Recording durations come from the converted 16 kHz audio. NOTSOFAR also gets eval_sc_160.tsv,
 the (meeting, device) pairs of the CHiME-8 / Nemotron-card eval-SC set.
@@ -464,7 +466,39 @@ def build_egocom(args) -> None:
         w.write()
 
 
+def build_ear1(args) -> None:
+    """EAR-1 Train&Dev after recipes/data/ear1_prepare.py (corrected speaker IDs, 55/7 split). All TextGrids of
+    a session share one timeline (device TextGrids are the headset ones cut at the device's audio end); the
+    official baseline scores each track over its own audio duration."""
+    src = args.corpora / "ear1" / "TrainDev"
+    for split in ("train", "dev"):
+        w = Writer(args.refs, "ear1", split)
+        w.prov["ref_types"]["segments"] = {
+            "source": "corpora/ear1/TrainDev/<session>/A/P*.TextGrid (union of headset tiers)",
+            "note": "The D1/R1/H* TextGrids are the headset annotation cut at that device's audio end (checked "
+                    "2026-10-27 over all 62 sessions: 460 segments missing from a device TextGrid start after its "
+                    "audio end, 41 cross it, 5 differ by boundary rounding, none is missing inside the audio), so "
+                    "the per-channel UEM reproduces them; segments crossing a channel's end are clipped by the UEM",
+            "corrections": "correct.zip timeline fixes + correct_v2.txt speaker IDs (recipes/data/ear1_prepare.py)"}
+        w.prov["uem"] = "session: [0, D1 duration]; per channel: [0, channel duration] (official baseline: track-specific full recording)"
+        chan_uem: dict[str, dict[str, float]] = {}
+        for sess_dir in sorted((args.audio / "ear1" / split).iterdir()):
+            s = sess_dir.name
+            durs = audio_durations(sess_dir)
+            tgs = sorted((src / s / "A").glob("P*.TextGrid"))
+            turns = rename(textgrid_turns(tgs))
+            check_within(s, turns, durs["D1"])
+            w.add("segments", s, turns)
+            w.uem[s] = [(0.0, durs["D1"])]
+            chan_uem[s] = durs
+        w.write()
+        for s, durs in chan_uem.items():
+            for ch, d in durs.items():
+                write_uem({s: [(0.0, d)]}, w.dir / "uem" / f"{s}__{ch}.uem")
+
+
 BUILDERS = {
+    "ear1": build_ear1,
     "aishell4": build_aishell4,
     "aishell5": build_aishell5,
     "alimeeting": build_alimeeting,

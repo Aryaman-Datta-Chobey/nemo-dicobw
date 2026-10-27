@@ -112,7 +112,29 @@ def layout_egocom(rel: Path, src: Path) -> tuple[str, str, str]:
     return _egocom_splits(src)[rel.stem], session, m.group(2)
 
 
+@functools.cache
+def _ear1_splits(src: Path) -> dict[str, str]:
+    """session -> train/dev from <src>/split.lst (written by recipes/data/ear1_prepare.py)."""
+    out, cur = {}, None
+    for ln in (src / "split.lst").read_text(encoding="utf-8").splitlines():
+        s = ln.strip().replace("\uff1a", ":").lower()
+        if s in ("train set:", "dev set:"):
+            cur = s.split()[0]
+        elif s and cur:
+            out[ln.strip()] = cur
+    return out
+
+
+def layout_ear1(rel: Path, src: Path) -> tuple[str, str, str]:
+    """<session>/D1.WAV -> (dev|train, <session>, D1); <session>/A/P006.WAV -> (.., <session>, P006)."""
+    session = rel.parts[0]
+    if session not in _ear1_splits(src) or len(rel.parts) not in (2, 3):
+        raise ValueError(f"unexpected EAR-1 path {rel}")
+    return _ear1_splits(src)[session], session, rel.stem
+
+
 LAYOUTS: dict[str, Layout] = {
+    "ear1": layout_ear1,
     "aishell4": layout_aishell4,
     "aishell5": layout_split_session_channel,
     "alimeeting": layout_alimeeting,

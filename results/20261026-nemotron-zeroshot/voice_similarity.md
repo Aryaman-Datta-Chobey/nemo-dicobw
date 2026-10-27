@@ -10,6 +10,8 @@ Cosine of mean solo-speech embeddings. Language-matched model: CAM++ zh for aish
 | aishell5 * | 0.89 [0.83, 0.93] n=108 | 0.47 [0.34, 0.62] n=54 | – | 0.30 [0.23, 0.35] n=5 | 0.34 [0.24, 0.48] n=39 | 0.37 [0.22, 0.53] n=10 | 0.33 [0.28, 0.79] n=3 |
 | alimeeting * | 0.93 [0.89, 0.95] n=85 | 0.31 [0.16, 0.47] n=98 | – | – | – | – | – |
 | chime6 | 0.89 [0.79, 0.93] n=16 | 0.66 [0.46, 0.83] n=24 | – | – | – | 0.82 [0.75, 0.85] n=5 | – |
+| ear1_D1 * | 0.88 [0.71, 0.93] n=294 | 0.46 [0.31, 0.69] n=633 | 0.57 [0.42, 0.71] n=26 | – | 0.53 [0.39, 0.61] n=4 | 0.84 [0.84, 0.84] n=1 | – |
+| ear1_R1 * | 0.86 [0.74, 0.92] n=294 | 0.46 [0.30, 0.69] n=633 | 0.56 [0.38, 0.69] n=25 | 0.35 [0.35, 0.35] n=1 | 0.55 [0.55, 0.55] n=1 | 0.54 [0.27, 0.89] n=6 | – |
 | egocom | 0.89 [0.79, 0.94] n=129 | 0.47 [0.35, 0.65] n=126 | – | 0.08 [0.08, 0.08] n=1 | – | – | – |
 | indic_diarbench | 0.91 [0.83, 0.95] n=429 | 0.51 [0.33, 0.69] n=438 | 0.76 [0.69, 0.85] n=4 | – | 0.17 [0.17, 0.17] n=1 | – | – |
 | notsofar | 0.91 [0.79, 0.95] n=3770 | 0.52 [0.35, 0.71] n=7362 | 0.70 [0.62, 0.74] n=11 | 0.63 [0.45, 0.84] n=16 | 0.02 [0.02, 0.02] n=1 | 0.75 [0.63, 0.92] n=11 | 0.88 [0.82, 0.88] n=3 |
@@ -35,6 +37,57 @@ Absorbed speakers (cos, share of the corpus's different-speaker pairs below it):
 - notsofar MTG_32185__sc_studio_0 Linda → Rachel: cos 0.72 (93th pct), airtime 62 s
 - notsofar MTG_32189__sc_panacast_0 Rachel → Linda: cos 0.69 (87th pct), airtime 72 s
 - notsofar MTG_32190__sc_plaza_0 Linda → Rachel: cos 0.67 (82th pct), airtime 53 s
+- ear1_D1 20260924-2__D1 P029 → P036: cos 0.61 (82th pct), airtime 86 s
+- ear1_D1 20260924-5__D1 P040 → P038: cos 0.57 (76th pct), airtime 48 s
+- ear1_D1 20260924-5__D1 P043 → P041: cos 0.76 (94th pct), airtime 44 s
+- ear1_D1 20260924-5__D1 P044 → P041: cos 0.61 (82th pct), airtime 29 s
+- ear1_R1 20260924-5__R1 P040 → P038: cos 0.70 (90th pct), airtime 48 s
+- ear1_R1 20260924-5__R1 P043 → P041: cos 0.73 (93th pct), airtime 44 s
+- ear1_R1 20260924-5__R1 P044 → P041: cos 0.60 (81th pct), airtime 29 s
+- ear1_D1 20260909-10__D1 P019 → P011: cos 0.50 (62th pct), airtime 53 s
+- ear1_D1 20260910-5__D1 P010 → P019: cos 0.41 (35th pct), airtime 56 s
+- ear1_D1 20260914-7__D1 P025 → P026: cos 0.45 (49th pct), airtime 24 s
+- ear1_D1 20260914-9__D1 P025 → P024: cos 0.48 (56th pct), airtime 41 s
+- ear1_D1 20260915-3__D1 P016 → P015: cos 0.50 (61th pct), airtime 26 s
+- ear1_D1 20260915-4__D1 P016 → P015: cos 0.52 (68th pct), airtime 61 s
+- ear1_D1 20260915-6__D1 P016 → P015: cos 0.04 (1th pct), airtime 46 s
+- ear1_D1 20260916-3__D1 P017 → P026: cos 0.60 (80th pct), airtime 143 s
+- ear1_D1 20260916-3__D1 P012 → P018: cos 0.55 (73th pct), airtime 26 s
+- ear1_D1 20260916-4__D1 P013 → P017: cos 0.64 (86th pct), airtime 388 s
+- ear1_D1 20260916-8__D1 P010 → P011: cos 0.88 (97th pct), airtime 95 s
+- ear1_D1 20260918-1__D1 P010 → P015: cos 0.60 (81th pct), airtime 123 s
+- ear1_D1 20260918-11__D1 P016 → P013: cos 0.44 (45th pct), airtime 112 s
+- ear1_D1 20260918-2__D1 P012 → P026: cos 0.56 (73th pct), airtime 140 s
+- ear1_D1 20260918-3__D1 P012 → P026: cos 0.62 (83th pct), airtime 42 s
+- ear1_D1 20260918-4__D1 P010 → P012: cos 0.47 (53th pct), airtime 68 s
+- ear1_D1 20260918-5__D1 P016 → P012: cos 0.35 (18th pct), airtime 127 s
+- ear1_D1 20260918-6__D1 P018 → P015: cos 0.66 (88th pct), airtime 59 s
+- ear1_D1 20260918-7__D1 P020 → P018: cos 0.53 (70th pct), airtime 61 s
+- ear1_D1 20260924-8__D1 P047 → P046: cos 0.62 (84th pct), airtime 105 s
+- ear1_D1 20260924-8__D1 P051 → P046: cos 0.66 (88th pct), airtime 56 s
+- ear1_D1 20260924-8__D1 P048 → P045: cos 0.94 (99th pct), airtime 132 s
+- ear1_R1 20260909-10__R1 P019 → P010: cos 0.52 (66th pct), airtime 53 s
+- ear1_R1 20260910-4__R1 P016 → P019: cos 0.50 (60th pct), airtime 322 s
+- ear1_R1 20260910-5__R1 P010 → P019: cos 0.32 (12th pct), airtime 56 s
+- ear1_R1 20260914-9__R1 P025 → P024: cos 0.58 (78th pct), airtime 41 s
+- ear1_R1 20260915-12__R1 P016 → P015: cos 0.56 (73th pct), airtime 105 s
+- ear1_R1 20260915-3__R1 P016 → P015: cos 0.44 (45th pct), airtime 26 s
+- ear1_R1 20260915-4__R1 P016 → P015: cos 0.40 (33th pct), airtime 61 s
+- ear1_R1 20260916-3__R1 P012 → P026: cos 0.48 (54th pct), airtime 26 s
+- ear1_R1 20260916-4__R1 P020 → P017: cos 0.47 (53th pct), airtime 637 s
+- ear1_R1 20260916-6__R1 P012 → P026: cos 0.50 (61th pct), airtime 421 s
+- ear1_R1 20260916-8__R1 P010 → P012: cos 0.39 (32th pct), airtime 95 s
+- ear1_R1 20260918-1__R1 P010 → P011: cos 0.56 (74th pct), airtime 123 s
+- ear1_R1 20260918-10__R1 P010 → P026: cos 0.60 (81th pct), airtime 43 s
+- ear1_R1 20260918-11__R1 P012 → P026: cos 0.56 (73th pct), airtime 55 s
+- ear1_R1 20260918-3__R1 P015 → P020: cos 0.65 (86th pct), airtime 46 s
+- ear1_R1 20260918-4__R1 P010 → P012: cos 0.36 (22th pct), airtime 68 s
+- ear1_R1 20260918-5__R1 P012 → P010: cos 0.38 (27th pct), airtime 143 s
+- ear1_R1 20260918-7__R1 P012 → P026: cos 0.56 (73th pct), airtime 93 s
+- ear1_R1 20260918-8__R1 P016 → P026: cos 0.39 (31th pct), airtime 240 s
+- ear1_R1 20260924-8__R1 P046 → P045: cos 0.67 (88th pct), airtime 129 s
+- ear1_R1 20260924-8__R1 P051 → P047: cos 0.58 (77th pct), airtime 56 s
+- ear1_R1 20260924-8__R1 P048 → P045: cos 0.93 (100th pct), airtime 132 s
 
 ## titanet_large
 
@@ -44,6 +97,8 @@ Absorbed speakers (cos, share of the corpus's different-speaker pairs below it):
 | aishell5 | 0.85 [0.76, 0.91] n=108 | 0.40 [0.22, 0.59] n=54 | – | 0.14 [0.10, 0.26] n=5 | 0.28 [0.16, 0.39] n=39 | 0.28 [0.20, 0.35] n=10 | 0.17 [0.11, 0.78] n=3 |
 | alimeeting | 0.91 [0.85, 0.94] n=85 | 0.25 [0.15, 0.54] n=98 | – | – | – | – | – |
 | chime6 * | 0.82 [0.65, 0.89] n=16 | 0.39 [0.14, 0.57] n=24 | – | – | – | 0.76 [0.55, 0.81] n=5 | – |
+| ear1_D1 | 0.81 [0.60, 0.89] n=294 | 0.33 [0.16, 0.63] n=633 | 0.46 [0.30, 0.75] n=26 | – | 0.37 [0.36, 0.39] n=4 | 0.80 [0.80, 0.80] n=1 | – |
+| ear1_R1 | 0.83 [0.63, 0.90] n=294 | 0.37 [0.23, 0.66] n=633 | 0.49 [0.35, 0.72] n=25 | 0.30 [0.30, 0.30] n=1 | 0.41 [0.41, 0.41] n=1 | 0.35 [0.26, 0.88] n=6 | – |
 | egocom * | 0.83 [0.65, 0.92] n=129 | 0.15 [0.02, 0.27] n=126 | – | -0.08 [-0.08, -0.08] n=1 | – | – | – |
 | indic_diarbench * | 0.89 [0.79, 0.94] n=429 | 0.33 [0.16, 0.60] n=438 | 0.67 [0.50, 0.83] n=4 | – | 0.04 [0.04, 0.04] n=1 | – | – |
 | notsofar * | 0.84 [0.65, 0.92] n=3770 | 0.14 [0.02, 0.39] n=7362 | 0.42 [0.34, 0.60] n=11 | 0.44 [0.21, 0.66] n=16 | -0.00 [-0.00, -0.00] n=1 | 0.76 [0.49, 0.83] n=11 | 0.73 [0.67, 0.76] n=3 |
@@ -69,4 +124,55 @@ Absorbed speakers (cos, share of the corpus's different-speaker pairs below it):
 - notsofar MTG_32185__sc_studio_0 Linda → Rachel: cos 0.46 (96th pct), airtime 62 s
 - notsofar MTG_32189__sc_panacast_0 Rachel → Linda: cos 0.61 (100th pct), airtime 72 s
 - notsofar MTG_32190__sc_plaza_0 Linda → Rachel: cos 0.51 (99th pct), airtime 53 s
+- ear1_D1 20260924-2__D1 P029 → P036: cos 0.74 (97th pct), airtime 86 s
+- ear1_D1 20260924-5__D1 P040 → P038: cos 0.77 (97th pct), airtime 48 s
+- ear1_D1 20260924-5__D1 P043 → P041: cos 0.73 (96th pct), airtime 44 s
+- ear1_D1 20260924-5__D1 P044 → P041: cos 0.62 (89th pct), airtime 29 s
+- ear1_R1 20260924-5__R1 P040 → P038: cos 0.74 (96th pct), airtime 48 s
+- ear1_R1 20260924-5__R1 P043 → P041: cos 0.73 (95th pct), airtime 44 s
+- ear1_R1 20260924-5__R1 P044 → P041: cos 0.50 (73th pct), airtime 29 s
+- ear1_D1 20260909-10__D1 P019 → P011: cos 0.53 (81th pct), airtime 53 s
+- ear1_D1 20260910-5__D1 P010 → P019: cos 0.29 (40th pct), airtime 56 s
+- ear1_D1 20260914-7__D1 P025 → P026: cos 0.42 (67th pct), airtime 24 s
+- ear1_D1 20260914-9__D1 P025 → P024: cos 0.38 (61th pct), airtime 41 s
+- ear1_D1 20260915-3__D1 P016 → P015: cos 0.46 (71th pct), airtime 26 s
+- ear1_D1 20260915-4__D1 P016 → P015: cos 0.46 (73th pct), airtime 61 s
+- ear1_D1 20260915-6__D1 P016 → P015: cos 0.05 (1th pct), airtime 46 s
+- ear1_D1 20260916-3__D1 P017 → P026: cos 0.40 (65th pct), airtime 143 s
+- ear1_D1 20260916-3__D1 P012 → P018: cos 0.33 (51th pct), airtime 26 s
+- ear1_D1 20260916-4__D1 P013 → P017: cos 0.40 (64th pct), airtime 388 s
+- ear1_D1 20260916-8__D1 P010 → P011: cos 0.81 (98th pct), airtime 95 s
+- ear1_D1 20260918-1__D1 P010 → P015: cos 0.39 (63th pct), airtime 123 s
+- ear1_D1 20260918-11__D1 P016 → P013: cos 0.30 (42th pct), airtime 112 s
+- ear1_D1 20260918-2__D1 P012 → P026: cos 0.48 (75th pct), airtime 140 s
+- ear1_D1 20260918-3__D1 P012 → P026: cos 0.63 (90th pct), airtime 42 s
+- ear1_D1 20260918-4__D1 P010 → P012: cos 0.36 (57th pct), airtime 68 s
+- ear1_D1 20260918-5__D1 P016 → P012: cos 0.30 (43th pct), airtime 127 s
+- ear1_D1 20260918-6__D1 P018 → P015: cos 0.62 (89th pct), airtime 59 s
+- ear1_D1 20260918-7__D1 P020 → P018: cos 0.44 (70th pct), airtime 61 s
+- ear1_D1 20260924-8__D1 P047 → P046: cos 0.66 (92th pct), airtime 105 s
+- ear1_D1 20260924-8__D1 P051 → P046: cos 0.68 (93th pct), airtime 56 s
+- ear1_D1 20260924-8__D1 P048 → P045: cos 0.90 (100th pct), airtime 132 s
+- ear1_R1 20260909-10__R1 P019 → P010: cos 0.48 (71th pct), airtime 53 s
+- ear1_R1 20260910-4__R1 P016 → P019: cos 0.38 (51th pct), airtime 322 s
+- ear1_R1 20260910-5__R1 P010 → P019: cos 0.35 (45th pct), airtime 56 s
+- ear1_R1 20260914-9__R1 P025 → P024: cos 0.57 (81th pct), airtime 41 s
+- ear1_R1 20260915-12__R1 P016 → P015: cos 0.44 (64th pct), airtime 105 s
+- ear1_R1 20260915-3__R1 P016 → P015: cos 0.48 (70th pct), airtime 26 s
+- ear1_R1 20260915-4__R1 P016 → P015: cos 0.47 (68th pct), airtime 61 s
+- ear1_R1 20260916-3__R1 P012 → P026: cos 0.49 (72th pct), airtime 26 s
+- ear1_R1 20260916-4__R1 P020 → P017: cos 0.35 (45th pct), airtime 637 s
+- ear1_R1 20260916-6__R1 P012 → P026: cos 0.34 (42th pct), airtime 421 s
+- ear1_R1 20260916-8__R1 P010 → P012: cos 0.35 (45th pct), airtime 95 s
+- ear1_R1 20260918-1__R1 P010 → P011: cos 0.64 (88th pct), airtime 123 s
+- ear1_R1 20260918-10__R1 P010 → P026: cos 0.50 (73th pct), airtime 43 s
+- ear1_R1 20260918-11__R1 P012 → P026: cos 0.62 (87th pct), airtime 55 s
+- ear1_R1 20260918-3__R1 P015 → P020: cos 0.65 (89th pct), airtime 46 s
+- ear1_R1 20260918-4__R1 P010 → P012: cos 0.47 (67th pct), airtime 68 s
+- ear1_R1 20260918-5__R1 P012 → P010: cos 0.36 (47th pct), airtime 143 s
+- ear1_R1 20260918-7__R1 P012 → P026: cos 0.56 (80th pct), airtime 93 s
+- ear1_R1 20260918-8__R1 P016 → P026: cos 0.29 (27th pct), airtime 240 s
+- ear1_R1 20260924-8__R1 P046 → P045: cos 0.51 (76th pct), airtime 129 s
+- ear1_R1 20260924-8__R1 P051 → P047: cos 0.72 (95th pct), airtime 56 s
+- ear1_R1 20260924-8__R1 P048 → P045: cos 0.93 (100th pct), airtime 132 s
 

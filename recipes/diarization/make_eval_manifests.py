@@ -50,6 +50,13 @@ CONDITIONS: dict[str, Condition] = {
     **{f"chime6_{s}_U06_CH1": Condition("chime6", s, "U06.CH1", "reference array U06, channel 1") for s in ("dev", "eval")},
     **{f"egocom_{s}_all": Condition("egocom", s, "person_*", "every wearer (moving egocentric mic)") for s in ("test", "val")},
     "indic_diarbench_far_field": Condition("indic_diarbench", "far_field", "mix"),
+    # EAR-1 ESD-ON tracks (D1 = Fixed-Array, R1 = Moving-Array) and the auxiliary near mics
+    **{f"ear1_{s}_{ch}": Condition("ear1", s, ch, note) for s in ("train", "dev")
+       for ch, note in (("D1", "Fixed-Array track input"), ("R1", "Moving-Array track input"))},
+    **{f"ear1_{s}_H_all": Condition("ear1", s, "H[1-3]", "mics in front of participants (training-only)")
+       for s in ("train", "dev")},
+    **{f"ear1_{s}_all": Condition("ear1", s, "[DRH][0-9]", "D1, R1 and H* of each session (channel consistency)")
+       for s in ("train", "dev")},
     # every channel of multi-microphone sessions (channel-consistency diagnostics)
     "aishell4_test_far_all": Condition("aishell4", "test", "far_ch*", "all 8 array channels"),
     **{f"aishell5_{s}_DX_all": Condition("aishell5", s, "DX0[1-4]C01", "all 4 far-field door mics") for s in ("Dev", "Eval1", "Eval2")},
@@ -90,7 +97,9 @@ def main() -> int:
         rows, missing = [], []
         for sess, ch, path in recordings(c, audio, refs):
             rttm = ref_dir / "rttm" / ref_type / f"{sess}.rttm"
-            uem = ref_dir / "uem" / f"{sess}.uem"
+            uem = ref_dir / "uem" / f"{sess}__{ch}.uem"  # channel-specific region, where channels differ in length
+            if not uem.exists():
+                uem = ref_dir / "uem" / f"{sess}.uem"
             if not path.exists() or not rttm.exists() or not uem.exists():
                 missing.append(f"{sess}/{ch}")
                 continue

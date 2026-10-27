@@ -6,15 +6,17 @@ Extra speaker = hypothesis speaker unmapped by the DER mapping (collar 0). Durat
 
 | set | extra spk | median s | p25–p75 s | <2 s | <5 s | <10 s | <30 s | median share of hyp speech | extra time on ref speech | mostly on silence | overlaps a mapped ref spk (split) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| all | 238 | 3.1 | 0.9–12.5 | 39.5% | 57.6% | 71.0% | 89.5% | 0.7% | 76% | 24% | 97% |
+| all | 256 | 3.4 | 1.0–15.2 | 37.9% | 55.9% | 68.4% | 86.3% | 0.8% | 69% | 25% | 96% |
 | aishell4 | 3 | 74.8 | 42.7–131.0 | 0.0% | 0.0% | 0.0% | 33.3% | 3.6% | 95% | 33% | 67% |
 | aishell5 | 87 | 9.0 | 3.4–21.9 | 14.9% | 31.0% | 51.7% | 87.4% | 2.0% | 48% | 59% | 94% |
 | chime6 | 6 | 95.0 | 30.9–210.7 | 0.0% | 0.0% | 16.7% | 33.3% | 1.5% | 94% | 0% | 100% |
+| ear1_D1 | 6 | 39.1 | 7.6–161.2 | 0.0% | 33.3% | 33.3% | 50.0% | 4.0% | 35% | 83% | 83% |
+| ear1_R1 | 12 | 38.6 | 3.4–96.5 | 25.0% | 33.3% | 33.3% | 41.7% | 4.0% | 70% | 25% | 92% |
 | egocom | 3 | 0.8 | 0.5–1.7 | 66.7% | 100.0% | 100.0% | 100.0% | 0.1% | 58% | 33% | 100% |
 | indic_diarbench | 4 | 1.6 | 0.7–34.4 | 50.0% | 75.0% | 75.0% | 75.0% | 0.4% | 89% | 50% | 75% |
 | notsofar | 135 | 1.4 | 0.5–4.0 | 57.0% | 77.0% | 86.7% | 94.8% | 0.4% | 99% | 1% | 100% |
 
-Missing reference speakers (under-count side): 25; durations (s): indic_diarbench 0, egocom 1, egocom 1, indic_diarbench 1, indic_diarbench 1, indic_diarbench 1, indic_diarbench 2, indic_diarbench 5, notsofar 11, aishell4 28, notsofar 40, notsofar 40, notsofar 53, notsofar 61, notsofar 61, notsofar 62, notsofar 67, notsofar 67, notsofar 72, indic_diarbench 80, notsofar 95, indic_diarbench 127, indic_diarbench 202, aishell4 224, indic_diarbench 310
+Missing reference speakers (under-count side): 108; durations (s): indic_diarbench 0, egocom 1, egocom 1, indic_diarbench 1, indic_diarbench 1, indic_diarbench 1, indic_diarbench 2, ear1_D1 4, ear1_R1 4, indic_diarbench 5, ear1_D1 8, ear1_R1 8, notsofar 11, ear1_R1 11, ear1_D1 12, ear1_D1 24, ear1_D1 26, ear1_R1 26, ear1_D1 26, ear1_R1 26, aishell4 28, ear1_D1 29, ear1_R1 29, ear1_R1 38, notsofar 40, notsofar 40, ear1_D1 41, ear1_R1 41, ear1_D1 42, ear1_R1 42, ear1_R1 43, ear1_D1 44, ear1_R1 44, ear1_D1 46, ear1_R1 46, ear1_D1 46, ear1_R1 46, ear1_D1 48, ear1_R1 48, ear1_D1 49, ear1_R1 49, ear1_D1 51, ear1_D1 52, ear1_R1 52, ear1_D1 53, ear1_R1 53, notsofar 53, ear1_D1 55, ear1_R1 55, ear1_D1 56, ear1_R1 56, ear1_D1 56, ear1_R1 56, ear1_D1 57, ear1_D1 59, ear1_R1 60, ear1_D1 61, ear1_R1 61, notsofar 61, notsofar 61, ear1_D1 61, notsofar 62, ear1_R1 62, notsofar 67, notsofar 67, ear1_D1 68, ear1_R1 68, notsofar 72, indic_diarbench 80, ear1_D1 86, ear1_R1 93, ear1_R1 93, ear1_D1 95, ear1_R1 95, notsofar 95, ear1_D1 105, ear1_D1 105, ear1_R1 105, ear1_D1 112, ear1_D1 123, ear1_R1 123, ear1_D1 127, ear1_D1 127, ear1_R1 127, indic_diarbench 127, ear1_R1 129, ear1_D1 132, ear1_R1 132, ear1_D1 136, ear1_R1 136, ear1_D1 140, ear1_R1 143, ear1_D1 143, ear1_R1 144, ear1_R1 193, ear1_D1 197, indic_diarbench 202, aishell4 224, ear1_D1 239, ear1_R1 240, ear1_D1 298, indic_diarbench 310, ear1_R1 322, ear1_R1 346, ear1_D1 388, ear1_R1 421, ear1_D1 423, ear1_R1 498
 
 ## Minimum-speech-per-speaker filter (simulated)
 
@@ -24,39 +26,39 @@ Hypothesis speakers with less than T seconds, or less than R of the recording's 
 
 | threshold | DER@0 | spk acc | spk MAE | spk bias |
 |---|---|---|---|---|
-| 0 s | 22.8 | 52.2 | 0.70 | +0.61 |
-| 1 s | 22.8 | 52.2 | 0.65 | +0.52 |
-| 2 s | 22.8 | 52.2 | 0.65 | +0.52 |
-| 5 s | 22.8 | 56.5 | 0.54 | +0.41 |
-| 10 s | 22.7 | 69.6 | 0.41 | +0.15 |
-| 20 s | 22.6 | 76.1 | 0.35 | +0.00 |
-| 30 s | 22.5 | 87.0 | 0.26 | -0.13 |
-| 60 s | 23.6 | 65.2 | 0.61 | -0.57 |
-| 0.5% of speech | 22.8 | 56.5 | 0.59 | +0.50 |
-| 1% of speech | 22.7 | 65.2 | 0.39 | +0.30 |
-| 2% of speech | 22.6 | 69.6 | 0.33 | +0.20 |
-| 3% of speech | 22.5 | 76.1 | 0.24 | +0.11 |
-| 5% of speech | 22.3 | 89.1 | 0.11 | -0.02 |
-| 8% of speech | 22.3 | 89.1 | 0.11 | -0.02 |
+| 0 s | 25.9 | 55.0 | 0.75 | +0.35 |
+| 1 s | 25.9 | 55.0 | 0.72 | +0.28 |
+| 2 s | 25.9 | 55.0 | 0.72 | +0.28 |
+| 5 s | 25.9 | 58.3 | 0.63 | +0.20 |
+| 10 s | 25.9 | 68.3 | 0.53 | +0.00 |
+| 20 s | 25.8 | 73.3 | 0.48 | -0.12 |
+| 30 s | 25.7 | 80.0 | 0.42 | -0.25 |
+| 60 s | 26.8 | 60.0 | 0.77 | -0.73 |
+| 0.5% of speech | 25.9 | 58.3 | 0.67 | +0.27 |
+| 1% of speech | 25.9 | 65.0 | 0.52 | +0.12 |
+| 2% of speech | 25.8 | 68.3 | 0.47 | +0.03 |
+| 3% of speech | 25.8 | 70.0 | 0.42 | -0.08 |
+| 5% of speech | 25.8 | 78.3 | 0.37 | -0.30 |
+| 8% of speech | 25.9 | 78.3 | 0.40 | -0.33 |
 
 **test**
 
 | threshold | DER@0 | spk acc | spk MAE | spk bias |
 |---|---|---|---|---|
-| 0 s | 18.7 | 82.5 | 0.21 | +0.17 |
-| 1 s | 18.7 | 87.0 | 0.16 | +0.11 |
-| 2 s | 18.7 | 89.3 | 0.13 | +0.08 |
-| 5 s | 18.7 | 92.1 | 0.09 | +0.05 |
-| 10 s | 18.7 | 93.1 | 0.08 | +0.02 |
-| 20 s | 18.9 | 87.4 | 0.14 | -0.08 |
-| 30 s | 19.7 | 71.4 | 0.33 | -0.30 |
-| 60 s | 27.2 | 30.2 | 1.32 | -1.30 |
-| 0.5% of speech | 18.7 | 89.0 | 0.13 | +0.09 |
-| 1% of speech | 18.7 | 91.5 | 0.10 | +0.05 |
-| 2% of speech | 18.7 | 92.8 | 0.08 | +0.03 |
-| 3% of speech | 18.7 | 93.2 | 0.07 | +0.01 |
-| 5% of speech | 18.9 | 90.3 | 0.12 | -0.06 |
-| 8% of speech | 19.5 | 82.6 | 0.21 | -0.18 |
+| 0 s | 25.0 | 79.1 | 0.25 | +0.11 |
+| 1 s | 25.0 | 83.2 | 0.21 | +0.05 |
+| 2 s | 25.0 | 85.2 | 0.18 | +0.02 |
+| 5 s | 25.0 | 88.0 | 0.15 | -0.01 |
+| 10 s | 25.0 | 88.7 | 0.14 | -0.04 |
+| 20 s | 25.2 | 83.3 | 0.20 | -0.13 |
+| 30 s | 25.8 | 67.9 | 0.38 | -0.35 |
+| 60 s | 31.7 | 29.4 | 1.31 | -1.29 |
+| 0.5% of speech | 25.0 | 85.2 | 0.18 | +0.02 |
+| 1% of speech | 25.0 | 87.2 | 0.16 | -0.01 |
+| 2% of speech | 25.0 | 88.0 | 0.15 | -0.04 |
+| 3% of speech | 25.1 | 87.6 | 0.15 | -0.07 |
+| 5% of speech | 25.3 | 84.3 | 0.21 | -0.15 |
+| 8% of speech | 26.0 | 76.7 | 0.32 | -0.29 |
 
 **corpus:aishell4**
 
@@ -133,6 +135,44 @@ Hypothesis speakers with less than T seconds, or less than R of the recording's 
 | 3% of speech | 34.8 | 50.0 | 0.50 | +0.50 |
 | 5% of speech | 34.7 | 75.0 | 0.25 | +0.25 |
 | 8% of speech | 34.7 | 75.0 | 0.25 | +0.25 |
+
+**corpus:ear1_D1**
+
+| threshold | DER@0 | spk acc | spk MAE | spk bias |
+|---|---|---|---|---|
+| 0 s | 43.0 | 45.2 | 0.74 | -0.58 |
+| 1 s | 43.0 | 45.2 | 0.76 | -0.60 |
+| 2 s | 43.0 | 45.2 | 0.76 | -0.60 |
+| 5 s | 43.0 | 48.4 | 0.74 | -0.65 |
+| 10 s | 43.0 | 48.4 | 0.74 | -0.65 |
+| 20 s | 43.0 | 45.2 | 0.81 | -0.74 |
+| 30 s | 43.1 | 37.1 | 0.92 | -0.85 |
+| 60 s | 43.5 | 22.6 | 1.18 | -1.11 |
+| 0.5% of speech | 43.0 | 48.4 | 0.74 | -0.65 |
+| 1% of speech | 43.0 | 46.8 | 0.76 | -0.66 |
+| 2% of speech | 43.0 | 43.5 | 0.81 | -0.74 |
+| 3% of speech | 43.2 | 33.9 | 0.95 | -0.89 |
+| 5% of speech | 43.4 | 25.8 | 1.10 | -1.03 |
+| 8% of speech | 44.2 | 21.0 | 1.44 | -1.37 |
+
+**corpus:ear1_R1**
+
+| threshold | DER@0 | spk acc | spk MAE | spk bias |
+|---|---|---|---|---|
+| 0 s | 46.0 | 50.0 | 0.73 | -0.47 |
+| 1 s | 46.0 | 50.0 | 0.74 | -0.52 |
+| 2 s | 46.0 | 48.4 | 0.76 | -0.53 |
+| 5 s | 46.0 | 50.0 | 0.74 | -0.55 |
+| 10 s | 46.0 | 46.8 | 0.77 | -0.58 |
+| 20 s | 46.0 | 43.5 | 0.84 | -0.65 |
+| 30 s | 46.1 | 33.9 | 0.92 | -0.76 |
+| 60 s | 46.7 | 24.2 | 1.26 | -1.16 |
+| 0.5% of speech | 46.0 | 50.0 | 0.74 | -0.55 |
+| 1% of speech | 46.0 | 46.8 | 0.77 | -0.58 |
+| 2% of speech | 46.0 | 41.9 | 0.85 | -0.66 |
+| 3% of speech | 46.1 | 33.9 | 0.92 | -0.76 |
+| 5% of speech | 46.5 | 27.4 | 1.16 | -1.06 |
+| 8% of speech | 47.2 | 21.0 | 1.44 | -1.37 |
 
 **corpus:egocom**
 

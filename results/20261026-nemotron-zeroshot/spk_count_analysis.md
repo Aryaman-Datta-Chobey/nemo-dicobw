@@ -6,11 +6,12 @@ Unit: recording (session x channel); gold = reference speakers with speech in th
 
 | set | recordings | under | correct | over | wrong: under / over % | mean err | MAE |
 |---|---|---|---|---|---|---|---|
-| **all** | 1142 | 21 (2%) | 928 (81%) | 193 (17%) | 10 / 90 | +0.19 | 0.23 |
+| **all** | 1266 | 75 (6%) | 987 (78%) | 204 (16%) | 27 / 73 | +0.12 | 0.27 |
 | aishell4 | 20 | 1 (5%) | 17 (85%) | 2 (10%) | 33 / 67 | +0.05 | 0.15 |
 | aishell5 | 54 | 0 (0%) | 1 (2%) | 53 (98%) | 0 / 100 | +1.61 | 1.61 |
 | alimeeting | 28 | 0 (0%) | 28 (100%) | 0 (0%) | – | +0.00 | 0.00 |
 | chime6 | 4 | 0 (0%) | 0 (0%) | 4 (100%) | 0 / 100 | +1.50 | 1.50 |
+| ear1 | 124 | 54 (44%) | 59 (48%) | 11 (9%) | 83 / 17 | -0.52 | 0.73 |
 | egocom | 44 | 2 (5%) | 39 (89%) | 3 (7%) | 40 / 60 | +0.02 | 0.11 |
 | indic_diarbench | 173 | 8 (5%) | 164 (95%) | 1 (1%) | 89 / 11 | -0.03 | 0.07 |
 | notsofar | 819 | 10 (1%) | 679 (83%) | 130 (16%) | 7 / 93 | +0.15 | 0.18 |
@@ -19,13 +20,13 @@ Unit: recording (session x channel); gold = reference speakers with speech in th
 
 | gold speakers | recordings | under | correct | over | wrong: under / over % | mean err | MAE | sessions | session-level under / correct / over % | corpora |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 2 | 190 | 0 (0%) | 136 (72%) | 54 (28%) | 0 / 100 | +0.47 | 0.47 | 190 | 0 / 72 / 28 | aishell5 54, alimeeting 11, indic_diarbench 125 |
-| 3 | 173 | 4 (2%) | 150 (87%) | 19 (11%) | 17 / 83 | +0.09 | 0.13 | 65 | 4 / 90 / 6 | alimeeting 5, egocom 44, indic_diarbench 29, notsofar 95 |
-| 4 | 355 | 1 (0%) | 290 (82%) | 64 (18%) | 2 / 98 | +0.19 | 0.19 | 77 | 1 / 81 / 17 | alimeeting 12, chime6 4, indic_diarbench 12, notsofar 327 |
-| 5 | 244 | 3 (1%) | 200 (82%) | 41 (17%) | 7 / 93 | +0.16 | 0.19 | 49 | 4 / 82 / 14 | aishell4 8, indic_diarbench 2, notsofar 234 |
-| 6 | 106 | 5 (5%) | 89 (84%) | 12 (11%) | 29 / 71 | +0.07 | 0.16 | 22 | 3 / 81 / 16 | aishell4 8, notsofar 98 |
-| 7 | 69 | 5 (7%) | 61 (88%) | 3 (4%) | 62 / 38 | -0.03 | 0.12 | 15 | 11 / 85 / 3 | aishell4 4, notsofar 65 |
-| 8 | 4 | 2 (50%) | 2 (50%) | 0 (0%) | 100 / 0 | -0.50 | 0.50 | 4 | 50 / 50 / 0 | indic_diarbench 4 |
+| 2 | 192 | 0 (0%) | 136 (71%) | 56 (29%) | 0 / 100 | +0.48 | 0.48 | 192 | 0 / 71 / 29 | aishell5 54, alimeeting 11, ear1 2, indic_diarbench 125 |
+| 3 | 179 | 4 (2%) | 153 (85%) | 22 (12%) | 15 / 85 | +0.10 | 0.15 | 71 | 4 / 87 / 9 | alimeeting 5, ear1 6, egocom 44, indic_diarbench 29, notsofar 95 |
+| 4 | 407 | 2 (0%) | 338 (83%) | 67 (16%) | 3 / 97 | +0.17 | 0.18 | 129 | 2 / 86 / 13 | alimeeting 12, chime6 4, ear1 52, indic_diarbench 12, notsofar 327 |
+| 5 | 276 | 30 (11%) | 205 (74%) | 41 (15%) | 42 / 58 | +0.04 | 0.27 | 81 | 36 / 56 / 8 | aishell4 8, ear1 32, indic_diarbench 2, notsofar 234 |
+| 6 | 116 | 11 (9%) | 91 (78%) | 14 (12%) | 44 / 56 | +0.00 | 0.24 | 32 | 21 / 62 / 17 | aishell4 8, ear1 10, notsofar 98 |
+| 7 | 79 | 13 (16%) | 62 (78%) | 4 (5%) | 76 / 24 | -0.22 | 0.32 | 25 | 39 / 55 / 6 | aishell4 4, ear1 10, notsofar 65 |
+| 8 | 16 | 14 (88%) | 2 (12%) | 0 (0%) | 100 / 0 | -1.69 | 1.69 | 16 | 88 / 12 / 0 | ear1 12, indic_diarbench 4 |
 | 9 | 1 | 1 (100%) | 0 (0%) | 0 (0%) | 100 / 0 | -1.00 | 1.00 | 1 | 100 / 0 / 0 | indic_diarbench 1 |
 
 ### By corpus and gold count
@@ -40,6 +41,13 @@ Unit: recording (session x channel); gold = reference speakers with speech in th
 | alimeeting/3 | 5 | 0 (0%) | 5 (100%) | 0 (0%) | – | +0.00 | 0.00 |
 | alimeeting/4 | 12 | 0 (0%) | 12 (100%) | 0 (0%) | – | +0.00 | 0.00 |
 | chime6/4 | 4 | 0 (0%) | 0 (0%) | 4 (100%) | 0 / 100 | +1.50 | 1.50 |
+| ear1/2 | 2 | 0 (0%) | 0 (0%) | 2 (100%) | 0 / 100 | +1.50 | 1.50 |
+| ear1/3 | 6 | 0 (0%) | 3 (50%) | 3 (50%) | 0 / 100 | +0.50 | 0.50 |
+| ear1/4 | 52 | 1 (2%) | 48 (92%) | 3 (6%) | 25 / 75 | +0.06 | 0.10 |
+| ear1/5 | 32 | 27 (84%) | 5 (16%) | 0 (0%) | 100 / 0 | -0.84 | 0.84 |
+| ear1/6 | 10 | 6 (60%) | 2 (20%) | 2 (20%) | 75 / 25 | -0.70 | 1.10 |
+| ear1/7 | 10 | 8 (80%) | 1 (10%) | 1 (10%) | 89 / 11 | -1.50 | 1.70 |
+| ear1/8 | 12 | 12 (100%) | 0 (0%) | 0 (0%) | 100 / 0 | -2.08 | 2.08 |
 | egocom/3 | 44 | 2 (5%) | 39 (89%) | 3 (7%) | 40 / 60 | +0.02 | 0.11 |
 | indic_diarbench/2 | 125 | 0 (0%) | 124 (99%) | 1 (1%) | 0 / 100 | +0.02 | 0.02 |
 | indic_diarbench/3 | 29 | 2 (7%) | 27 (93%) | 0 (0%) | 100 / 0 | -0.07 | 0.07 |
@@ -53,4 +61,4 @@ Unit: recording (session x channel); gold = reference speakers with speech in th
 | notsofar/6 | 98 | 5 (5%) | 83 (85%) | 10 (10%) | 33 / 67 | +0.05 | 0.15 |
 | notsofar/7 | 65 | 4 (6%) | 58 (89%) | 3 (5%) | 57 / 43 | -0.02 | 0.11 |
 
-Error histogram (hyp − gold : recordings), all: -2: 1, -1: 20, 0: 928, 1: 153, 2: 38, 3: 2
+Error histogram (hyp − gold : recordings), all: -4: 2, -3: 2, -2: 15, -1: 56, 0: 987, 1: 162, 2: 40, 3: 2
