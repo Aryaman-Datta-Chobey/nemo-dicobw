@@ -31,6 +31,14 @@ Long splits (coherence, switch time / recording length): aishell4 75s coh 0.97 t
 
 | condition | sessions | ch/session | all channels correct | all wrong | mixed | recording exact % | per-channel exact % | median DER spread across channels |
 |---|---|---|---|---|---|---|---|---|
+| alimeeting_Eval_Ali_far_all | 8 | 8.0 | 8 | 0 | 0 | 100.0 | far_ch1 100, far_ch2 100, far_ch3 100, far_ch4 100, far_ch5 100, far_ch6 100, far_ch7 100, far_ch8 100 | 1.0 |
+| alimeeting_Test_Ali_far_all | 20 | 8.0 | 20 | 0 | 0 | 100.0 | far_ch1 100, far_ch2 100, far_ch3 100, far_ch4 100, far_ch5 100, far_ch6 100, far_ch7 100, far_ch8 100 | 0.9 |
+| aishell5_Dev_DX_all | 18 | 4.0 | 0 | 17 | 1 | 2.8 | DX01C01 6, DX02C01 0, DX03C01 0, DX04C01 6 | 4.8 |
+| aishell5_Eval1_DX_all | 18 | 4.0 | 0 | 17 | 1 | 1.4 | DX01C01 0, DX02C01 0, DX03C01 6, DX04C01 0 | 5.4 |
+| aishell5_Eval2_DX_all | 18 | 4.0 | 0 | 17 | 1 | 1.4 | DX01C01 0, DX02C01 0, DX03C01 6, DX04C01 0 | 4.0 |
+| aishell4_test_far_all | 20 | 8.0 | 12 | 1 | 8 | 83.1 | far_ch1 85, far_ch2 85, far_ch3 80, far_ch4 75, far_ch5 90, far_ch6 85, far_ch7 80, far_ch8 85 | 3.3 |
+| chime6_dev_U_all | 2 | 22.0 | 0 | 0 | 2 | 6.8 | U01.CH1 0, U01.CH2 0, U01.CH3 0, U01.CH4 0, U02.CH1 50, U02.CH2 0, U02.CH3 0, U02.CH4 0, U03.CH1 0, U03.CH2 0, U03.CH3 0, U03.CH4 0, U04.CH1 0, U04.CH2 50, U04.CH3 50, U04.CH4 0, U05.CH1 0, U05.CH2 0, U05.CH3 0, U05.CH4 0, U06.CH1 0, U06.CH2 0, U06.CH3 0, U06.CH4 0 | 14.7 |
+| chime6_eval_U_all | 2 | 22.0 | 0 | 1 | 1 | 31.8 | U01.CH1 50, U01.CH2 50, U01.CH3 50, U01.CH4 50, U02.CH1 0, U02.CH2 50, U02.CH3 0, U02.CH4 0, U03.CH1 0, U03.CH2 0, U03.CH3 0, U03.CH4 0, U04.CH1 50, U04.CH2 50, U04.CH3 50, U04.CH4 50, U05.CH1 50, U05.CH2 50, U05.CH3 50, U05.CH4 50, U06.CH1 0, U06.CH2 0, U06.CH3 50, U06.CH4 0 | 23.0 |
 | notsofar_eval_sc_all | 129 | 6.3 | 47 | 1 | 81 | 82.9 | – | 3.4 |
 | egocom_test_all | 9 | 2.9 | 7 | 0 | 2 | 92.3 | – | 4.0 |
 | egocom_val_all | 6 | 3.0 | 4 | 0 | 2 | 83.3 | – | 2.9 |
@@ -108,5 +116,5 @@ Long splits (coherence, switch time / recording length): aishell4 75s coh 0.97 t
 | 20261026-nemotron-zeroshot | {'spkcache_len': 264, 'fifo_len': 40, 'chunk_len': 340, 'chunk_right_context': 40, 'spkcache_update_period': 300} | 22.5 / 5.6 / +1.44 | 10.3 / 100.0 / +0.00 | 31.2 / 0.0 / +1.50 | 31.2 / 83.3 / -0.06 |
 | 20261026-nemotron-zs-cache2x | {'spkcache_len': 528, 'fifo_len': 40, 'chunk_len': 340, 'chunk_right_context': 40, 'spkcache_update_period': 300} | 22.7 / 5.6 / +1.33 | 10.3 / 100.0 / +0.00 | 35.0 / 0.0 / +1.00 | 31.1 / 88.9 / -0.11 |
 | 20261026-nemotron-zs-chunk2x | {'spkcache_len': 264, 'fifo_len': 40, 'chunk_len': 680, 'chunk_right_context': 40, 'spkcache_update_period': 680} | 22.7 / 0.0 / +1.44 | 10.7 / 100.0 / +0.00 | 39.2 / 0.0 / +1.50 | 31.8 / 83.3 / -0.06 |
-| 20261026-nemotron-zs-fifo264 | {'spkcache_len': 264, 'fifo_len': 264, 'chunk_len': 340, 'chunk_right_context': 40, 'spkcache_update_period': 300} | 22.8 / 5.6 / +1.44 | 10.2 / 100.0 / +0.00 | pending | pending |
-| 20261026-nemotron-zs-lowlat | None | pending | pending | pending | pending |
+| 20261026-nemotron-zs-fifo264 | {'spkcache_len': 264, 'fifo_len': 264, 'chunk_len': 340, 'chunk_right_context': 40, 'spkcache_update_period': 300} | 22.8 / 5.6 / +1.44 | 10.2 / 100.0 / +0.00 | 33.4 / 0.0 / +1.50 | 31.3 / 83.3 / -0.06 |
+| 20261026-nemotron-zs-lowlat | {'spkcache_len': 264, 'fifo_len': 264, 'chunk_len': 9, 'chunk_right_context': 4, 'spkcache_update_period': 222} | 23.6 / 0.0 / +1.72 | 10.8 / 100.0 / +0.00 | 34.5 / 0.0 / +2.50 | 34.1 / 55.6 / +0.22 |

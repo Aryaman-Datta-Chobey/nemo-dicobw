@@ -11,6 +11,9 @@ Matrix (see EXPERIMENTS.md, "Whisper-family zero-shot on Mandarin sets"):
                                       ts {on, off}, zh: whole; per_speaker x diar {nemotron, oracle}
     auto-LID (dev set only)           every checkpoint, language auto: whole ts on (DiCoW: per_speaker,
                                       nemotron)
+    near-field (--near, dev only)     every checkpoint, per_speaker, oracle, zh, each speaker from their
+                                      headset (dataset alimeeting_Eval_Ali_near); ts as the checkpoint's
+                                      default (off for the Belle/BuzzASR checkpoints)
 Whole-mode runs also write late fusion with Nemotron and with oracle diarization.
 
 Example:
@@ -41,6 +44,15 @@ CKPT = {
     "buzzasr": "BuzzASR__mandarin",
 }
 BOTH_TS = ("belle-zh", "belle-zh-punct", "belle-turbo-zh", "buzzasr")
+NEAR = "alimeeting_Eval_Ali_near"  # dev sessions, each speaker decoded from their headset
+
+
+def near_conditions() -> list[dict]:
+    out = [dict(ds=NEAR, ck=ck, mode="per_speaker", ts="off" if ck in BOTH_TS else "on", diar="oracle", lang="zh")
+           for ck in CKPT]
+    for c in out:
+        c["name"] = f"{c['ds']}__{c['ck']}__{c['mode']}__ts-{c['ts']}__{c['diar']}__{c['lang']}"
+    return out
 
 
 def conditions(datasets: list[str]) -> list[dict]:
@@ -61,11 +73,13 @@ def conditions(datasets: list[str]) -> list[dict]:
 
 
 def command(c: dict, out: Path) -> list[str]:
+    near = c["ds"] == NEAR
     cmd = [sys.executable, str(REPO / "recipes" / "asr" / "asr_infer.py"), "--model", str(MODELS / CKPT[c["ck"]]),
-           "--manifest", str(MANIFESTS / f"{c['ds']}.jsonl"), "--diar", NEMOTRON if c["diar"] == "nemotron" else "oracle",
+           "--manifest", str(MANIFESTS / f"{DEV if near else c['ds']}.jsonl"),
+           "--diar", NEMOTRON if c["diar"] == "nemotron" else "oracle",
            "--fusion-nemotron", NEMOTRON, "--mode", c["mode"], "--timestamps", c["ts"], "--language", c["lang"],
            "--out", str(out), "--condition", c["name"]]
-    return cmd + (["--dicow"] if c["ck"] == "dicow-large" else [])
+    return cmd + (["--dicow"] if c["ck"] == "dicow-large" else []) + (["--near-field"] if near else [])
 
 
 def main() -> int:
@@ -73,10 +87,11 @@ def main() -> int:
     ap.add_argument("--datasets", nargs="*", default=DATASETS)
     ap.add_argument("--checkpoints", nargs="*", default=list(CKPT))
     ap.add_argument("--out", type=Path, default=Path("/mnt/data/exp/asr/20261027-whisper-zeroshot"))
+    ap.add_argument("--near", action="store_true", help="the near-field dev conditions instead of the matrix")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--run", action="store_true")
     args = ap.parse_args()
-    conds = [c for c in conditions(args.datasets) if c["ck"] in args.checkpoints]
+    conds = [c for c in (near_conditions() if args.near else conditions(args.datasets)) if c["ck"] in args.checkpoints]
     if args.list or not args.run:
         print("\n".join(c["name"] for c in conds))
         print(f"{len(conds)} conditions", file=sys.stderr)
