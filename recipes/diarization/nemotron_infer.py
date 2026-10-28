@@ -6,6 +6,8 @@ For each manifest line (see make_eval_manifests.py) and each recording `<uniq_id
     <out>/probs/<manifest name>/<uniq_id>.npy     float16 (frames, 8) sigmoid outputs, 10 ms frames
     <out>/timing/<manifest name>.tsv              per-recording duration, wall time, RTFx
 and once per run <out>/config.json (model, NeMo commit, streaming and postprocessing settings).
+--model takes a .nemo file or a training checkpoint (.ckpt, loaded strictly into the released
+architecture), e.g. from recipes/diarization/train_nemotron_ft.py.
 Recordings whose RTTM and probabilities already exist are skipped, so a run can be resumed.
 
 Defaults reproduce the model card's offline evaluation: streaming config spkcache_len=264,
@@ -47,7 +49,12 @@ def _git(repo: Path, *cmd: str) -> str:
 def load_model(path: str, args: argparse.Namespace):
     from nemo.collections.asr.models import SortformerEncLabelModel
 
-    model = SortformerEncLabelModel.restore_from(restore_path=path, map_location="cuda", strict=False)
+    if path.endswith(".ckpt"):  # training checkpoint: architecture from the released .nemo, weights strict
+        model = SortformerEncLabelModel.restore_from(restore_path=DEFAULT_MODEL, map_location="cuda", strict=False)
+        state = torch.load(path, map_location="cuda", weights_only=False)["state_dict"]
+        model.load_state_dict(state, strict=True)
+    else:
+        model = SortformerEncLabelModel.restore_from(restore_path=path, map_location="cuda", strict=False)
     if args.precision == "bf16":
         model = model.to(dtype=torch.bfloat16)
     model.eval()
