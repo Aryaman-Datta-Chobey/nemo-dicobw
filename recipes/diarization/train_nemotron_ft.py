@@ -11,11 +11,16 @@ arXiv 2609.27315 does for EEND (the remedy for low-airtime and silenced speakers
 After initialisation from `init_from_nemo_model`, every parameter is checked against the .nemo state dict
 (NeMo loads it with strict=False, which would silently skip mismatches).
 
+`model.param_rules` (optional) sets per-parameter learning-rate multipliers by regex on the parameter
+name (first match wins, default x1); a multiplier of 0 freezes the parameter. The encoder has no
+BatchNorm running statistics (LayerNorm only), so frozen parameters stay exactly at their initial values.
+
     python recipes/diarization/train_nemotron_ft.py --config-path=configs --config-name=nemotron_ft_ear1 \
         exp_manager.exp_dir=$DATA/exp/nemotron/20261027-nemotron-ft-ear1
 """
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -37,6 +42,25 @@ from checkpoint_averaging import average_checkpoints_after_training  # noqa: E40
 
 
 class SpeakerWeightedSortformer(SortformerEncLabelModel):
+    def setup_optimizer_param_groups(self):
+        # model.param_rules: [{pattern: <regex on parameter name>, lr_mult: <float>}], first match wins;
+        # lr_mult 0 freezes the parameter (requires_grad False, left out of the optimizer)
+        rules = [(re.compile(r["pattern"]), float(r["lr_mult"])) for r in self._cfg.get("param_rules", None) or []]
+        if not rules:
+            return super().setup_optimizer_param_groups()
+        lr = float(self._cfg.optim.lr)
+        groups: dict[float, list] = {}
+        for name, p in self.named_parameters():
+            mult = next((m for rx, m in rules if rx.search(name)), 1.0)
+            p.requires_grad_(mult > 0)
+            if mult > 0:
+                groups.setdefault(mult, []).append(p)
+        for mult, ps in sorted(groups.items()):
+            logging.info(f"param group lr x{mult:g}: {len(ps)} tensors, {sum(p.numel() for p in ps):,} parameters")
+        frozen = [p for p in self.parameters() if not p.requires_grad]
+        logging.info(f"frozen: {len(frozen)} tensors, {sum(p.numel() for p in frozen):,} parameters")
+        self._optimizer_param_groups = [{"params": ps, "lr": lr * mult} for mult, ps in sorted(groups.items())]
+
     def setup_validation_data(self, val_data_config):
         # NeMo shares `self.augmentor` across all dataloaders; keep validation audio clean
         aug, self.augmentor = self.augmentor, None

@@ -50,6 +50,9 @@ CONDITIONS: dict[str, Condition] = {
     **{f"chime6_{s}_U06_CH1": Condition("chime6", s, "U06.CH1", "reference array U06, channel 1") for s in ("dev", "eval")},
     **{f"egocom_{s}_all": Condition("egocom", s, "person_*", "every wearer (moving egocentric mic)") for s in ("test", "val")},
     "indic_diarbench_far_field": Condition("indic_diarbench", "far_field", "mix"),
+    # training-only corpora for the speaker-count run (manifests for window profiles and selection)
+    "ami_train_Array1-01": Condition("ami", "train", "Array1-01", "AMI single distant mic (array 1, mic 1)"),
+    "icsi_train_mix": Condition("icsi", "train", "mix", "ICSI headset mix (no distant mics available)"),
     # EAR-1 ESD-ON tracks (D1 = Fixed-Array, R1 = Moving-Array) and the auxiliary near mics
     **{f"ear1_{s}_{ch}": Condition("ear1", s, ch, note) for s in ("train", "dev")
        for ch, note in (("D1", "Fixed-Array track input"), ("R1", "Moving-Array track input"))},

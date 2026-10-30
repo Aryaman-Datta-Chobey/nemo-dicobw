@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Build diarization references for the held-out evaluation sets.
+"""Build diarization references for the held-out evaluation sets (and the training-only AMI / ICSI splits).
 
 Output, per corpus and split:
     <refs>/<corpus>/<split>/rttm/<ref_type>/<session>.rttm   one file per session
@@ -22,6 +22,8 @@ ref_type:
 | chime6     | dev, eval             | segments (transcription JSON), fa (official alignment RTTM) | [official start, min(12000, recording)] |
 | egocom     | test, val             | words (ground_truth_transcriptions.csv, untimed words interpolated), words_timedonly | [0, shortest wearer] |
 | ear1       | train, dev            | segments (headset A/P*.TextGrid; device TextGrids = these cut at the device's end) | [0, D1]; per channel uem/<session>__<channel>.uem = [0, that channel] |
+| ami        | train                 | fa (nttcslab-sp/diar-forced-alignment, full-corpus ASR partition, only_words) | [0, recording] |
+| icsi       | train (all meetings)  | words (NXT word times; untimed words fill between timed neighbours), segments (NXT segments with words) | [0, recording] |
 
 Recording durations come from the converted 16 kHz audio. NOTSOFAR also gets eval_sc_160.tsv,
 the (meeting, device) pairs of the CHiME-8 / Nemotron-card eval-SC set.
@@ -37,6 +39,7 @@ import json
 import re
 import sys
 import tarfile
+import xml.etree.ElementTree as ET
 from collections import defaultdict
 from pathlib import Path
 
@@ -496,8 +499,118 @@ def build_ear1(args) -> None:
             for ch, d in durs.items():
                 write_uem({s: [(0.0, d)]}, w.dir / "uem" / f"{s}__{ch}.uem")
 
+def build_ami(args) -> None:
+    fa_root = args.refs / "alimeeting" / "forced_alignment"
+    fa_commit = (fa_root / ".git" / "HEAD").read_text().strip() if (fa_root / ".git").exists() else "?"
+    w = Writer(args.refs, "ami", "train")
+    w.prov["ref_types"]["fa"] = {"source": "nttcslab-sp/diar-forced-alignment AMI/train (only_words)", "commit": fa_commit}
+    w.prov["uem"] = "[0, recording duration]"
+    fa = load_rttm(sorted((fa_root / "AMI" / "train").glob("*.rttm")))
+    for sess_dir in sorted((args.audio / "ami" / "train").iterdir()):
+        s = sess_dir.name
+        dur = min(audio_durations(sess_dir).values())
+        if s not in fa:
+            raise KeyError(f"no forced-alignment RTTM for ami/train/{s}")
+        turns = rename(fa[s])
+        check_within(s, turns, dur)
+        w.add("fa", s, turns)
+        w.uem[s] = [(0.0, dur)]
+    w.write()
+
+
+ICSI_SPEECH = {"W", "TRUNCW", "LET", "APOSS", "HYPH"}  # word classes that are spoken (not punctuation)
+NITE = "{http://nite.sourceforge.net/}"
+
+
+def icsi_segment_words(words_xml: Path, segs_xml: Path, stats: dict[str, int]) -> tuple[str, list[Interval], list[Interval]]:
+    """One NXT channel: (participant, word intervals, segment spans). Segments without spoken words are dropped
+    (vocal / non-vocal sounds only, as AMI only_words). Untimed or zero-length words take the span between their
+    timed neighbours inside the segment (segment edges where there is none); a segment with no timed word keeps its span."""
+    elems = list(ET.parse(words_xml).getroot())
+    pos = {e.get(f"{NITE}id"): i for i, e in enumerate(elems)}
+    who, words, spans = set(), [], []
+    for seg in ET.parse(segs_xml).getroot().iter("segment"):
+        who.add(seg.get("participant"))
+        s0, s1 = (float(x) if x else None for x in (seg.get("starttime"), seg.get("endtime")))
+        toks: list[tuple[float, float] | None] = []
+        for ch in seg.iter(f"{NITE}child"):
+            ids = re.findall(r"id\(([^)]+)\)", ch.get("href"))
+            a, b = pos[ids[0]], pos[ids[-1]]
+            for e in elems[a:b + 1]:
+                if e.tag != "w" or e.get("c") not in ICSI_SPEECH or not (e.text or "").strip():
+                    continue
+                st, en = e.get("starttime"), e.get("endtime")
+                ok = bool(st and en) and float(en) > float(st)
+                toks.append((float(st), float(en)) if ok else None)
+        if not toks:
+            stats["segments_without_words"] += 1
+            continue
+        timed = [t for t in toks if t is not None]
+        if s0 is None or s1 is None:  # 3 sub-segments lack a time: take it from their timed words
+            stats["segments_missing_time"] += 1
+            if not timed:
+                continue
+            s0 = timed[0][0] if s0 is None else s0
+            s1 = max(e for _, e in timed) if s1 is None else s1
+        spans.append((s0, s1))
+        if not timed:
+            stats["segments_untimed"] += 1
+            words.append((s0, s1))
+            continue
+        for i, t in enumerate(toks):
+            if t is not None:
+                stats["words_timed"] += 1
+                words.append(t)
+                continue
+            stats["words_filled"] += 1
+            prev = next((x[1] for x in reversed(toks[:i]) if x is not None), s0)
+            nxt = next((x[0] for x in toks[i + 1:] if x is not None), s1)
+            if nxt > prev:
+                words.append((prev, nxt))
+    if not who:  # channel with no segments (e.g. Buw001.J)
+        stats["channels_empty"] += 1
+        return "", [], []
+    if len(who) != 1:
+        raise ValueError(f"{segs_xml.name}: expected one participant, got {sorted(who)}")
+    return who.pop(), words, spans
+
+
+def build_icsi(args) -> None:
+    nxt = args.corpora / "icsi" / "ICSI"
+    w = Writer(args.refs, "icsi", "train")
+    stats: dict[str, int] = defaultdict(int)
+    w.prov["ref_types"]["words"] = {
+        "source": f"ICSI_core_NXT Words/Segments (participant = segment participant); see build_refs.icsi_segment_words; "
+                  f"merged per speaker across gaps <= {args.word_gap} s", "word_gap": args.word_gap, "words": stats}
+    w.prov["ref_types"]["segments"] = {"source": "ICSI_core_NXT Segments containing spoken words"}
+    w.prov["uem"] = "[0, recording duration]"
+    for sess_dir in sorted((args.audio / "icsi" / "train").iterdir()):
+        s = sess_dir.name
+        dur = min(audio_durations(sess_dir).values())
+        words: dict[str, list[Interval]] = defaultdict(list)
+        spans: dict[str, list[Interval]] = defaultdict(list)
+        for segs_xml in sorted((nxt / "Segments").glob(f"{s}.*.segs.xml")):
+            words_xml = nxt / "Words" / segs_xml.name.replace(".segs.xml", ".words.xml")
+            spk, wd, sp = icsi_segment_words(words_xml, segs_xml, stats)
+            if not spk:
+                continue
+            words[spk] += wd
+            spans[spk] += sp
+        for ref_type, ivs, gap in (("words", words, args.word_gap), ("segments", spans, 0.0)):
+            turns = rename([Turn(spk, a, b) for spk, iv in ivs.items() for a, b in merge_intervals(iv, gap)])
+            check_within(s, turns, dur)
+            # NXT has one segment ending past the audio (Bro025.segment.958: 2122.1-4245.2 s, audio 2122.6 s)
+            stats[f"{ref_type}_turns_clipped"] += sum(t.end > dur for t in turns)
+            turns = [Turn(t.speaker, t.start, min(t.end, dur)) for t in turns if t.start < dur]
+            w.add(ref_type, s, turns)
+        w.uem[s] = [(0.0, dur)]
+    w.prov["ref_types"]["words"]["words"] = dict(stats)
+    w.write()
+
 
 BUILDERS = {
+    "ami": build_ami,
+    "icsi": build_icsi,
     "ear1": build_ear1,
     "aishell4": build_aishell4,
     "aishell5": build_aishell5,
@@ -512,7 +625,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("corpora_to_build", nargs="+", choices=sorted(BUILDERS), metavar="corpus")
     ap.add_argument("--data", type=Path, default=DATA)
-    ap.add_argument("--word-gap", type=float, default=0.3, help="EgoCom: merge words across gaps <= this (s)")
+    ap.add_argument("--word-gap", type=float, default=0.3, help="EgoCom / ICSI: merge words across gaps <= this (s)")
     args = ap.parse_args()
     args.corpora, args.audio, args.refs = args.data / "corpora", args.data / "audio16k", args.data / "refs"
     for c in args.corpora_to_build:
