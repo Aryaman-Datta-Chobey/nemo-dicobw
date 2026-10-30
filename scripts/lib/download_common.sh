@@ -35,6 +35,7 @@ record() {  # record <dir> <name> <url...>
 }
 
 # Download one file (from one or more mirrors of the *same* file), test it, record it.
+# ARIA_CONN sets the connections per file (default 8); use 1 for servers that rate-limit.
 fetch() {  # fetch <dir> <name> <url...>
   local dir=$1 name=$2; shift 2
   mkdir -p "$dir"
@@ -43,7 +44,7 @@ fetch() {  # fetch <dir> <name> <url...>
     return 0
   fi
   log "==> $name"
-  aria2c -x8 -s8 -c --file-allocation=none --console-log-level=warn --summary-interval=120 \
+  aria2c -x"${ARIA_CONN:-8}" -s"${ARIA_CONN:-8}" -c --file-allocation=none --console-log-level=warn --summary-interval=120 \
     --max-tries=10 --retry-wait=30 -d "$dir" -o "$name" "$@"
   log "    testing $name"
   test_file "$dir/$name"

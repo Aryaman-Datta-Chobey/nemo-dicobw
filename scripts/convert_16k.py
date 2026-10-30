@@ -133,8 +133,31 @@ def layout_ear1(rel: Path, src: Path) -> tuple[str, str, str]:
     return _ear1_splits(src)[session], session, rel.stem
 
 
+@functools.cache
+def _ami_splits(src: Path) -> dict[str, str]:
+    """meeting -> train/dev/test from <src>/partition.tsv (written by scripts/download_ami.sh)."""
+    return dict(ln.split("\t")[::-1] for ln in (src / "partition.tsv").read_text().split("\n") if ln.strip())
+
+
+def layout_ami(rel: Path, src: Path) -> tuple[str, str, str]:
+    """<meeting>/audio/<meeting>.Array1-01.wav -> (train|dev|test, <meeting>, Array1-01)."""
+    meeting, _, mic = rel.stem.partition(".")
+    if len(rel.parts) != 3 or meeting != rel.parts[0] or meeting not in _ami_splits(src):
+        raise ValueError(f"unexpected AMI path {rel}")
+    return _ami_splits(src)[meeting], meeting, mic
+
+
+def layout_icsi(rel: Path, src: Path) -> tuple[str, str, str]:
+    """Signals/<meeting>/<meeting>.interaction.wav -> (train, <meeting>, mix). ICSI is training-only here."""
+    if len(rel.parts) != 3 or rel.parts[0] != "Signals" or rel.name != f"{rel.parts[1]}.interaction.wav":
+        raise ValueError(f"unexpected ICSI path {rel}")
+    return "train", rel.parts[1], "mix"
+
+
 LAYOUTS: dict[str, Layout] = {
+    "ami": layout_ami,
     "ear1": layout_ear1,
+    "icsi": layout_icsi,
     "aishell4": layout_aishell4,
     "aishell5": layout_split_session_channel,
     "alimeeting": layout_alimeeting,

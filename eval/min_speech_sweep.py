@@ -32,6 +32,8 @@ def main() -> int:
     ap.add_argument("--system", action="append", required=True, help="name=<run dir>[,<run dir>...]")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--jobs", type=int, default=6)
+    ap.add_argument("--abs", type=float, nargs="+", default=ABS, help="A values in seconds (default: full grid)")
+    ap.add_argument("--frac", type=float, nargs="+", default=FRAC, help="F values (default: full grid)")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     systems = {k: [Path(x) for x in v.split(",")] for k, v in (s.split("=", 1) for s in args.system)}
@@ -41,8 +43,8 @@ def main() -> int:
     with ProcessPoolExecutor(args.jobs) as ex:
         for name, dirs in systems.items():
             rdir = {k: next(d / "rttm" / v for d in dirs if (d / "rttm" / v).is_dir()) for k, v in SETS.items()}
-            for a in ABS:
-                for f in FRAC:
+            for a in args.abs:
+                for f in args.frac:
                     res, dev4 = {"system": name, "abs_s": a, "frac": f}, []
                     for k, rs in rows.items():
                         recs = [r["fill_nearest_vad"] for r in ex.map(

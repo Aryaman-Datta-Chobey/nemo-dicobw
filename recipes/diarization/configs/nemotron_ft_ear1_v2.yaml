@@ -1,0 +1,13 @@
+# Freezing / per-module learning-rate study (EXPERIMENTS.md, 20261028-nemotron-ft-ear1-v2): the nospkw
+# recipe (plain NeMo loss) cut to 1250 steps, the step count at which the NOTSOFAR gate still held in
+# the nospkw run. Arms are set with arm=A|B|C|D, labels with model.train_ds.manifest_filepath
+# (ear1_v1 = organiser segments, ear1_v1_fa = forced-alignment refs for the EAR-1 recordings).
+defaults:
+  - nemotron_ft_ear1
+  - arm: A
+  - _self_
+name: nemotron_ft_ear1_v2
+model:
+  spk_weighted_weight: 0.0
+trainer:
+  max_steps: 1250

@@ -1,0 +1,5 @@
+# @package _global_
+# upper encoder (layers 16-30 + final norm) at 0.1x the learning rate
+model:
+  param_rules:
+    - {pattern: '^encoder\.(layers\.(1[6-9]|2[0-9]|30)\.|final_norm\.)', lr_mult: 0.1}
