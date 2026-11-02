@@ -11,7 +11,6 @@ nemo_dicobw.txt_norm_zh). Speaker labels equal the RTTM reference labels (TextGr
 | alimeeting | Eval_Ali, Test_Ali  | <split>/<split>_far/textgrid_dir/<session>.TextGrid |
 | aishell4   | test                | test/TextGrid/<session>.TextGrid |
 | aishell5   | Dev, Eval1, Eval2   | <split>/<session>/DX01C01.TextGrid (far-field timeline; DX01-04 identical) |
-| ear1       | train, dev          | TrainDev/<session>/A/P*.TextGrid (headset tiers; same timeline as D1/R1/H*, whose TextGrids are these cut at the device's end) |
 
 Example (dicow env, which has `textgrid`):
     python recipes/data/build_seglst.py
@@ -24,6 +23,9 @@ import sys
 from pathlib import Path
 
 DATA = Path("/mnt/data")
+
+
+from nemo_dicobw.local import local_value
 
 
 def textgrid_segments(path: Path, session: str) -> list[dict]:
@@ -45,19 +47,7 @@ def sources(corpora: Path) -> dict[tuple[str, str], dict[str, Path | list[Path]]
     src[("aishell4", "test")] = {p.stem: p for p in sorted((corpora / "aishell4" / "test" / "TextGrid").glob("*.TextGrid"))}
     for split in ("Dev", "Eval1", "Eval2"):
         src[("aishell5", split)] = {p.parent.name: p for p in sorted((corpora / "aishell5" / split).glob("*/DX01C01.TextGrid"))}
-    split_of = {}
-    lst = corpora / "ear1" / "TrainDev" / "split.lst"
-    if lst.exists():
-        cur = None
-        for ln in lst.read_text(encoding="utf-8").splitlines():
-            t = ln.strip().replace("\uff1a", ":").lower()
-            if t in ("train set:", "dev set:"):
-                cur = t.split()[0]
-            elif t and cur:
-                split_of[ln.strip()] = cur
-    for split in ("train", "dev"):
-        src[("ear1", split)] = {s: sorted((corpora / "ear1" / "TrainDev" / s / "A").glob("P*.TextGrid"))
-                                for s, sp in sorted(split_of.items()) if sp == split}
+    src.update(local_value("seglst_sources", lambda _: {})(corpora))
     return src
 
 

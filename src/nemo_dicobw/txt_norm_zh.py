@@ -103,3 +103,37 @@ def tokens(text: str) -> list[str]:
 
 def normalize(text: str) -> str:
     return " ".join(tokens(text))
+
+
+# Training targets for belle-zh-punct. The frozen decoder learned ct-transformer punctuation, so unlike the scoring
+# normaliser above these keep punctuation (NFKC would turn ， into an ASCII comma), digits and case.
+_WIDE = {c: c - 0xFEE0 for c in (*range(0xFF10, 0xFF1A), *range(0xFF21, 0xFF3B), *range(0xFF41, 0xFF5B))}
+_INVISIBLE = re.compile("[﻿​-‏⁠]")
+_CJK = _HAN + "，。？！、；：“”‘’《》（）…—"
+_CJK_GAP = re.compile(rf"\s+(?=[{_CJK}])|(?<=[{_CJK}])\s+")
+_SPELLED = re.compile(r"(?<![A-Za-z'])(?:[A-Z] )+[A-Z](?![A-Za-z'])|(?<![A-Za-z'])(?:[a-z] )+[a-z](?![A-Za-z'])")
+
+
+def _join_spelled(m: re.Match) -> str:
+    """Corpus transcripts spell acronyms with spaces (C P U -> CPU); repeated letters are speech (I I don't)."""
+    s = m.group(0)
+    return s if len(set(s.replace(" ", ""))) == 1 else s.replace(" ", "")
+
+
+def normalize_train(text: str) -> str:
+    """Decoder target: t2s, tags and invisible characters removed, no space beside Han or CJK punctuation.
+
+    ASCII punctuation after Latin text (`OK.`, `bug,`) stays: it is what the ct-transformer emits. Idempotent, because
+    the training dataset applies it again after joining a speaker's segments with spaces.
+    """
+    text = _INVISIBLE.sub("", text).translate(_WIDE)
+    text = _t2s().convert(text)
+    text = _TAG.sub(" ", text).replace("&", " ").replace("*", " ")
+    text = _CJK_GAP.sub("", text.strip())
+    return re.sub(r"\s+", " ", _SPELLED.sub(_join_spelled, text)).strip()
+
+
+def normalize_ctc(text: str) -> str:
+    """CTC target: normalize_train without punctuation, which has no acoustic frames (and ， is three byte tokens)."""
+    chars = (c if c == "'" or not unicodedata.category(c).startswith(("P", "S")) else " " for c in normalize_train(text))
+    return normalize_train("".join(chars))

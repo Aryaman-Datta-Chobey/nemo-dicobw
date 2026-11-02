@@ -36,6 +36,7 @@ DATASETS = ["alimeeting_Eval_Ali_far_ch1", "alimeeting_Test_Ali_far_ch1", "aishe
 DEV = "alimeeting_Eval_Ali_far_ch1"
 CKPT = {
     "dicow-large": "BUT-FIT__DiCoW_v3_3_large",
+    "dicow": "BUT-FIT__DiCoW_v3_3",
     "whisper-large-v3": "openai__whisper-large-v3",
     "whisper-large-v3-turbo": "openai__whisper-large-v3-turbo",
     "belle-zh": "BELLE-2__Belle-whisper-large-v3-zh",
@@ -45,6 +46,14 @@ CKPT = {
 }
 BOTH_TS = ("belle-zh", "belle-zh-punct", "belle-turbo-zh", "buzzasr")
 NEAR = "alimeeting_Eval_Ali_near"  # dev sessions, each speaker decoded from their headset
+DICOW = ("dicow-large", "dicow")
+
+
+def local_value(name, default):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+    from nemo_dicobw.local import local_value as read
+
+    return read(name, default)
 
 
 def near_conditions() -> list[dict]:
@@ -79,7 +88,7 @@ def command(c: dict, out: Path) -> list[str]:
            "--diar", NEMOTRON if c["diar"] == "nemotron" else "oracle",
            "--fusion-nemotron", NEMOTRON, "--mode", c["mode"], "--timestamps", c["ts"], "--language", c["lang"],
            "--out", str(out), "--condition", c["name"]]
-    return cmd + (["--dicow"] if c["ck"] == "dicow-large" else []) + (["--near-field"] if near else [])
+    return cmd + (["--dicow"] if c["ck"] in DICOW else []) + (["--near-field"] if near else [])
 
 
 def main() -> int:
@@ -88,10 +97,11 @@ def main() -> int:
     ap.add_argument("--checkpoints", nargs="*", default=list(CKPT))
     ap.add_argument("--out", type=Path, default=Path("/mnt/data/exp/asr/20261027-whisper-zeroshot"))
     ap.add_argument("--near", action="store_true", help="the near-field dev conditions instead of the matrix")
+    ap.add_argument("--local-set", action="store_true", help="conditions from the optional local module instead of the matrix")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--run", action="store_true")
     args = ap.parse_args()
-    conds = [c for c in (near_conditions() if args.near else conditions(args.datasets)) if c["ck"] in args.checkpoints]
+    conds = [c for c in (near_conditions() if args.near else local_value("asr_conditions", lambda _: [])(DICOW) if args.local_set else conditions(args.datasets)) if c["ck"] in args.checkpoints]
     if args.list or not args.run:
         print("\n".join(c["name"] for c in conds))
         print(f"{len(conds)} conditions", file=sys.stderr)

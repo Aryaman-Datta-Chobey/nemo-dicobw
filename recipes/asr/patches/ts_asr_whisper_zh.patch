@@ -1,0 +1,132 @@
+diff --git a/src/data/collators.py b/src/data/collators.py
+index 6b55793..bd97580 100644
+--- a/src/data/collators.py
++++ b/src/data/collators.py
+@@ -26,6 +26,7 @@ class DataCollator:
+     stno_max_segment_length: int = 50  # Maximum segment length for augmentation
+     spec_aug_prob: float = 0.3
+     use_enrollments: bool = False
++    ctc_text_norm: Any = None  # separate CTC target text, e.g. without punctuation
+ 
+     def __post_init__(self):
+         spec_params = {
+@@ -184,6 +185,12 @@ class DataCollator:
+         batch['upp_labels'] = batch['labels'].clone().apply_(
+             lambda x: self.tokenizer.upper_cased_tokens.get(int(x)) if int(
+                 x) in self.tokenizer.upper_cased_tokens else x)
++        if self.ctc_text_norm is not None and not in_longform:
++            ctc = self.tokenizer([self.ctc_text_norm(sample["transcript"]) for sample in inputs],
++                                 padding="longest", max_length=self.max_length, return_tensors="pt")
++            batch["ctc_labels"] = ctc["input_ids"].masked_fill(ctc.attention_mask.ne(1), -100)
++            if (batch["ctc_labels"][:, 0] == self.bos_token_id).all().cpu().item():
++                batch["ctc_labels"] = batch["ctc_labels"][:, 1:]
+ 
+         # Apply STNO augmentations (only during training, not for long-form generation)
+         if not ("is_long_form" in inputs[0] and inputs[0]['is_long_form']) and not nested:
+diff --git a/src/data/local_datasets.py b/src/data/local_datasets.py
+index a5d8cbd..3e83c90 100644
+--- a/src/data/local_datasets.py
++++ b/src/data/local_datasets.py
+@@ -461,6 +461,8 @@ class TS_ASR_DatasetSuperclass:
+                                                    (idx == len(merged_supervisions) - 1) and last_segment_unfinished)
+              for idx, segment in
+              enumerate(merged_supervisions)])
++        if not self.use_timestamps:
++            transcription = self.text_norm(transcription)
+ 
+         outputs = {"input_features": features, "stno_mask": torch.tensor(stno_mask), "attention_mask": att_mask,
+                    "transcript": transcription, "is_long_form": False}
+diff --git a/src/models/dicow/modeling_dicow.py b/src/models/dicow/modeling_dicow.py
+index 5cdfeb7..114486e 100644
+--- a/src/models/dicow/modeling_dicow.py
++++ b/src/models/dicow/modeling_dicow.py
+@@ -261,6 +261,7 @@ class DiCoWForConditionalGeneration(DiCoWGenerationMixin, WhisperForConditionalG
+             decoder_position_ids: Optional[tuple[torch.LongTensor]] = None,
+             labels: Optional[torch.LongTensor] = None,
+             upp_labels: Optional[torch.LongTensor] = None,
++            ctc_labels: Optional[torch.LongTensor] = None,
+             use_cache: Optional[bool] = None,
+             output_attentions: Optional[bool] = None,
+             output_hidden_states: Optional[bool] = None,
+@@ -326,7 +327,7 @@ class DiCoWForConditionalGeneration(DiCoWGenerationMixin, WhisperForConditionalG
+             if self.config.ctc_weight > 0.0:
+                 enc_lm_logits = self.get_enc_logits(outputs.encoder_last_hidden_state)
+                 # Prepare CTC labels
+-                enc_labels = labels.clone().to(dec_lm_logits.device)
++                enc_labels = (labels if ctc_labels is None else ctc_labels).clone().to(dec_lm_logits.device)
+                 for token in self.tokenizer.prefix_tokens:
+                     if (enc_labels[:, 0] == token).all():
+                         enc_labels = enc_labels[:, 1:]
+diff --git a/src/train.py b/src/train.py
+index 8ef6f66..1142e7f 100755
+--- a/src/train.py
++++ b/src/train.py
+@@ -145,6 +145,7 @@ class ModelTrainer:
+             stno_max_segment_length=self.aug_args.stno_max_segment_length,
+             spec_aug_prob=self.aug_args.spec_aug_prob,
+             use_enrollments=self.data_args.use_enrollments,
++            ctc_text_norm=get_text_norm(self.data_args.ctc_text_norm) if self.data_args.ctc_text_norm else None,
+         )
+ 
+     def _create_compute_metrics_fn(self, dev_datasets):
+diff --git a/src/txt_norm/__init__.py b/src/txt_norm/__init__.py
+index c80ef56..33e7bbb 100644
+--- a/src/txt_norm/__init__.py
++++ b/src/txt_norm/__init__.py
+@@ -16,5 +16,8 @@ def get_text_norm(t_norm: str):
+         return EnglishTextNormalizer(SPELLING_CORRECTIONS)
+     elif t_norm == 'whisper_nsf':
+         return EnglishTextNormalizerNSF()
++    elif t_norm in ('zh', 'zh_train', 'zh_ctc'):
++        from nemo_dicobw.txt_norm_zh import normalize, normalize_ctc, normalize_train
++        return {'zh': normalize, 'zh_train': normalize_train, 'zh_ctc': normalize_ctc}[t_norm]
+     else:
+         return lambda x: x
+\ No newline at end of file
+diff --git a/src/utils/evaluation.py b/src/utils/evaluation.py
+index b74d0b2..a3fcdb3 100644
+--- a/src/utils/evaluation.py
++++ b/src/utils/evaluation.py
+@@ -147,12 +147,17 @@ def parse_string_to_objects(s):
+     return objects
+ 
+ 
+-def process_session(session_preds, tokenizer, spk_id, cut: DataCut, break_to_characters=False, overflow_margin=5.0):
++def process_session(session_preds, tokenizer, spk_id, cut: DataCut, break_to_characters=False, overflow_margin=5.0,
++                    use_timestamps=True):
+     session_preds[session_preds == -100] = tokenizer.pad_token_id
+     transcript = tokenizer.decode(session_preds, decode_with_timestamps=True,
+                                   skip_special_tokens=True)
+     segments = parse_string_to_objects(transcript)
+     cut_duration = cut.end - cut.start
++    if not use_timestamps:
++        # no timing from the model: whatever window bounds it emits, its text covers the whole cut
++        text = re.sub(r'<\|[\d.]+\|>', ' ', transcript).strip()
++        segments = [{'start': 0.0, 'end': cut_duration, 'text': text}] if text else []
+     for segment in segments:
+         if break_to_characters:
+             segment['text'] = LhotseLongFormDataset.add_space_between_chars(segment['text'])
+@@ -271,7 +276,8 @@ def compute_longform_metrics(pred, trainer, output_dir, text_norm, metrics_list=
+                 processed_sessions[get_cut_recording_id(cut)] = []
+             processed_sessions[get_cut_recording_id(cut)].extend(
+                 process_session(session_preds, trainer.processing_class, spk_id, cut,
+-                                break_to_characters=dataset.break_to_characters if dataset is not None else False)
++                                break_to_characters=dataset.break_to_characters if dataset is not None else False,
++                                use_timestamps=dataset.use_timestamps if dataset is not None else True)
+             )
+             processed_sessions_ids.add((cut_id, spk_id))
+ 
+diff --git a/src/utils/training_args.py b/src/utils/training_args.py
+index ec7ab7c..e13bb9b 100755
+--- a/src/utils/training_args.py
++++ b/src/utils/training_args.py
+@@ -135,6 +135,9 @@ class DataArguments:
+     eval_text_norm: Optional[str] = field(default=None, metadata={
+         "help": "Normalisation to use for evaluation."})
+ 
++    ctc_text_norm: Optional[str] = field(default=None, metadata={
++        "help": "Normalisation of a separate CTC target. Default: the CTC head uses the decoder labels."})
++
+     dataset_weights: Optional[List[int]] = field(default=None, metadata={"help": "Dataset weights."})
+ 
+     use_enrollments: Optional[bool] = field(default=False, metadata={"help": "Use enrollments."})

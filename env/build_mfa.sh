@@ -2,7 +2,7 @@
 # Build the `mfa` conda env (Montreal Forced Aligner) and fetch the pretrained English models used
 # for forced-alignment references: the same versions as nttcslab-sp/diar-forced-alignment
 # (english_mfa acoustic v3.1.0, english_us_mfa dictionary v3.1.0, english_us_mfa G2P v3.0.0).
-# Mandarin (EAR-1 forced-alignment references, user-approved 2026-10-28): mandarin_mfa acoustic, mandarin_china_mfa
+# Mandarin (forced-alignment references, user-approved 2026-10-28): mandarin_mfa acoustic, mandarin_china_mfa
 # dictionary and G2P, all v3.0.0 (the versions nttcslab-sp/diar-forced-alignment used for AliMeeting).
 # Models live under $MFA_ROOT_DIR (default /mnt/data/mfa). Run inside tmux:
 #   tmux new -d -s env-mfa "bash env/build_mfa.sh 2>&1 | tee logs/20261026-env-mfa.log"

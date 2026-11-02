@@ -63,3 +63,30 @@ def test_real_lines(corpus: str):
         assert not re.search(r"[<>&*，。？！]", " ".join(toks)), line
         han_in = len(re.findall(r"[一-鿿]", re.sub(r"<[^>]*>", "", line)))
         assert sum(len(t) == 1 and "一" <= t <= "鿿" for t in toks) == han_in, line  # no Han lost or added
+
+
+from nemo_dicobw.txt_norm_zh import normalize_ctc, normalize_train  # noqa: E402
+
+
+def test_train_keeps_punctuation_and_cleans_spacing():
+    assert normalize_train("﻿十套 楼的，  都有。 我们") == "十套楼的，都有。我们"
+    assert normalize_train("我們<sil>在這") == "我们在这"
+    assert normalize_train("yes yes, ld o然后") == "yes yes, ld o然后"
+    assert normalize_train("Ａ１好") == "A1好"
+
+
+def test_train_joins_spelled_letters_only():
+    assert normalize_train("它的 C P U 是") == "它的CPU是"
+    assert normalize_train("I I don't care") == "I I don't care"
+    assert normalize_train("e c e 的课") == "ece的课"
+
+
+def test_train_is_idempotent():
+    for s in ("好了，OK. 我们 M A C", "Because they don't play.", " Oppo."):
+        assert normalize_train(normalize_train(s)) == normalize_train(s)
+
+
+def test_ctc_strips_punctuation():
+    assert normalize_ctc("好了，OK.我们？") == "好了OK我们"
+    assert normalize_ctc("I don't, care。") == "I don't care"
+    assert normalize_ctc("，。") == ""

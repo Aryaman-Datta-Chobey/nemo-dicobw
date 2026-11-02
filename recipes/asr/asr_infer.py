@@ -80,7 +80,10 @@ def decode_recording(dec, args, row, turns) -> list[dict]:
             for w in windows(ivs, rec_end, src):
                 seg = src[int(w[0] * sr):int(w[1] * sr)]
                 if args.dicow:
-                    jobs.append((s, w, seg, stno_mask(w, ivs, others)))
+                    m = stno_mask(w, ivs, others)
+                    if args.stno_overlap_as_target:
+                        m[1], m[3] = m[1] + m[3], 0.0
+                    jobs.append((s, w, seg, m))
                 else:
                     jobs.append((s, w, seg * target_mask(w, ivs, others, n=len(seg)), None))
     out = []
@@ -158,6 +161,8 @@ def main() -> int:
     ap.add_argument("--condition", required=True)
     ap.add_argument("--near-field", action="store_true",
                     help="per_speaker with oracle diarization only: decode each speaker from their headset recording")
+    ap.add_argument("--stno-overlap-as-target", action="store_true",
+                    help="DiCoW: mark overlapped target frames as target only in the STNO mask")
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--limit", type=int, help="only the first N recordings (smoke tests)")
     args = ap.parse_args()

@@ -140,6 +140,21 @@ def table(rows: dict[str, list[dict]], targets: list[str], keys: list[str] = DIS
     return "\n".join(md) + "\n"
 
 
+TEXT_KEYS = ("bc_pct", "bc_per_min", "bc_inside_pct", "tok_per_s", "filler_per_100", "latin_pct", "digit_seg_pct",
+             "punct_seg_pct")
+TIMING_KEYS = [k for k in DISTANCE_KEYS if k not in TEXT_KEYS]
+
+
+def rttm_stats(path: Path) -> dict:
+    from nemo_dicobw.rttm import load_rttm
+
+    (sess, turns), = load_rttm([path]).items()
+    segs = [{"speaker": t.speaker, "start_time": t.start, "end_time": t.end, "words": ""} for t in turns]
+    r = session_stats(segs)
+    r.update({k: math.nan for k in TEXT_KEYS})
+    return {"session": sess, "rttm": str(path), **{k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()}}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("sets", nargs="+", help="<name>=<seglst dir>")

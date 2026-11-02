@@ -1,0 +1,53 @@
+# @package _global_
+# nemo-dicobw-open: dicow_v3 on open Mandarin data with a frozen belle-zh-punct decoder (EXPERIMENTS.md 20261101-dicow-open-train-setup).
+# Sampled shares: results/20261101-dicow-open-train-setup/shares.md. Weights are starting points, not results.
+# Selection is cpCER on windows with segment masks: without timestamps upstream's tcpCER has no timing to score.
+defaults:
+  - /train/dicow_v3
+experiment: nemo-dicobw-open-large
+model:
+  whisper_model: ${oc.env:MODELS}/BELLE-2__Belle-whisper-large-v3-zh-punct
+  reinit_encoder_from: ${oc.env:PRETRAINED_CTC_MODELS_PATH}/belle-large-zh-punct_ctc-aishell3/model.safetensors
+data:
+  use_timestamps: false
+  global_lang_id: zh
+  train_text_norm: zh_train
+  eval_text_norm: zh
+  ctc_text_norm: zh_ctc
+  use_diar: true
+  train_cutsets:
+    - ${oc.env:MANIFEST_DIR}/alimeeting/alimeeting_cutset_train_30s.jsonl.gz
+    - ${oc.env:MANIFEST_DIR}/aishell4/aishell4_lt7spk_cutset_train_30s.jsonl.gz
+    - ${oc.env:MANIFEST_DIR}/aishell4/aishell4_7spk_cutset_train_30s.jsonl.gz
+    - ${oc.env:MANIFEST_DIR}/aishell5/aishell5_cutset_train_30s.jsonl.gz
+    - ${oc.env:MANIFEST_DIR}/dicow_open/sim_open_cutset_train_30s.jsonl.gz
+  dataset_weights: [2, 1, 3, 2, 2]
+  dev_cutsets:
+    - ${oc.env:MANIFEST_DIR}/dicow_open/dicow_dev_small_cutset.jsonl.gz
+  dev_diar_cutsets:
+    - ${oc.env:MANIFEST_DIR}/dicow_open/dicow_dev_small_cutset_30s.jsonl.gz
+  eval_cutsets:
+    - ${oc.env:MANIFEST_DIR}/dicow_open/dicow_dev_full_cutset.jsonl.gz
+  eval_diar_cutsets:
+    - ${oc.env:MANIFEST_DIR}/dicow_open/dicow_dev_full_cutset_30s.jsonl.gz
+aug:
+  musan_root: ${oc.env:MUSAN_ROOT}
+training:
+  # 12 x 8 = 96 at 30 GB with checkpointing, 10.4 s per step. Without it 12 and 6 run out of memory on the A100 40 GB,
+  # and auto_find_batch_size then halves silently to an effective 24, so it is off.
+  auto_find_batch_size: false
+  overall_batch_size: 96
+  gradient_accumulation_steps: 8
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  dataloader_num_workers: 8
+  max_steps: 10000
+  eval_steps: 2000
+  save_steps: 2000
+  save_total_limit: 2
+  metric_for_best_model: eval_dicow_dev_small_cutset_cp_wer
+  train_metrics_list: ["cp_wer"]
+  eval_metrics_list: ["cp_wer"]
+  save_visualizations: false
+  report_to: [tensorboard]

@@ -1,0 +1,148 @@
+diff --git a/fastmss/simulator.py b/fastmss/simulator.py
+index 9f84893..65764b7 100644
+--- a/fastmss/simulator.py
++++ b/fastmss/simulator.py
+@@ -283,6 +283,10 @@ class ConversationalMeetingSimulator:
+         if len(audio) == 0:
+             return audio
+ 
++        if getattr(self, "_band", None):
++            c_noise = self._bandlimit(c_noise)
++            c_noise = c_noise / (np.sqrt(np.mean(c_noise**2)) + 1e-8)
++
+         # Calculate maximum allowed noise level (5 dB below min speech level)
+         max_noise_level_db = min_speech_level_db + np.random.uniform(*range_db_offset)
+ 
+@@ -299,6 +303,13 @@ class ConversationalMeetingSimulator:
+ 
+         return noisy_audio
+ 
++    def _bandlimit(self, audio):
++        from scipy.signal import sosfilt
++
++        for sos in getattr(self, "_band", []):
++            audio = sosfilt(sos, audio, axis=-1)
++        return audio
++
+     def add_real_noise(self, audio, min_speech_level_db, range_db_offset=(-15, 3)):
+         # Check if multi-noise sampling is enabled
+         multi_noise_enabled = getattr(self.cfg, "multi_noise_sampling", True)
+@@ -406,6 +417,10 @@ class ConversationalMeetingSimulator:
+             rms = np.sqrt(np.mean(c_noise**2))
+             c_noise = c_noise / (rms + 1e-8)
+ 
++        if getattr(self, "_band", None):
++            c_noise = self._bandlimit(c_noise)
++            c_noise = c_noise / (np.sqrt(np.mean(c_noise**2)) + 1e-8)
++
+         # Calculate maximum allowed noise level (5 dB below min speech level)
+         max_noise_level_db = min_speech_level_db + np.random.uniform(*range_db_offset)
+ 
+@@ -466,6 +481,20 @@ class ConversationalMeetingSimulator:
+         target_dur = self.cfg.duration
+ 
+         sampled_spk = np.random.choice(self.speakers, n_speakers, replace=False)
++        # optional uneven speaker shares: per-meeting Dirichlet weights on who takes the next turn
++        # (nemo-dicobw patch; off unless spk_dirichlet_alpha is set)
++        alpha = getattr(self.cfg, "spk_dirichlet_alpha", None)
++        spk_w = (dict(zip(sampled_spk, np.random.dirichlet([alpha] * len(sampled_spk))))
++                 if alpha else {s: 1.0 for s in sampled_spk})
++
++        def pick(cands):
++            # past the target duration the meeting only continues until every speaker has spoken: take the
++            # next turn from the unseen ones (a near-zero weight would otherwise grow the meeting unboundedly)
++            if current_time >= target_dur:
++                unseen = [s for s in cands if s not in seen_speakers]
++                cands = unseen or cands
++            w = np.array([spk_w[s] for s in cands], dtype=float)
++            return cands[np.random.choice(len(cands), p=w / w.sum())]
+ 
+         current_time = 0
+         utt_indx = 0
+@@ -495,14 +524,14 @@ class ConversationalMeetingSimulator:
+                     current_speaker = prev_speaker
+                 else:
+                     # random choice of next speaker first utterance
+-                    current_speaker = np.random.choice(sampled_spk)
++                    current_speaker = pick(list(sampled_spk))
+             else:
+                 # Different speaker
+                 if prev_speaker is not None:
+                     available_speakers = [s for s in sampled_spk if s != prev_speaker]
+-                    current_speaker = np.random.choice(available_speakers)
++                    current_speaker = pick(available_speakers)
+                 else:
+-                    current_speaker = np.random.choice(sampled_spk)
++                    current_speaker = pick(list(sampled_spk))
+ 
+             cut = np.random.choice(self.spk2cuts[current_speaker])
+ 
+@@ -565,10 +594,18 @@ class ConversationalMeetingSimulator:
+             current_time = prev_offset + cut.duration
+ 
+         base_gain = np.random.uniform(*self.cfg.base_gain)
++        # optional per-speaker level offset: quiet talkers (nemo-dicobw patch; off unless quiet_spk_prob > 0)
++        spk_offset = {}
++        utt_spks = [x.supervisions[0].speaker for x in utterances]
++        if getattr(self.cfg, "quiet_spk_prob", 0.0) and np.random.random() < self.cfg.quiet_spk_prob:
++            uniq = sorted(set(utt_spks))
++            n_quiet = min(len(uniq) - 1, np.random.randint(self.cfg.quiet_spk_n[0], self.cfg.quiet_spk_n[1] + 1))
++            for spk in np.random.choice(uniq, size=max(0, n_quiet), replace=False):
++                spk_offset[spk] = np.random.uniform(*self.cfg.quiet_spk_gain)
+         speech_lvls = []
+-        for _ in utterances:
++        for spk in utt_spks:
+             c_gain = np.random.uniform(*self.cfg.rel_gain)
+-            speech_lvls.append(base_gain + c_gain)
++            speech_lvls.append(base_gain + c_gain + spk_offset.get(spk, 0.0))
+ 
+         # fetch the maximum length
+         output_audio = np.zeros((1, int(current_time * self.cfg.samplerate)))
+@@ -584,6 +621,7 @@ class ConversationalMeetingSimulator:
+             spk2audio = {}
+             spk2audio_anechoic = {}
+ 
++        spk2rir = {}
+         do_reverb = self.cfg.reverberate and np.random.random() < getattr(
+             self.cfg, "reverb_prob", 1.0
+         )
+@@ -602,7 +640,14 @@ class ConversationalMeetingSimulator:
+             if do_reverb:
+                 # Simple random RIR selection (not position-aware)
+                 c_spk = cut.supervisions[0].speaker
+-                c_rir_file = str(np.random.choice(c_room_rirs))
++                # optional fixed position per speaker, re-drawn with rir_change_prob per utterance (nemo-dicobw
++                # patch; upstream draws a random position for every utterance)
++                if getattr(self.cfg, "rir_per_speaker", False):
++                    if c_spk not in spk2rir or np.random.random() < getattr(self.cfg, "rir_change_prob", 0.0):
++                        spk2rir[c_spk] = str(np.random.choice(c_room_rirs))
++                    c_rir_file = spk2rir[c_spk]
++                else:
++                    c_rir_file = str(np.random.choice(c_room_rirs))
+ 
+                 c_rir, fs = sf.read(c_rir_file)
+                 assert fs == self.cfg.samplerate
+@@ -686,6 +731,23 @@ class ConversationalMeetingSimulator:
+         # add some gaussian noise here.
+         # if we have noise we can add that too. e.g. wham and sins, qut etc
+ 
++        # optional microphone band limit: Butterworth low-pass and/or high-pass drawn once per meeting, applied
++        # to the speech mixture here and to the noise before its level is set (nemo-dicobw patch; off unless
++        # lowpass_prob > 0)
++        self._band = []
++        if getattr(self.cfg, "lowpass_prob", 0.0) and np.random.random() < self.cfg.lowpass_prob:
++            from scipy.signal import butter
++
++            fs = self.cfg.samplerate
++            if getattr(self.cfg, "lowpass_cutoff", None):
++                fc = np.random.uniform(*self.cfg.lowpass_cutoff)
++                self._band.append(butter(getattr(self.cfg, "lowpass_order", 4), fc, fs=fs, output="sos"))
++            if getattr(self.cfg, "highpass_cutoff", None):
++                fc = np.random.uniform(*self.cfg.highpass_cutoff)
++                self._band.append(butter(getattr(self.cfg, "highpass_order", 2), fc, btype="highpass", fs=fs,
++                                         output="sos"))
++            output_audio = self._bandlimit(output_audio)
++
+         noise_prob = getattr(self.cfg, "noise_probability_global", 1.0)
+         if self.cfg.add_noise and np.random.random() < noise_prob:
+             min_lvl = min(speech_lvls)

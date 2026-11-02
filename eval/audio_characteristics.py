@@ -114,9 +114,13 @@ def analyse(row: dict) -> dict:
     if x.ndim > 1:
         x = x.mean(axis=1)
     assert sr == SR, (row["audio_filepath"], sr)
+    return analyse_signal(x, load_rttm([Path(row["rttm_filepath"])]).get(row["session"], []), row)
+
+
+def analyse_signal(x: np.ndarray, turns, row: dict) -> dict:
+    """Features of one mono 16 kHz signal; `turns` have .speaker, .start and .end in seconds."""
     p = frame_power(x)
     n = len(p)
-    turns = load_rttm([Path(row["rttm_filepath"])]).get(row["session"], [])
     count, per = activity(turns, n)
     speech = count > 0
     lv = 10 * np.log10(p)

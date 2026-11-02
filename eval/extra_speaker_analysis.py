@@ -27,6 +27,7 @@ from pathlib import Path
 import numpy as np
 
 from nemo_dicobw.diar_metrics import DiarSummary, merge_speaker_turns, score_file
+from nemo_dicobw.local import local_value
 from nemo_dicobw.rttm import Turn, intersect_intervals, load_rttm, load_uem, merge_intervals
 
 REPO = Path(__file__).resolve().parents[1]
@@ -34,11 +35,8 @@ CONDITIONS = [
     "aishell4_test_far_ch1", "aishell5_Dev_DX01C01", "aishell5_Eval1_DX01C01", "aishell5_Eval2_DX01C01",
     "alimeeting_Eval_Ali_far_ch1", "alimeeting_Test_Ali_far_ch1", "chime6_dev_U06_CH1", "chime6_eval_U06_CH1",
     "egocom_test_all", "egocom_val_all", "indic_diarbench_far_field", "notsofar_eval_sc_all",
-    # EAR-1 ESD-ON inputs (train is zero-shot inference only, used as extra evaluation data)
-    "ear1_dev_D1", "ear1_dev_R1", "ear1_train_D1", "ear1_train_R1",
-]
-DEV = {"aishell5_Dev_DX01C01", "alimeeting_Eval_Ali_far_ch1", "chime6_dev_U06_CH1", "egocom_val_all",
-       "ear1_dev_D1", "ear1_dev_R1"}
+] + local_value("DIAR_CONDITIONS", [])
+DEV = {"aishell5_Dev_DX01C01", "alimeeting_Eval_Ali_far_ch1", "chime6_dev_U06_CH1", "egocom_val_all"} | set(local_value("DEV_CONDITIONS", []))
 THRESHOLDS = [("abs", t) for t in (0, 1, 2, 5, 10, 20, 30, 60)] + \
     [("rel", r) for r in (0.005, 0.01, 0.02, 0.03, 0.05, 0.08)]
 
@@ -48,8 +46,9 @@ def dur(iv: list[tuple[float, float]]) -> float:
 
 
 def corpus_of(cond: str) -> str:
-    if cond.startswith("ear1"):  # the two ESD-ON tracks (and auxiliary mics) are reported separately
-        return "ear1_" + cond.split("_")[2]
+    local = local_value("corpus_of", lambda _: None)(cond)
+    if local:
+        return local
     return "indic_diarbench" if cond.startswith("indic") else cond.split("_")[0]
 
 

@@ -26,6 +26,9 @@ from pathlib import Path
 
 import soundfile as sf
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+from nemo_dicobw.local import local_value  # noqa: E402
+
 DATA = Path("/mnt/data")
 REF_PREFERENCE = ("fa", "words", "segments")
 
@@ -53,19 +56,13 @@ CONDITIONS: dict[str, Condition] = {
     # training-only corpora for the speaker-count run (manifests for window profiles and selection)
     "ami_train_Array1-01": Condition("ami", "train", "Array1-01", "AMI single distant mic (array 1, mic 1)"),
     "icsi_train_mix": Condition("icsi", "train", "mix", "ICSI headset mix (no distant mics available)"),
-    # EAR-1 ESD-ON tracks (D1 = Fixed-Array, R1 = Moving-Array) and the auxiliary near mics
-    **{f"ear1_{s}_{ch}": Condition("ear1", s, ch, note) for s in ("train", "dev")
-       for ch, note in (("D1", "Fixed-Array track input"), ("R1", "Moving-Array track input"))},
-    **{f"ear1_{s}_H_all": Condition("ear1", s, "H[1-3]", "mics in front of participants (training-only)")
-       for s in ("train", "dev")},
-    **{f"ear1_{s}_all": Condition("ear1", s, "[DRH][0-9]", "D1, R1 and H* of each session (channel consistency)")
-       for s in ("train", "dev")},
     # every channel of multi-microphone sessions (channel-consistency diagnostics)
     "aishell4_test_far_all": Condition("aishell4", "test", "far_ch*", "all 8 array channels"),
     **{f"aishell5_{s}_DX_all": Condition("aishell5", s, "DX0[1-4]C01", "all 4 far-field door mics") for s in ("Dev", "Eval1", "Eval2")},
     **{f"alimeeting_{s}_far_all": Condition("alimeeting", s, "far_ch*", "all 8 array channels") for s in ("Eval_Ali", "Test_Ali")},
     **{f"chime6_{s}_U_all": Condition("chime6", s, "U0[1-6].CH[1-4]", "all Kinect array channels") for s in ("dev", "eval")},
 }
+CONDITIONS.update(local_value("eval_conditions", lambda _: {})(Condition))
 
 
 def recordings(c: Condition, audio: Path, refs: Path) -> list[tuple[str, str, Path]]:

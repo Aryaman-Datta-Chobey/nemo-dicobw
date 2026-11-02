@@ -1,0 +1,13 @@
+# @package _global_
+# Real-only arm of the nemo-dicobw-open data-mix comparison (EXPERIMENTS.md 20261102-dicow-large-mix): open_large without the simulated cutset.
+# Same relative weights, so sampled shares become AliMeeting 56.4%, AISHELL-4 18.9% + 7-speaker 9.0%, AISHELL-5 15.8%.
+defaults:
+  - /dicobw/open_large
+experiment: nemo-dicobw-open-large-realonly
+data:
+  train_cutsets:
+    - ${oc.env:MANIFEST_DIR}/alimeeting/alimeeting_cutset_train_30s.jsonl.gz
+    - ${oc.env:MANIFEST_DIR}/aishell4/aishell4_lt7spk_cutset_train_30s.jsonl.gz
+    - ${oc.env:MANIFEST_DIR}/aishell4/aishell4_7spk_cutset_train_30s.jsonl.gz
+    - ${oc.env:MANIFEST_DIR}/aishell5/aishell5_cutset_train_30s.jsonl.gz
+  dataset_weights: [2, 1, 3, 2]

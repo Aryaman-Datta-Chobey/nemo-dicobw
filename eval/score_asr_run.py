@@ -19,6 +19,8 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from nemo_dicobw.local import local_value
+
 REPO = Path(__file__).resolve().parents[1]
 REFS = Path("/mnt/data/refs")
 DATASET_REFS = {
@@ -28,6 +30,7 @@ DATASET_REFS = {
     "aishell4_test_far_ch1": REFS / "aishell4/test/seglst",
     "aishell5_Eval1_DX01C01": REFS / "aishell5/Eval1/seglst",
     "aishell5_Eval2_DX01C01": REFS / "aishell5/Eval2/seglst",
+    **{k: REFS / v for k, v in local_value("ASR_REFS", {}).items()},
 }
 
 

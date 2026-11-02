@@ -38,12 +38,14 @@ from nemo_dicobw.rttm import Turn, intersect_intervals, load_rttm, load_uem, mer
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from extra_speaker_analysis import CONDITIONS, DEV, corpus_of  # noqa: E402
 
+from nemo_dicobw.local import local_value
+
 REPO = Path(__file__).resolve().parents[1]
 SLIVER_S = 10.0
 MULTI_CHANNEL = ["alimeeting_Eval_Ali_far_all", "alimeeting_Test_Ali_far_all", "aishell5_Dev_DX_all",
                  "aishell5_Eval1_DX_all", "aishell5_Eval2_DX_all", "aishell4_test_far_all", "chime6_dev_U_all",
-                 "chime6_eval_U_all", "notsofar_eval_sc_all", "egocom_test_all", "egocom_val_all", "ear1_dev_all",
-                 "ear1_train_all"]
+                 "chime6_eval_U_all", "notsofar_eval_sc_all", "egocom_test_all", "egocom_val_all"] + \
+    local_value("MULTI_CHANNEL", [])
 THRESHOLDS = [0.3, 0.4, 0.5, 0.6, 0.7]
 
 

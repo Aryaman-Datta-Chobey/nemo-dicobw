@@ -38,9 +38,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from count_diagnostics import analyse_recording  # noqa: E402
 from extra_speaker_analysis import CONDITIONS, corpus_of  # noqa: E402
 
+from nemo_dicobw.local import local_value
+
 REPO = Path(__file__).resolve().parents[1]
 MAX_S, MIN_CHUNK, MAX_CHUNK = 60.0, 1.0, 10.0
-MANDARIN = {"aishell4", "aishell5", "alimeeting", "ear1_D1", "ear1_R1"}
+MANDARIN = {"aishell4", "aishell5", "alimeeting"} | set(local_value("MANDARIN_CORPORA", []))
 
 
 def solo(spk_iv: dict, who: str) -> list:

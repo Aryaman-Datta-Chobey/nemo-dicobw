@@ -31,6 +31,9 @@ import numpy as np
 import soundfile as sf
 import soxr
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from nemo_dicobw.local import local_value  # noqa: E402
+
 TARGET_SR = 16000
 AUDIO_EXTS = {".wav", ".flac"}
 
@@ -113,27 +116,6 @@ def layout_egocom(rel: Path, src: Path) -> tuple[str, str, str]:
 
 
 @functools.cache
-def _ear1_splits(src: Path) -> dict[str, str]:
-    """session -> train/dev from <src>/split.lst (written by recipes/data/ear1_prepare.py)."""
-    out, cur = {}, None
-    for ln in (src / "split.lst").read_text(encoding="utf-8").splitlines():
-        s = ln.strip().replace("\uff1a", ":").lower()
-        if s in ("train set:", "dev set:"):
-            cur = s.split()[0]
-        elif s and cur:
-            out[ln.strip()] = cur
-    return out
-
-
-def layout_ear1(rel: Path, src: Path) -> tuple[str, str, str]:
-    """<session>/D1.WAV -> (dev|train, <session>, D1); <session>/A/P###.WAV -> (.., <session>, P###)."""
-    session = rel.parts[0]
-    if session not in _ear1_splits(src) or len(rel.parts) not in (2, 3):
-        raise ValueError(f"unexpected EAR-1 path {rel}")
-    return _ear1_splits(src)[session], session, rel.stem
-
-
-@functools.cache
 def _ami_splits(src: Path) -> dict[str, str]:
     """meeting -> train/dev/test from <src>/partition.tsv (written by scripts/download_ami.sh)."""
     return dict(ln.split("\t")[::-1] for ln in (src / "partition.tsv").read_text().split("\n") if ln.strip())
@@ -154,10 +136,19 @@ def layout_icsi(rel: Path, src: Path) -> tuple[str, str, str]:
     return "train", rel.parts[1], "mix"
 
 
+def layout_aishell3(rel: Path, src: Path) -> tuple[str, str, str]:
+    """[data_aishell3/]<split>/wav/<speaker>/<utterance>.wav -> (<split>, <speaker>, <utterance>);
+    one 44.1 kHz read-speech utterance per file."""
+    parts = rel.parts[1:] if rel.parts[0] == "data_aishell3" else rel.parts
+    if len(parts) != 4 or parts[1] != "wav" or parts[0] not in ("train", "test"):
+        raise ValueError(f"unexpected AISHELL-3 path {rel}")
+    return parts[0], parts[2], rel.stem
+
+
 LAYOUTS: dict[str, Layout] = {
     "ami": layout_ami,
-    "ear1": layout_ear1,
     "icsi": layout_icsi,
+    "aishell3": layout_aishell3,
     "aishell4": layout_aishell4,
     "aishell5": layout_split_session_channel,
     "alimeeting": layout_alimeeting,
@@ -165,6 +156,7 @@ LAYOUTS: dict[str, Layout] = {
     "egocom": layout_egocom,
     "notsofar": layout_notsofar,
 }
+LAYOUTS.update(local_value("LAYOUTS", {}))
 
 
 def iter_jobs(src: Path, out: Path, corpus: str, layout: Layout, includes: list[str],

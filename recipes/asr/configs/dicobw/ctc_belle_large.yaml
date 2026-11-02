@@ -1,0 +1,30 @@
+# @package _global_
+# Mandarin CTC head on AISHELL-3 train with the encoder frozen, replacing upstream's LibriSpeech head (EXPERIMENTS.md 20261101-dicow-open-train-setup).
+defaults:
+  - /pretrain/base
+experiment: ctc_heads/belle-large-zh-punct_ctc-aishell3
+model:
+  whisper_model: ${oc.env:MODELS}/BELLE-2__Belle-whisper-large-v3-zh-punct
+data:
+  use_timestamps: false
+  global_lang_id: zh
+  train_text_norm: zh_ctc
+  eval_text_norm: zh_ctc
+  train_cutsets:
+    - ${oc.env:MANIFEST_DIR}/aishell3/aishell3_cutset_train.jsonl.gz
+  dev_cutsets:
+    - ${oc.env:MANIFEST_DIR}/dicow_open/ctc_dev_aishell3_cutset.jsonl.gz
+  eval_cutsets:
+    - ${oc.env:MANIFEST_DIR}/dicow_open/ctc_eval_aishell3_cutset.jsonl.gz
+  dataset_weights: [1]
+training:
+  remove_timestamps_from_ctc: true
+  max_steps: 10000
+  eval_strategy: steps
+  save_strategy: steps
+  eval_steps: 1000
+  save_steps: 1000
+  early_stopping_patience: 3
+  metric_for_best_model: eval_ctc_dev_aishell3_cutset_cer
+  dataloader_num_workers: 6
+  report_to: [tensorboard]

@@ -1,0 +1,78 @@
+# FastMSS config for the open DiCoW simulations (EXPERIMENTS.md 20261031-dicow-open-prep). Uses open data only.
+# Follows the "Mind the Gap" DiCoW setting (arXiv 2605.15442; FastMSS recipes/paper/ts_asr/table1/callhome_boosted.yaml,
+# table2/w_noise): CALLHOME p_ind boosted by 2.0 gives TH / TS / IR / BC = 0.09 / 0.13 / 0.54 / 0.24, same gain and noise levels,
+# no reverberation in the main arm. Pause and overlap means are fitted on AliMeeting + AISHELL-4 train and passed
+# as hmm_params.beta_* by recipes/data/sim_dicow_open.py. FastMSS pin + recipes/data/patches/fastmss_spk_gain_rir.patch.
+n_jobs: 8
+stage: 0
+samplerate: 16000
+seed: null
+
+output_dir: null
+data_dir: null
+rir_dir: null
+hydra:
+  run:
+    dir: ${output_dir}
+
+n_meetings: 100
+duration: 120
+min_max_spk: [4, 4]
+max_concurrent_speakers: 3
+
+manifest_dir: /mnt/data/manifests/lhotse/dicow_open
+manifest_prefix: dicow_seeds
+dset_splits:
+  - cutset_train
+exclude_speakers: null
+split_fa_factor: 0.2
+max_utt_duration: 20
+min_utt_duration: 0.0
+min_spk_utt: 5
+drop_without_align: true
+
+base_gain: [-35, -8]
+rel_gain: [-12, 5]
+spk_dirichlet_alpha: 1.0
+
+add_noise: true
+noise_folders:
+  - /mnt/data/corpora/musan/musan/noise
+  - /mnt/data/corpora/aishell5/noise
+noise_rel_gain: [-20, -3]
+noise_probability_global: 0.5
+multi_noise_sampling: true
+filter_noise_len: 2.0
+
+reverberate: false
+reverb_prob: 0.0
+n_rirs: 0
+n_pos_rirs: 50
+rt60: [0.1, 0.7]
+room_sz: [5, 10]
+room_ceiling: [3, 5]
+delta_dist: 0.5
+use_rand_ism: false
+rand_disp: 0.0
+max_position_change: 0.5
+mic_type: single
+circular:
+  diameter: [0.08, 0.085]
+  n_mics: 8
+  center_mic: false
+
+speed_perturb: false
+speed_perturb_range: [0.95, 1.05]
+use_fir: false
+
+use_markov: false
+hmm_fit_transitions_to: null
+hmm_params:
+  p_ind: [0.15, 0.21, 0.44, 0.20]
+boost_overlap_factor: 2.0
+
+save_cutset: true
+save_spk: false
+save_anechoic: false
+save_rttm: false
+save_nemo_manifest: false
